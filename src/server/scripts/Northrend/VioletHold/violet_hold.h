@@ -1,0 +1,184 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_VIOLET_HOLD_H
+#define DEF_VIOLET_HOLD_H
+
+enum InstanceSpells
+{
+    SPELL_SABOTEUR_SHIELD_DISRUPTION = 58291,
+    SPELL_SABOTEUR_SHIELD_EFFECT     = 45775,
+	SPELL_CYANIGOSA_SPELL_TRANSFORM  = 58668,
+    SPELL_CYANIGOSA_BLUE_AURA        = 47759,
+	SPELL_ARCANE_LIGHTNING           = 57912,
+    SPELL_ARCANE_LIGHTNING_VISUAL_1  = 57930,
+	SPELL_ARCANE_LIGHTNING_VISUAL_2  = 60038,
+    SPELL_ARCANE_LIGHTNING_KILL      = 58152,
+    SPELL_SPAWN_EFFECT               = 57886,
+	SPELL_PORTAL_CHANNEL             = 58012,
+    SPELL_CRYSTALL_ACTIVATION        = 57804,
+};
+
+enum Creatures
+{
+    NPC_TELEPORTATION_PORTAL = 31011,
+    NPC_PORTAL_GUARDIAN      = 30660,
+    NPC_PORTAL_KEEPER        = 30695,
+    NPC_XEVOZZ               = 29266,
+    NPC_LAVANTHOR            = 29312,
+    NPC_ICHORON              = 29313,
+    NPC_ZURAMAT              = 29314,
+    NPC_EREKEM               = 29315,
+    NPC_EREKEM_GUARD         = 29395,
+    NPC_MORAGG               = 29316,
+    NPC_CYANIGOSA            = 31134,
+    NPC_SINCLARI             = 30658,
+    NPC_SABOTEOUR            = 31079,
+    NPC_VIOLET_HOLD_GUARD    = 30659,
+    NPC_DEFENSE_SYSTEM       = 30837,
+	NPC_ICHOR_GLOBULE        = 29321,
+	NPC_ETHEREAL_SPHERE_N    = 29271,
+	NPC_ETHEREAL_SPHERE_H    = 32582,
+	NPC_VOID_SENTRY          = 29364,
+	// Trash
+	NPC_AZURE_INVADER_1      = 30661,
+    NPC_AZURE_INVADER_2      = 30961,
+    NPC_AZURE_SPELLBREAKER_1 = 30662,
+    NPC_AZURE_SPELLBREAKER_2 = 30962,
+    NPC_AZURE_BINDER_1       = 30663,
+    NPC_AZURE_BINDER_2       = 30918,
+    NPC_AZURE_MAGE_SLAYER_1  = 30664,
+    NPC_AZURE_MAGE_SLAYER_2  = 30963,
+    NPC_AZURE_CAPTAIN        = 30666,
+    NPC_AZURE_SORCEROR       = 30667,
+    NPC_AZURE_RAIDER         = 30668,
+    NPC_AZURE_STALKER        = 32191,
+};
+
+enum GameObjects
+{
+    GO_MAIN_DOOR                = 191723,
+    GO_XEVOZZ_DOOR              = 191556,
+    GO_LAVANTHOR_DOOR           = 191566,
+    GO_ICHORON_DOOR             = 191722,
+    GO_ZURAMAT_DOOR             = 191565,
+    GO_EREKEM_DOOR              = 191564,
+    GO_EREKEM_GUARD_1_DOOR      = 191563,
+    GO_EREKEM_GUARD_2_DOOR      = 191562,
+    GO_MORAGG_DOOR              = 191606,
+    GO_INTRO_ACTIVATION_CRYSTAL = 193615,
+    GO_ACTIVATION_CRYSTAL       = 193611,
+};
+
+enum Achievements
+{
+	ACHIEVEMENTS_THE_VOID_DANCE = 2153,
+};
+
+enum Data
+{
+    DATA_1ST_BOSS_EVENT,
+    DATA_2ND_BOSS_EVENT,
+    DATA_CYANIGOSA_EVENT,
+    DATA_WAVE_COUNT,
+    DATA_REMOVE_NPC,
+    DATA_PORTAL_LOCATION,
+    DATA_DOOR_INTEGRITY,
+    DATA_NPC_PRESENCE_AT_DOOR,
+    DATA_NPC_PRESENCE_AT_DOOR_ADD,
+    DATA_NPC_PRESENCE_AT_DOOR_REMOVE,
+    DATA_START_BOSS_ENCOUNTER,
+    DATA_FIRST_BOSS,
+    DATA_SECOND_BOSS,
+    // DATA_ACTIVATE_CRYSTAL,
+    DATA_MAIN_EVENT_PHASE,
+    DATA_DEFENSELESS,
+};
+
+enum Data64
+{
+    DATA_MORAGG,
+    DATA_EREKEM,
+    DATA_EREKEM_GUARD_1,
+    DATA_EREKEM_GUARD_2,
+    DATA_ICHORON,
+    DATA_LAVANTHOR,
+    DATA_XEVOZZ,
+    DATA_ZURAMAT,
+    DATA_CYANIGOSA,
+    DATA_MORAGG_CELL,
+    DATA_EREKEM_CELL,
+    DATA_EREKEM_LEFT_GUARD_CELL,
+    DATA_EREKEM_RIGHT_GUARD_CELL,
+    DATA_ICHORON_CELL,
+    DATA_LAVANTHOR_CELL,
+    DATA_XEVOZZ_CELL,
+    DATA_ZURAMAT_CELL,
+    DATA_MAIN_DOOR,
+    DATA_SINCLARI,
+    DATA_TELEPORTATION_PORTAL,
+    DATA_SABOTEUR_PORTAL,
+};
+
+enum Bosses
+{
+    BOSS_NONE,              // 0 used as marker for not yet randomized
+    BOSS_MORAGG,
+    BOSS_EREKEM,
+    BOSS_ICHORON,
+    BOSS_LAVANTHOR,
+    BOSS_XEVOZZ,
+    BOSS_ZURAMAT,
+    BOSS_CYANIGOSA,
+};
+
+enum VHWorldStates
+{
+    WORLD_STATE_VH              = 3816,
+    WORLD_STATE_VH_PRISON_STATE = 3815,
+    WORLD_STATE_VH_WAVE_COUNT   = 3810,
+};
+
+enum Encounters
+{
+	MAX_ENCOUNTER = 3,
+};
+
+enum Misc
+{
+    SAY_SINCLARI_1         = -1608045,
+
+	SPAWN_TIME             = 20000,
+    EVENT_ACTIVATE_CRYSTAL = 20001,
+};
+
+const Position PortalLocation[] =
+{
+    {1877.51f, 850.104f, 44.6599f, 4.7822f },
+    {1918.37f, 853.437f, 47.1624f, 4.12294f},
+    {1936.07f, 803.198f, 53.3749f, 3.12414f},
+    {1927.61f, 758.436f, 51.4533f, 2.20891f},
+    {1890.64f, 753.471f, 48.7224f, 1.71042f},
+    {1908.31f, 809.657f, 38.7037f, 3.08701f},
+};
+
+const Position BossStartMove1  = {1894.684448f, 739.390503f, 47.668003f, 0.0f};
+const Position BossStartMove2  = {1875.173950f, 860.832703f, 43.333565f, 0.0f};
+const Position BossStartMove21 = {1858.854614f, 855.071411f, 43.333565f, 0.0f};
+const Position BossStartMove22 = {1891.926636f, 863.388977f, 43.333565f, 0.0f};
+const Position BossStartMove3  = {1916.138062f, 778.152222f, 35.772308f, 0.0f};
+const Position BossStartMove4  = {1853.618286f, 758.557617f, 38.657505f, 0.0f};
+const Position BossStartMove5  = {1906.683960f, 842.348022f, 38.637459f, 0.0f};
+const Position BossStartMove6  = {1928.207031f, 852.864441f, 47.200813f, 0.0f};
+
+const Position CyanigosasSpawnLocation = {1930.281250f, 804.407715f, 52.410946f, 3.139621f};
+const Position MiddleRoomLocation = {1892.291260f, 805.696838f, 38.438862f, 3.139621f};
+const Position MiddleRoomPortalSaboLocation = {1896.622925f, 804.854126f, 38.504772f, 3.139621f};
+
+#endif

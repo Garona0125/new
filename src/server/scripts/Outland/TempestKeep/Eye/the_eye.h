@@ -1,0 +1,73 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_THE_EYE_H
+#define DEF_THE_EYE_H
+
+enum Data
+{
+	DATA_ALAR                             = 0,
+	DATA_HIGH_ASTROMANCER_SOLARIAN        = 1,
+	DATA_VOID_REAVER                      = 2,
+	DATA_KAELTHAS_SUNSTRIDER              = 3,
+	DATA_THALADRED_THE_DARKENER           = 4,
+	DATA_LORD_SANGUINAR                   = 5,
+	DATA_GRAND_ASTROMANCER_CAPERNIAN      = 6,
+	DATA_MASTER_ENGINEER_TELONICUS        = 7,
+	DATA_KAETLTHAS_LEFT_DOOR              = 8,
+	DATA_KAETLTHAS_RIGHT_DOOR             = 9,
+	DATA_KAETLTHAS_ENTRANCE_DOOR_RIGHT    = 10,
+	DATA_KAETLTHAS_ENTRANCE_DOOR_LEFT     = 11,
+	DATA_KAELTHAS_PRE_ENTRANCE_DOOR_RIGHT = 12,
+	DATA_KAELTHAS_PRE_ENTRANCE_DOOR_LEFT  = 13,
+};
+
+enum Creatures
+{
+	NPC_THALADRED_THE_DARKENER      = 20064,
+	NPC_MASTER_ENGINEER_TELONICUS   = 20063,
+	NPC_GRAND_ASTROMANCER_CAPERNIAN = 20062,
+	NPC_LORD_SANGUINAR              = 20060,
+	NPC_KAELTHAS_SUNSTRIDER         = 19622,
+	NPC_HIGH_ASTROMANCER_SOLARIAN   = 18805,
+	NPC_ALAR                        = 19514,
+	NPC_VOID_REAVER                 = 19516,
+	NPC_PHOENIX                     = 21362,
+    NPC_PHOENIX_EGG                 = 21364,
+	NPC_FLAME_PATCH_ALAR            = 20602,
+	NPC_EMBER_OF_ALAR               = 19551,
+    NPC_SOLARIUM_AGENT              = 18925,
+    NPC_SOLARIUM_PRIEST             = 18806,
+	NPC_SPOTLIGHT                   = 18928,
+	NPC_NETHERSTRAND_LONGBOW        = 21268,
+	NPC_DEVASTATION                 = 21269,
+	NPC_COSMIC_INFUSER              = 21270,
+	NPC_INFINITY_BLADES             = 21271,
+	NPC_WARP_SLICER                 = 21272,
+	NPC_PHASESHIFT_BULWARK          = 21273,
+	NPC_STAFF_OF_DISINTEGRATION     = 21274,
+	NPC_CRYSTALCORE_DEVASTATOR      = 20040,
+};
+
+enum Gameobjects
+{
+	GO_KAETLTHAS_LEFT_DOOR              = 184324,
+	GO_KAETLTHAS_RIGHT_DOOR             = 184325,
+	GO_KAETLTHAS_ENTRANCE_DOOR_RIGHT    = 184326,
+	GO_KAETLTHAS_ENTRANCE_DOOR_LEFT     = 184328,
+	GO_KAELTHAS_PRE_ENTRANCE_DOOR_RIGHT = 184327,
+	GO_KAELTHAS_PRE_ENTRANCE_DOOR_LEFT  = 184329,
+};
+
+enum Encounters
+{
+	MAX_ENCOUNTER = 5,
+};
+
+#endif

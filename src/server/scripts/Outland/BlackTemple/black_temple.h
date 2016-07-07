@@ -1,0 +1,99 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_BLACK_TEMPLE_H
+#define DEF_BLACK_TEMPLE_H
+
+enum Types
+{
+    DATA_AKAMA                      = 1,
+    DATA_AKAMA_SHADE                = 2,
+    DATA_GURTOGGBLOODBOILEVENT      = 3,
+    DATA_HIGHWARLORDNAJENTUS        = 4,
+    DATA_HIGHWARLORDNAJENTUSEVENT   = 5,
+    DATA_ILLIDANSTORMRAGE           = 6,
+    DATA_ILLIDANSTORMRAGEEVENT      = 7,
+    DATA_ILLIDARICOUNCILEVENT       = 8,
+    DATA_ILLIDARICOUNCIL            = 9,
+    DATA_LADYMALANDE                = 10,
+    DATA_HIGHNETHERMANCERZEREVOR    = 11,
+    DATA_GATHIOSTHESHATTERER        = 12,
+    DATA_VERASDARKSHADOW            = 13,
+    DATA_MOTHERSHAHRAZEVENT         = 14,
+    DATA_RELIQUARYOFSOULSEVENT      = 15,
+    DATA_SHADEOFAKAMA               = 16,
+    DATA_SHADEOFAKAMAEVENT          = 17,
+    DATA_SUPREMUS                   = 18,
+    DATA_SUPREMUSEVENT              = 19,
+    DATA_TERONGOREFIENDEVENT        = 20,
+    DATA_GAMEOBJECT_NAJENTUS_GATE   = 21,
+    DATA_GAMEOBJECT_ILLIDAN_GATE    = 22,
+    DATA_GAMEOBJECT_ILLIDAN_DOOR_R  = 23,
+    DATA_GAMEOBJECT_ILLIDAN_DOOR_L  = 24,
+    DATA_GAMEOBJECT_SUPREMUS_DOORS  = 25,
+    DATA_BLOOD_ELF_COUNCIL_VOICE    = 26,
+    DATA_TERONGOREFIEND             = 27,
+    DATA_ILLIDAN_GATE_OPENED        = 28,
+};
+
+enum BalckTempleCreatures
+{
+	NPC_ASTONGUE_CHANNELER      = 23421,
+	NPC_ASHTONGUE_SORCERER      = 23215,
+	NPC_ASHTONGUE_DEFENDER      = 23216,
+	NPC_ASHTONGUE_BROKEN        = 23319,
+	NPC_SHADE_OF_AKAMA          = 22841,
+	NPC_AKAMA                   = 22990,
+    NPC_ILLIDAN_STORMRAGE       = 22917,
+    NPC_BLADE_OF_AZZINOTH       = 22996,
+    NPC_FLAME_OF_AZZINOTH       = 22997,
+    NPC_MAIEV_SHADOWSONG        = 23197,
+    NPC_SHADOW_DEMON            = 23375,
+    NPC_DEMON_FIRE              = 23069,
+    NPC_FLAME_CRASH             = 23336,
+    NPC_ILLIDAN_DOOR_TRIGGER    = 23412,
+    NPC_SPIRIT_OF_OLUM          = 23411,
+    NPC_SPIRIT_OF_UDALO         = 23410,
+    NPC_ILLIDARI_ELITE          = 23226,
+    NPC_PARASITIC_SHADOWFIEND   = 23498,
+    NPC_CAGE_TRAP_TRIGGER       = 23292,
+	NPC_VOLCANO                 = 23085,
+	NPC_PUNCH_STALKER           = 23095,
+	NPC_DOOM_BLOSSOM            = 23123,
+	NPC_SHADOWY_CONSTRUCT       = 23111,
+	NPC_GHOST                   = 23109,
+	NPC_ENSLAVED_SOUL           = 23469,
+	NPC_AQUEOUS_SPAWN           = 22883,
+	NPC_AQUEOUS_LORD            = 22878,
+	NPC_LEVIATHAN               = 22884,
+	NPC_TASKMASTER              = 23028,
+	NPC_ASHTONGUE_PRIMALIST     = 22847,
+	NPC_FERAL_SPIRIT            = 22849,
+	NPC_CYCLONE_TOTEM           = 22894,
+	NPC_SEARING_TOTEM           = 22896,
+	NPC_WINDFURY_TOTEM          = 22897,
+	NPC_STORM_FURY              = 22848,
+	NPC_IMAGE_OF_DEMENTIA       = 23436,
+	NPC_SISTER_OF_PAIN          = 22956,
+	NPC_SISTER_OF_PLEASURE      = 22964,
+	NPC_SHADOWMOON_FALLEN       = 23371,
+	NPC_SHADOWMOON_RIDING_HOUND = 23083,
+};
+
+enum Gameobjects
+{
+	GO_SPINE = 185584,
+};
+
+enum Misc
+{
+	MAX_ENCOUNTERS = 9,
+};
+
+#endif

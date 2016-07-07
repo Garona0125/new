@@ -1,0 +1,81 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_GUNDRAK_H
+#define DEF_GUNDRAK_H
+
+enum Data
+{
+    DATA_SLAD_RAN_EVENT,
+    DATA_MOORABI_EVENT,
+    DATA_DRAKKARI_COLOSSUS_EVENT,
+    DATA_GAL_DARAH_EVENT,
+    DATA_ECK_THE_FEROCIOUS_EVENT,
+    DATA_RUIN_DWELLER_DIED,
+};
+
+enum Data64
+{
+    DATA_SLAD_RAN_ALTAR,
+    DATA_MOORABI_ALTAR,
+    DATA_DRAKKARI_COLOSSUS_ALTAR,
+    DATA_SLAD_RAN_STATUE,
+    DATA_MOORABI_STATUE,
+    DATA_DRAKKARI_COLOSSUS_STATUE,
+    DATA_DRAKKARI_COLOSSUS,
+    DATA_STATUE_ACTIVATE,
+};
+
+enum Creatures
+{
+    NPC_RUIN_DWELLER      = 29920,
+    NPC_SLAD_RAN          = 29304,
+    NPC_MOORABI           = 29305,
+    NPC_GALDARAH          = 29306,
+    NPC_DRAKKARI_COLOSSUS = 29307,
+    NPC_ECK               = 29932,
+	NPC_LIVING_MOJO       = 29830,
+	NPC_SNAKE             = 29680,
+    NPC_CONSTRICTORS      = 29713,
+    NPC_SNAKE_WRAP        = 29742,
+};
+
+enum Gameobjects
+{
+	GO_SLADRAN_ALTAR   = 192518,
+	GO_MORABI_ALTAR    = 192519,
+	GO_COLOSSUS_ALTAR  = 192520,
+	GO_SLADRAN_STATUE  = 192564,
+	GO_MORABI_STATUE   = 192565,
+	GO_GALDARAH_STATUE = 192566,
+	GO_COLOSSUS_STATUE = 192567,
+	GO_ECK_DOOR        = 192632,
+	GO_ECK_BEHIND_DOOR = 192569,
+	GO_GALDARAH_DOOR_1 = 193208,
+	GO_GALDARAH_DOOR_2 = 193209,
+	GO_GALDARAH_DOOR_3 = 192568,
+	GO_BRIDGE_1        = 193188,
+	GO_BRIDGE_2        = 192743,
+	GO_COLISION        = 192633,
+};
+
+enum InstanceSpells
+{
+	SPELL_FIRE_BEAM_MAMMOTH   = 57068,
+	SPELL_FIRE_BEAM_SNAKE     = 57071,
+	SPELL_FIRE_BEAM_ELEMENTAL = 57072,
+};
+
+enum Misc
+{
+	MAX_ENCOUNTER = 5,
+	MAX_DWELLER   = 8,
+};
+
+#endif

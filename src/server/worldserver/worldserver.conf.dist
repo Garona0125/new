@@ -1,0 +1,4792 @@
+###################################################################################################
+[worldserver]
+###################################################################################################
+#   QuantumCore Multisystem Kernel For The Epic Game: World of Warcraft: The Lich King 3.3.5a.
+#
+#   Project Created In 2010 Year From Old TrinityCore and YTDB Database.
+#   During The 5 Years and The Present Time Work With These Projects Stopped.
+#   With The Server I Work Alone.
+#   Maximal Realisation, Stability, Quality, Uptime, Exclusive.
+#   The Server Supports Two Types: Blizzlike and Fun.
+#   Fun System Works In Kernel Script and Adjusted Below.
+#   Server Work Is Performed Exclusively In C ++
+#
+#   SYSTEM REQUIREMENTS FOR STABILITY WORK AND COMPILE.
+#
+#   [WINDOWS XP] [WINDOWS 7] [WINDOWS 8] [WINDOWS 10]
+#   REQUIREMENT PROGRAMS FOR STABILITY WORKING THE SERVER.
+#
+#   1 - Navicat 8.2 For MySql: Other Versions Are Not To Use.
+#   2 - Win32 OpenSSL v1.0.2d: Not Use Light Versions!
+#   3 - Win64 OpenSSL v1.0.2d: Not Use Light Versions!
+#   4 - ACE 6.1.4
+#   5 - Mysql Server 5.5 Version or Open Server 5.2.2 Maximal Redaction (Win32 or Win64).
+#   6 - The Microsoft Net Framework 3.5 or 4.0
+#   7 - The Microsoft Visual C++ 2005 Redistributable Package (Win32)
+#   8 - The Microsoft Visual C++ 2005 Redistributable Package (Win64)
+#   9 - The Microsoft Visual C++ 2008 Redistributable Package (Win32)
+#   10 - The Microsoft Visual C++ 2008 Redistributable Package (Win64)
+#   11 - The Microsoft Visual C++ 2010 Redistributable Package (Win32)
+#   12 - The Microsoft Visual C++ 2010 Redistributable Package (Win64)
+#   13 - Quantum DB Editor (Only Private Users)
+#
+#   UNIX/LINUX
+#   REQUIREMENT PROGRAMS FOR STABILITY WORKING THE SERVER.
+#
+#   1 - Cmake 2.8.10 or Cmake 2.8.9
+#   2 - ACE 6.0.3 or 6.1.4
+#   3 - GCC 4.5.4 or 4.7.2
+#   4 - MySQL 5.5
+#   5 - OpenSSL 1.0.2d
+#
+####################################################################################################
+#
+#   IF YOU USE OTHER VERSIONS OF PROGRAMS: SERVER STABILITY AND WORK IS NOT QUARANTEED.
+#   
+#   Curator of The Project: Crispi
+#
+#   AUTOR CONTACTS:
+#   https://vk.com/shpierkommel
+#   https://vk.com/quantumcore
+#   Skype: [Pandemonium902]
+#
+#   I Wish You A Nice Game. Thank You For Have Chosen My Project.
+#
+###################################################################################################
+
+###################################################################################################
+# SERVER PROPERTIES AND DIRECTORY FOR SETTINGS
+#
+#  1  - CONNECTION PROPERTIES AND DIRECTORIES FOR FILES
+#  2  - PERFORMANCE
+#  3  - LOGGING
+#  4  - REALM AND SERVER SETTINGS
+#  5  - INTERACTION
+#  6  - CREATURE SETTINGS
+#  7  - CHAT SETTINGS
+#  8  - GAME MASTER SETTINGS
+#  9  - SERVERSIDE GRIDS
+#  10 - SERVER RATES AND STATS
+#  11 - AUTO BROADCAST
+#  12 - BATTLEGROUND SETTINGS
+#  13 - ARENA SETTINGS
+#  14 - ARENA DYNAMIC MATCHMAKING SETTINGS
+#  15 - NETWORK SETTINGS
+#  16 - CONSOLE AND REMOTE ACCESS
+#  17 - CHARACTER DELETE OPTIONS
+#  18 - CUSTOM SERVER OPTIONS
+#  19 - WARDEN ANTICHEAT SYSTEM
+#  20 - QUANTUM CORE PASSIVE ANTICHEAT SYSTEM
+#  21 - BATTLEGROUND ANTICHEAT SYSTEM
+#  22 - DUEL RESET COOLDOWN
+#  23 - WINTERGRASP OUTDOOR PVP SYSTEM
+#  24 - WOW ARMORY
+#  25 - CHARACTER HISTORY LOGGING SYSTEM
+#  26 - BATTLEGROUND REWARD SYSTEM
+#  27 - PVP RANK EXTRA HONOR SYSTEM
+#  28 - ITEM SETS ON START
+#  29 - EXTERNAL MAIL SYSTEM
+#  30 - NAME ANNOUNCE CHAT FRAME SYSTEM
+#  31 - SERVER RATES FOR PREMIUM ACCOUNTS
+#  32 - VIP COMMANDS
+#  33 - ANTISPAM SYSTEM
+#  34 - GAME MASTER MONITORING
+#  35 - LOOKING FOR GROUP SETTINGS
+#  36 - NORTHREND ACCESS SYSTEM
+#  37 - ARENA SPECTATOR SYSTEM
+#  38 - MULTIKILL SYSTEM
+#  39 - AUTO LEARN SPELL SYSTEM
+#  40 - BOSS HISTORY ANNOUNCE SYSTEM
+#  41 - DAMAGE CHECK SYSTEM
+#  42 - NPC SERVER HELPER CONTROL OPTION
+#  43 - PROFESSION NPC CONTROL OPTION
+#  44 - ENCHANCEMENT NPC CONTROL OPTION
+#  45 - GAME MASTER START HELPER SYSTEM
+#  46 - PLAYER START HELPER SYSTEM
+#  47 - TRANSMOGRIFICATION SYSTEM
+#  48 - PLAYED TIME REWARD SYSTEM
+#  49 - D.E.H.T.A CHAT ANNOUNCE SYSTEM
+#  50 - WORLD REWARDING SYSTEM
+#  51 - ANNIVERSARY WORLD SYSTEM
+#  52 - FUNNY PANDA OF SHAOLIN
+#  53 - PVP RANK ACHIEVEMENTS SYSTEM
+#  54 - COLORED ICONS IN CHAT SYSTEM
+#  55 - CHARACTER LOGIN INFO SYSTEM
+#  56 - C++ FUN SYSTEM FOR QUANTUMCORE
+#
+###################################################################################################
+
+###################################################################################################
+# CONNECTION PROPERTIES AND DIRECTORIES FOR FILES
+#
+#    RealmID
+#        Description: ID of the Realm using this config.
+#        Important:   RealmID must match the realmlist inside the realmd database.
+#        Default:     1
+
+RealmID = 1
+
+#
+#    DataDir
+#        Description: Data directory setting.
+#        Important:   DataDir needs to be quoted, as the string might contain space characters.
+#        Example:     "@prefix@/share/quantumcore"
+#        Default:     "."
+
+DataDir = "Data"
+
+#
+#    LogsDir
+#        Description: Logs directory setting.
+#        Important:   LogsDir needs to be quoted, as the string might contain space characters.
+#                     Logs directory must exists, or log file creation will be disabled.
+#        Default:     "" - (Log files will be stored in the current path)
+
+LogsDir = "Logs"
+
+#
+#    LoginDatabaseInfo
+#    WorldDatabaseInfo
+#    CharacterDatabaseInfo
+#        Description: Database connection settings for the world server.
+#        Example:     "hostname;port;username;password;database"
+#                     ".;somenumber;username;password;database" - (Use named pipes on Windows
+#                                                                 "enable-named-pipe" to [mysqld]
+#                                                                 section my.ini)
+#                     ".;/path/to/unix_socket;username;password;database" - (use Unix sockets on
+#                                                                           Unix/Linux)
+#        Default:     "127.0.0.1;3306;quantumcore;quantumcore;realmd"     - (LoginDatabaseInfo)
+#                     "127.0.0.1;3306;quantumcore;quantumcore;world"      - (WorldDatabaseInfo)
+#                     "127.0.0.1;3306;quantumcore;quantumcore;characters" - (CharacterDatabaseInfo)
+
+LoginDatabaseInfo     = "127.0.0.1;3306;quantumcore;quantumcore;realmd"
+WorldDatabaseInfo     = "127.0.0.1;3306;quantumcore;quantumcore;world"
+CharacterDatabaseInfo = "127.0.0.1;3306;quantumcore;quantumcore;characters"
+
+#
+#    LoginDatabase.WorkerThreads
+#    WorldDatabase.WorkerThreads
+#    CharacterDatabase.WorkerThreads
+#        Description: The amount of worker threads spawned to handle asynchronous (delayed) MySQL
+#                     statements. Each worker thread is mirrored with its own connection to the
+#                     MySQL server and their own thread on the MySQL server.
+#        Default:     1 - (LoginDatabase.WorkerThreads)
+#                     1 - (WorldDatabase.WorkerThreads)
+#                     1 - (CharacterDatabase.WorkerThreads)
+
+LoginDatabase.WorkerThreads     = 1
+WorldDatabase.WorkerThreads     = 1
+CharacterDatabase.WorkerThreads = 1
+
+#
+#    LoginDatabase.SynchThreads
+#    WorldDatabase.SynchThreads
+#    CharacterDatabase.SynchThreads
+#        Description: The amount of MySQL connections spawned to handle.
+#        Default:     1 - (LoginDatabase.WorkerThreads)
+#                     1 - (WorldDatabase.WorkerThreads)
+#                     2 - (CharacterDatabase.WorkerThreads)
+
+LoginDatabase.SynchThreads     = 1
+WorldDatabase.SynchThreads     = 1
+CharacterDatabase.SynchThreads = 1
+
+#
+#    MaxPingTime
+#        Description: Time (in minutes) between database pings.
+#        Default:     30
+
+MaxPingTime = 30
+
+#
+#    WorldServerPort
+#        Description: TCP port to reach the world server.
+#        Default:     8085
+
+WorldServerPort = 8085
+
+#
+#    BindIP
+#        Description: Bind world server to IP/hostname
+#        Default:     "0.0.0.0" - (Bind to all IPs on the system)
+
+BindIP = "0.0.0.0"
+
+#
+###################################################################################################
+
+###################################################################################################
+# PERFORMANCE SETTINGS
+#
+#    UseProcessors
+#        Description: Processors mask for Windows based multi-processor systems.
+#        Default:     0  - (Selected by OS)
+#                     1+ - (Bit mask value of selected processors)
+
+UseProcessors = 0
+
+#
+#    ProcessPriority
+#        Description: Process priority setting for Windows based systems.
+#        Default:     1 - (High)
+#                     0 - (Normal)
+
+ProcessPriority = 1
+
+#
+#    Compression
+#        Description: Compression level for client update packages
+#        Range:       1-9
+#        Default:     1   - (Speed)
+#                     9   - (Best compression)
+
+Compression = 1
+
+#
+#    PlayerLimit
+#        Description: Maximum number of players in the world. Excluding Mods, GMs and Admins.
+#          Important: If you want to block players and only allow Mods, GMs or Admins to join the
+#                     server, use the DB field "realmd.realmlist.allowedSecurityLevel".
+#            Default: 100 - (Enabled)
+#                     1+  - (Enabled)
+#                     0   - (Disabled, No limit)
+
+PlayerLimit = 0
+
+#
+#    SaveRespawnTimeImmediately
+#        Description: Save respawn time for creatures at death and gameobjects at use/open.
+#        Default:     1 - (Enabled, Save respawn time immediately)
+#                     0 - (Disabled, Save respawn time at grid unloading)
+
+SaveRespawnTimeImmediately = 1
+
+#
+#    MaxOverspeedPings
+#        Description: Maximum overspeed ping count before character is disconnected.
+#        Default:     2  - (Enabled, Minimum value)
+#                     3+ - (Enabled, More checks before kick)
+#                     0  - (Disabled)
+
+MaxOverspeedPings = 3
+
+#
+#    GridUnload
+#        Description: Unload grids to save memory. Can be disabled if enough memory is available
+#                     to speed up moving players to new grids.
+#        Default:     1 - (enable, Unload grids)
+#                     0 - (disable, Do not unload grids)
+
+GridUnload = 1
+
+#
+#    SocketTimeOutTime
+#        Description: Time (in milliseconds) after which a connection being idle on the character
+#                     selection screen is disconnected.
+#        Default:     90000 - (90 seconds)
+
+SocketTimeOutTime = 90000
+
+#
+#    SessionAddDelay
+#        Description: Time (in microseconds) that a network thread will sleep after authentication
+#                     protocol handling before adding a connection to the world session map.
+#        Default:     10000 - (10 milliseconds, 0.01 second)
+
+SessionAddDelay = 10000
+
+#
+#    GridCleanUpDelay
+#        Description: Time (in milliseconds) grid clean up delay.
+#        Default:     300000 - (5 minutes)
+
+GridCleanUpDelay = 300000
+
+#
+#    MapUpdateInterval
+#        Description: Time (milliseconds) for map update interval.
+#        Default:     100 - (0.1 second)
+
+MapUpdateInterval = 100
+
+#
+#    ChangeWeatherInterval
+#        Description: Time (in milliseconds) for weather update interval.
+#        Default:     600000 - (10 min)
+
+ChangeWeatherInterval = 600000
+
+#
+#    PlayerSaveInterval
+#        Description: Time (in milliseconds) for player save interval.
+#        Default:     90000 - (90 seconds)
+
+PlayerSaveInterval = 90000
+
+#
+#    PlayerSave.Stats.MinLevel
+#        Description: Minimum level for saving character stats in the database for external usage.
+#        Default:     0  - (Disabled, Do not save character stats)
+#                     1+ - (Enabled, Level beyond which character stats are saved)
+
+PlayerSave.Stats.MinLevel = 0
+
+#
+#    PlayerSave.Stats.SaveOnlyOnLogout
+#        Description: Save player stats only on logout.
+#        Default:     1 - (Enabled, Only save on logout)
+#                     0 - (Disabled, Save on every player save)
+
+PlayerSave.Stats.SaveOnlyOnLogout = 1
+
+#
+#    vmap.enableLOS
+#    vmap.enableHeight
+#        Description: VMmap support for line of sight and height calculation.
+#        Default:     1 - (Enabled, vmap.enableLOS)
+#                     1 - (Enabled, vmap.enableHeight)
+#                     0 - (Disabled)
+
+vmap.enableLOS    = 1
+vmap.enableHeight = 1
+
+#
+#    vmap.ignoreSpellIds
+#        Description: These spells are ignored for LoS calculation.
+#                     List of ids with delimiter ','.
+#        Example:     "7720,1337"
+#        Default:     "7720"
+
+vmap.ignoreSpellIds = "7720"
+
+#
+#    vmap.petLOS
+#        Description: Check line of sight for pets, to avoid them attacking through walls.
+#        Default:     1 - (Enabled, each pet attack will be checked for line of sight)
+#                     0 - (Disabled, somewhat less CPU usage)
+
+vmap.petLOS = 1
+
+#
+#    vmap.enableIndoorCheck
+#        Description: VMap based indoor check to remove outdoor-only auras (mounts etc.).
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled, somewhat less CPU usage)
+
+vmap.enableIndoorCheck = 1
+
+#
+#    DetectPosCollision
+#        Description: Check final move position, summon position, etc for visible collision with
+#                     other objects or walls (walls only if vmaps are enabled).
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled, Less position precision but less CPU usage)
+
+DetectPosCollision = 1
+
+#
+#    TargetPosRecalculateRange
+#        Description: Max distance from movement target point (+moving unit size) and targeted
+#                     object (+size) after that new target movement point calculated.
+#        Range:       0.5-5.0
+#        Default:     1.5
+#                     0.5 - (Minimum, Contact Range, More sensitive reaction to target movement)
+#                     5.0 - (Maximum, Melee attack range, Less CPU usage)
+
+TargetPosRecalculateRange = 1.5
+
+#
+#    UpdateUptimeInterval
+#        Description: Update realm uptime period (in minutes).
+#        Default:     10 - (10 minutes)
+#                     1+
+
+UpdateUptimeInterval = 10
+
+#
+#    LogDB.Opt.ClearInterval
+#        Description: Time (in minutes) for the WUPDATE_CLEANDB timer that clears the `logs` table
+#                     of old entries.
+#        Default:     10 - (10 minutes)
+#                     1+
+
+LogDB.Opt.ClearInterval = 10
+
+#
+#    LogDB.Opt.ClearTime
+#        Description: Time (in seconds) for keeping old `logs` table entries.
+#        Default:     1209600 - (Enabled, 14 days)
+#                     0       - (Disabled, Do not clear entries)
+
+LogDB.Opt.ClearTime = 1209600
+
+#
+#    MaxCoreStuckTime
+#        Description: Time (in seconds) before the server is forced to crash if it is frozen.
+#        Default:     0   - (Disabled)
+#                     10+ - (Enabled, Recommended 10+)
+
+MaxCoreStuckTime = 15
+
+#
+#    AddonChannel
+#        Description: Configure the use of the addon channel through the server (some client side
+#                     addons will not work correctly with disabled addon channel)
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AddonChannel = 1
+
+#
+#    MapUpdate.Threads
+#        Description: Number of threads to update maps.
+#        Default:     1
+
+MapUpdate.Threads = 1
+
+#
+#    CleanCharacterDB
+#        Description: Clean out deprecated achievements, skills, spells and talents from the db.
+#        Default:     0 - (Disabled)
+#                     1 - (Enable)
+
+CleanCharacterDB = 0
+
+#
+#    PersistentCharacterCleanFlags
+#        Description: Determines the character clean flags that remain set after cleanups.
+#                     This is a bitmask value, check /doc/CharacterDBCleanup.txt for more
+#                     information.
+#        Example:     14 - (Cleaning up skills, talents and spells will remain enabled after the
+#                           next cleanup)
+#        Default:     0  - (All cleanup methods will be disabled after the next cleanup)
+
+PersistentCharacterCleanFlags = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# LOGGING SYSTEM SETTINGS
+#
+#    PidFile
+#        Description: World daemon PID file
+#        Example:     "./worldd.pid" - (Enabled)
+#        Default:     ""             - (Disabled)
+
+PidFile = ""
+
+#
+#    LogLevel
+#        Description: Server console level of logging
+#        Default:     1 - (Basic)
+#                     0 - (Minimum)
+#                     2 - (Detail)
+#                     3 - (Full/Debug)
+
+LogLevel = 1
+
+#
+#    LogFile
+#        Description: Log file for main server log.
+#        Default:     "Server Loading.log" - (Enabled)
+#                     ""           - (Disabled)
+
+LogFile = "Server Loading.log"
+
+#
+#    LogTimestamp
+#        Description: Append timestamp to the server log file name.
+#                     Logname_YYYY-MM-DD_HH-MM-SS.Ext for Logname.Ext
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+LogTimestamp = 0
+
+#
+#    LogFileLevel
+#        Description: Server file level of logging
+#        Default:     0 - (Minimum)
+#                     1 - (Basic)
+#                     2 - (Detail)
+#                     3 - (Full/Debug)
+
+LogFileLevel = 0
+
+#
+#    Debug Log Mask
+#        Description: Bitmask that determines which debug log output (level 3)
+#                     will be logged.
+#        Possible flags:
+#                   1 - Anything related to units that doesn't fit in other
+#                          categories.
+#                   2 - Anything related to pets.
+#                   4 - Anything related to vehicles.
+#                   8 - Anything related to C++ AI, instance scripts, etc.
+#                  16 - Anything related to DB AI, such as SAI, EAI, CreatureAI
+#                  32 - Anything related to DB map scripts
+#                  64 - Anything related to network input/output,
+#                        such as packet handlers and netcode logs
+#                 128 - Anything related to the spellsystem and aurasystem
+#                 256 - Anything related to the achievement system
+#                 512 - Anything related to the condition system
+#                1024 - Anything related to the pool system
+#                2048 - Anything related to the auction house
+#                4096 - Anything related to arena's and battlegrounds
+#                8192 - Anything related to outdoor PVP
+#               16384 - Anything related to the chat system
+#               32768 - Anything related to the LFG system
+#               65536 - Anything related to maps, instances (not scripts),
+#                       grids, cells, visibility, etc.
+#              131072 - Anything related to player loading from DB
+#                      (Player::_LoadXXX functions)
+#              262144 - Anything related to items
+#              524288 - Anything related to player skills
+#                      (do not confuse with spells)
+#             1048576 - Anything related to loot
+#             2097152 - Anything related to guilds
+#             4194304 - Anything related to transports
+#             8388608 - Anything related to Warden anti cheat
+#
+#                       Simply add the values together to create a bitmask.
+#                       For more info see enum DebugLogFilters in Log.h
+#
+#             Default: 0 (nothing)
+
+DebugLogMask = 0
+
+#
+#    PacketLogFile
+#        Description: Binary packet logging file for the world server.
+#                     Filename extension must be .bin to be parsable with WowPacketParser.
+#        Example:     "World.bin" - (Enabled)
+#        Default:     ""          - (Disabled)
+
+PacketLogFile = ""
+
+#
+#    DBErrorLogFile
+#        Description: Log file for database errors.
+#        Default:     "DataBase Errors.log" - (Enabled)
+#                     ""             - (Disabled)
+
+DBErrorLogFile = "Database Errors.log"
+
+#
+#    CharLogFile
+#        Description: Log file for character operations
+#        Default:     "Characters Operations.log" - (Enabled)
+#                     ""         - (Disabled)
+
+CharLogFile = "Characters Operations.log"
+
+#
+#    CharLogTimestamp
+#        Description: Append timestamp to the character log file name.
+#                     Logname_YYYY-MM-DD_HH-MM-SS.Ext for Logname.Ext
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharLogTimestamp = 0
+
+#
+#    CharLogDump
+#        Description: Write a character dump in the CharLogFile before deleting it.
+#                     For restoration, copy character data from log file starting from
+#                     line == START DUMP == to line == END DUMP == (exclusive)
+#                     and load it using the "pdump load" command.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharLogDump = 0
+
+#
+#    CharLogDump.Separate
+#        Description: Write character dump to separate files files rather than adding it to the
+#                     CharLogFile.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharLogDump.Separate = 0
+
+#
+#    CharLogDump.SeparateDir
+#        Description: Write dump files into the sub folder within the log folder.
+#        Example:     "chardumps" - (Enabled)
+#        Default:     ""         - (Disabled)
+
+CharLogDump.SeparateDir = ""
+
+#
+#    GmLogFile
+#        Description: Log file for gamemaster commands.
+#        Default:     "GameMaster Command.log" - (Enabled)
+#                     ""       - (Disabled)
+
+GmLogFile = "GameMaster Command.log"
+
+#
+#    GmLogTimestamp
+#        Description: Append timestamp to the gamemaster log file name.
+#                     Logname_YYYY-MM-DD_HH-MM-SS.Ext for Logname.Ext
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+GmLogTimestamp = 0
+
+#
+#    GmLogPerAccount
+#        Description: Create a log file per gamemaster account.
+#        Important:   Logs not created if GmLogFile is not set.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+GmLogPerAccount = 0
+
+#
+#    RaLogFile
+#        Description: Log file for Remote Access commands.
+#        Default:     "Remote Access.log" - (Enabled)
+#                     ""       - (Disabled)
+
+RaLogFile = "Remote Access.log"
+
+#
+#    ArenaLogFile
+#        Description: Log file for arena fights and arena team creations.
+#        Example:     "Arena Parser.log" - (Enabled)
+#        Default:     ""          - (Disabled)
+
+ArenaLogFile = "Arena Parser.log"
+
+#
+#    ArenaLog.ExtendedInfo
+#        Description: Include extended info to ArenaLogFile for each player after rated arena
+#                     matches (guid, name, team, IP, healing/damage done, killing blows).
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ArenaLog.ExtendedInfo = 0
+
+#
+#    SQLDeveloperLogFile
+#        Description: Log file for core-generated SQL queries/dumps
+#        Example:     "Sql Queries.log"   - (Enabled)
+#        Default:      ""             - (Disabled)
+
+SQLDeveloperLogFile = "Sql Queries.log"
+
+#
+#    SQLDriverLogFile
+#        Description: Log file for SQL driver events.
+#        Example:     "World Sql Driver.log" - (Enabled)
+#        Default:      ""             - (Disabled)
+
+SQLDriverLogFile = "World Sql Driver.log"
+
+#
+#    SQLDriverQueryLogging
+#        Description: Log SQL queries to the SQLDriverLogFile and console.
+#        Default:     0 - (Disabled, Query errors only)
+#                     1 - (Enabled, Full query logging - may have performance impact)
+
+SQLDriverQueryLogging = 0
+
+#
+#    LogColors
+#        Description: Colors for log messages (Format: "normal basic detail debug").
+#        Colors:      0  - Black
+#                     1  - Red
+#                     2  - Green
+#                     3  - Brown
+#                     4  - Blue
+#                     5  - Magenta
+#                     6  - Cyan
+#                     7  - Grey
+#                     8  - Yellow
+#                     9  - Lred
+#                     10 - Lgreen
+#                     11 - Lblue
+#                     12 - Lmagenta
+#                     13 - Lcyan
+#                     14 - White
+#        Example:     "13 10 9 12" - (Enabled)
+#        Default:     ""          - (Disabled)
+
+LogColors = "13 10 9 12"
+
+#
+#    EnableLogDB
+#        Description: Write log messages to database (LogDatabaseInfo).
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+EnableLogDB = 0
+
+#
+#    DBLogLevel
+#        Description: Log level of databases logging.
+#        Default:     2 - (Detail)
+#                     0 - (Minimum)
+#                     1 - (Basic)
+#                     3 - (Full/Debug)
+
+DBLogLevel = 2
+
+#
+#    LogDB.Char
+#        Description: Log character operations to database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+LogDB.Char = 0
+
+#
+#    LogDB.GM
+#        Description: Log gamemaster commands to database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+LogDB.GM = 0
+
+#
+#    LogDB.RA
+#        Description: Log remote access events to database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+LogDB.RA = 0
+
+#
+#    LogDB.World
+#        Description: Log world server packets to database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled, May have performance impact)
+
+LogDB.World = 0
+
+#
+#    LogDB.Chat
+#        Description: Log chat messages to database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+LogDB.Chat = 0
+
+
+#    ChatLogFile
+#        Description: Log file for chat logs.
+#        Default:     "World Chat.log" - (Enabled)
+#                     ""         - (Disabled)
+
+ChatLogFile = "World Chat.log"
+
+#    ChatLogTimestamp
+#        Description: Append timestamp to the chat log file name.
+#                     Logname_YYYY-MM-DD_HH-MM-SS.Ext for Logname.Ext
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogTimestamp = 0
+
+#
+#    ChatLogs.Channel
+#        Description: Log custom channel chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.Channel = 0
+
+#
+#    ChatLogs.Whisper
+#        Description: Log whispers between players.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.Whisper = 0
+
+#
+#    ChatLogs.SysChan
+#        Description: Log system channel messages.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.SysChan = 0
+
+#
+#    ChatLogs.Party
+#        Description: Log party chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+
+ChatLogs.Party = 0
+
+#
+#    ChatLogs.Raid
+#        Description: Log raid chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+
+ChatLogs.Raid = 0
+
+#
+#    ChatLogs.Guild
+#        Description: Log guild chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.Guild = 0
+
+#
+#    ChatLogs.Public
+#        Description: Log public chat (say/yell/emote).
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.Public = 0
+
+#
+#    ChatLogs.Addon
+#        Description: Log addon messages.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.Addon = 0
+
+#
+#    ChatLogs.BattleGround
+#        Description: Log battleground chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatLogs.BattleGround = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# SERVER SETTINGS
+#
+#    GameType
+#        Description: Server realm type.
+#        Default:     0  - (NORMAL)
+#                     1  - (PVP)
+#                     4  - (NORMAL)
+#                     6  - (RP)
+#                     8  - (RPPVP)
+#                     16 - (FFA_PVP, Free for all pvp mode like arena PvP in all zones except rest activated places and sanctuaries)
+
+GameType = 0
+
+#
+#    RealmZone
+#        Description: Server realm zone. Set allowed alphabet in character, etc. names.
+#        Default      1  - (Development   - any language)
+#                     2  - (United States - extended-Latin)
+#                     3  - (Oceanic       - extended-Latin)
+#                     4  - (Latin America - extended-Latin)
+#                     5  - (Tournament    - basic-Latin at create, any at login)
+#                     6  - (Korea         - East-Asian)
+#                     7  - (Tournament    - basic-Latin at create, any at login)
+#                     8  - (English       - extended-Latin)
+#                     9  - (German        - extended-Latin)
+#                     10 - (French        - extended-Latin)
+#                     11 - (Spanish       - extended-Latin)
+#                     12 - (Russian       - Cyrillic)
+#                     13 - (Tournament    - basic-Latin at create, any at login)
+#                     14 - (Taiwan        - East-Asian)
+#                     15 - (Tournament    - basic-Latin at create, any at login)
+#                     16 - (China         - East-Asian)
+#                     17 - (CN1           - basic-Latin at create, any at login)
+#                     18 - (CN2           - basic-Latin at create, any at login)
+#                     19 - (CN3           - basic-Latin at create, any at login)
+#                     20 - (CN4           - basic-Latin at create, any at login)
+#                     21 - (CN5           - basic-Latin at create, any at login)
+#                     22 - (CN6           - basic-Latin at create, any at login)
+#                     23 - (CN7           - basic-Latin at create, any at login)
+#                     24 - (CN8           - basic-Latin at create, any at login)
+#                     25 - (Tournament    - basic-Latin at create, any at login)
+#                     26 - (Test Server   - any language)
+#                     27 - (Tournament    - basic-Latin at create, any at login)
+#                     28 - (QA Server     - any language)
+#                     29 - (CN9           - basic-Latin at create, any at login)
+
+RealmZone = 1
+
+#
+#    StrictPlayerNames
+#        Description: Limit player name to language specific symbol set. Prevents character
+#                     creation and forces rename request if not allowed symbols are used
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictPlayerNames = 0
+
+#
+#    StrictCharterNames
+#        Description: Limit guild/arena team charter names to language specific symbol set.
+#                     Prevents charter creation if not allowed symbols are used.
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictCharterNames = 0
+
+#
+#    StrictPetNames
+#        Description: Limit pet names to language specific symbol set.
+#                     Prevents pet naming if not allowed symbols are used.
+#        Default:     0 - (Disable, Limited server timezone dependent client check)
+#                     1 - (Enabled, Strictly basic Latin characters)
+#                     2 - (Enabled, Strictly realm zone specific, See RealmZone setting,
+#                         Note: Client needs to have the appropriate fonts installed which support
+#                         the charset. For non-official localization, custom fonts need to be
+#                         placed in clientdir/Fonts.
+#                     3 - (Enabled, Basic Latin characters + server timezone specific)
+
+StrictPetNames = 0
+
+#
+#    DBC.Locale
+#        Description: DBC language settings.
+#        Default:     255 - (Auto Detect)
+#                     0   - (English)
+#                     1   - (Korean)
+#                     2   - (French)
+#                     3   - (German)
+#                     4   - (Chinese)
+#                     5   - (Taiwanese)
+#                     6   - (Spanish)
+#                     7   - (Spanish Mexico)
+#                     8   - (Russian)
+
+DBC.Locale = 255
+
+#
+#    DeclinedNames
+#        Description: Allow Russian clients to set and use declined names.
+#        Default:     0 - (Disabled, Except when the Russian RealmZone is set)
+#                     1 - (Enabled)
+
+DeclinedNames = 0
+
+#
+#    Expansion
+#        Description: Allow server to use content from expansions. Checks for expansion-related
+#                     map files, client compatibility and class/race character creation.
+#        Default:     2 - (Expansion 2)
+#                     1 - (Expansion 1)
+#                     0 - (Disabled, Ignore and disable expansion content (maps, races, classes)
+
+Expansion = 2
+
+#
+#    MinPlayerName
+#        Description: Minimal player name length.
+#        Range:       1-12
+#        Default:     2
+
+MinPlayerName = 2
+
+#
+#    MinCharterName
+#        Description: Minimal charter name length.
+#        Range:       1-24
+#        Default:     2
+
+MinCharterName = 2
+
+#
+#    MinPetName
+#        Description: Minimal pet name length.
+#        Range:       1-12
+#        Default:     2
+
+MinPetName = 2
+
+#
+#    Guild.CharterCost
+#    ArenaTeam.CharterCost.2v2
+#    ArenaTeam.CharterCost.3v3
+#    ArenaTeam.CharterCost.5v5
+#        Description: Amount of money (in Copper) the petitions costs.
+#        Default:     1000 - (10 Silver)
+#                     800000 - (80 Gold)
+#                     1200000 - (120 Gold)
+#                     2000000 - (200 Gold)
+
+Guild.CharterCost = 1000
+ArenaTeam.CharterCost.2v2 = 800000
+ArenaTeam.CharterCost.3v3 = 1200000
+ArenaTeam.CharterCost.5v5 = 2000000
+
+#
+#    MaxWhoListReturns
+#        Description: Set the max number of players returned in the /who list and interface.
+#        Default:     49 - (stable)
+
+MaxWhoListReturns = 49
+
+#
+#    CharacterCreating.Disabled
+#        Description: Disable character creation for players based on faction.
+#        Default:     0 - (Enabled, All factions are allowed)
+#                     1 - (Disabled, Alliance)
+#                     2 - (Disabled, Horde)
+#                     3 - (Disabled, Both factions)
+
+CharacterCreating.Disabled = 0
+
+#
+#    CharacterCreating.Disabled.RaceMask
+#        Description: Mask of races which cannot be created by players.
+#        Example:     1536 - (1024 + 512, Blood Elf and Draenei races are disabled)
+#        Default:     0    - (Enabled, All races are allowed)
+#                     1    - (Disabled, Human)
+#                     2    - (Disabled, Orc)
+#                     4    - (Disabled, Dwarf)
+#                     8    - (Disabled, Night Elf)
+#                     16   - (Disabled, Undead)
+#                     32   - (Disabled, Tauren)
+#                     64   - (Disabled, Gnome)
+#                     128  - (Disabled, Troll)
+#                     512  - (Disabled, Blood Elf)
+#                     1024 - (Disabled, Draenei)
+
+CharacterCreating.Disabled.RaceMask = 0
+
+#
+#    CharacterCreating.Disabled.ClassMask
+#        Description: Mask of classes which cannot be created by players.
+#        Example:     288 - (32 + 256, Death Knight and Warlock classes are disabled)
+#        Default:     0    - (Enabled, All classes are allowed)
+#                     1    - (Disabled, Warrior)
+#                     2    - (Disabled, Paladin)
+#                     4    - (Disabled, Hunter)
+#                     8    - (Disabled, Rogue)
+#                     16   - (Disabled, Undead)
+#                     32   - (Disabled, Death Knight)
+#                     64   - (Disabled, Shaman)
+#                     128  - (Disabled, Mage)
+#                     256  - (Disabled, Warlock)
+#                     1024 - (Disabled, Druid)
+
+CharacterCreating.Disabled.ClassMask = 0
+
+#
+#    CharactersPerAccount
+#        Description: Limit number of characters per account on all realms on this realmlist.
+#        Important:   Number must be >= CharactersPerRealm
+#        Default:     50
+
+CharactersPerAccount = 50
+#
+#    CharactersPerRealm
+#        Description: Limit number of characters per account on this realm.
+#        Range:       1-10
+#        Default:     10 - (Client limitation)
+
+CharactersPerRealm = 10
+
+#
+#    HeroicCharactersPerRealm
+#        Description: Limit number of heroic class characters per account on this realm.
+#        Range:       1-10
+#        Default:     1
+
+HeroicCharactersPerRealm = 1
+
+#
+#    CharacterCreating.MinLevelForHeroicCharacter
+#        Description: Limit creating heroic characters only for account with another
+#                     character of specific level (ignored for GM accounts)
+#        Default:     55 - (Enabled, Requires at least another level 55 character)
+#                     0  - (Disabled)
+#                     1  - (Enabled, Requires at least another level 1 character)
+
+CharacterCreating.MinLevelForHeroicCharacter = 55
+
+#
+#    SkipCinematics
+#        Description: Disable cinematic intro at first login after character creation.
+#                     Prevents buggy intros in case of custom start location coordinates.
+#        Default:     0 - (Show intro for each new character)
+#                     1 - (Show intro only for first character of selected race)
+#                     2 - (Disable intro for all classes)
+
+SkipCinematics = 0
+
+#
+#    MaxPlayerLevel
+#        Description: Maximum level that can be reached by players.
+#        Important:   Levels beyond 100 are not recommended at all.
+#        Range:       1-255
+#        Default:     80
+
+MaxPlayerLevel = 80
+
+#
+#    MinDualSpecLevel
+#        Description: Level requirement for Dual Talent Specialization
+#        Default:     40
+
+MinDualSpecLevel = 40
+
+#
+#    StartPlayerLevel
+#        Description: Starting level for characters after creation.
+#        Range:       1-MaxPlayerLevel
+#        Default:     1
+
+StartPlayerLevel = 1
+
+#
+#    StartDeathKnightLevel
+#        Description: Staring level for death knight class after creation.
+#        Range:       1 - MaxPlayerLevel
+#        Default:     55
+
+StartDeathKnightLevel = 55
+
+#
+#    StartPlayerMoney
+#        Description: Amount of money (in Copper) that a character has after creation.
+#        Default:     0
+#                     100 - (1 Silver)
+
+StartPlayerMoney = 0
+
+#
+#    MaxHonorPoints
+#        Description: Maximum honor points a character can have.
+#        Default:     75000
+
+MaxHonorPoints = 75000
+
+#
+#    StartHonorPoints
+#        Description: Amount of honor points that characters have after creation.
+#        Default:     0
+
+StartHonorPoints = 0
+
+#
+#    MaxArenaPoints
+#        Description: Maximum arena points a character can have.
+#        Default:     10000
+
+MaxArenaPoints = 10000
+
+#
+#    StartArenaPoints
+#        Description: Amount of arena points that characters has after creation.
+#        Default:     0
+
+StartArenaPoints = 0
+
+#
+#    RecruitAFriend.MaxLevel
+#        Description: Highest level up to which a character can benefit from the Recruit-A-Friend
+#                     experience multiplier.
+#        Default:     60
+
+RecruitAFriend.MaxLevel = 60
+
+#
+#    RecruitAFriend.MaxDifference
+#        Description: Highest level difference between linked Recruiter and Friend benefit from
+#                     the Recruit-A-Friend experience multiplier.
+#        Default:     4
+
+RecruitAFriend.MaxDifference = 4
+
+#
+#    InstantLogout
+#        Description: Required security level for instantly logging out everywhere.
+#                     Does not work while in combat, dueling or falling.
+#        Default:     1  - (Enabled, Mods/GMs/Admins)
+#                     0  - (Enabled, Everyone)
+#                     2  - (Enabled, GMs/Admins)
+#                     3  - (Enabled, Admins)
+#                     4  - (Disabled)
+
+InstantLogout = 1
+
+#
+#    DisableWaterBreath
+#        Description: Required security level for water breathing.
+#        Default:     4  - (Disabled)
+#                     0  - (Enabled, Everyone)
+#                     1  - (Enabled, Mods/GMs/Admins)
+#                     2  - (Enabled, GMs/Admins)
+#                     3  - (Enabled, Admins)
+
+DisableWaterBreath = 4
+
+#
+#    AllFlightPaths
+#        Description: Character knows all flight paths (of both factions) after creation.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllFlightPaths = 1
+
+#
+#    InstantFlightPaths
+#        Description: Flight paths will take players to their destination instantly instead
+#                     of making them wait while flying.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+InstantFlightPaths = 0
+
+#
+#    AlwaysMaxSkillForLevel
+#        Description: Players will automatically gain max skill level when logging in or leveling
+#                     up.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AlwaysMaxSkillForLevel = 1
+
+#
+#    ActivateWeather
+#        Description: Activate the weather system.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+ActivateWeather = 1
+
+#
+#    CastUnstuck
+#        Description: Allow casting the Unstuck spell using .start or unstuck button in client
+#                     help options.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+CastUnstuck = 1
+
+#
+#    Instance.IgnoreLevel
+#        Description: Ignore level requirement when entering instances.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Instance.IgnoreLevel = 0
+
+#
+#    Instance.IgnoreRaid
+#        Description: Ignore raid group requirement when entering instances.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Instance.IgnoreRaid = 0
+
+#
+#    Instance.ResetTimeHour
+#        Description: Hour of the day when the global instance reset occurs.
+#        Range:       0-23
+#        Default:     4 - (04:00 AM)
+
+Instance.ResetTimeHour = 4
+
+#
+#    Instance.UnloadDelay
+#        Description: Time (in milliseconds) before instance maps are unloaded from memory if no
+#                     characters are inside.
+#        Default:     1800000 - (Enabled, 30 minutes)
+#                     0       - (Disabled, Instance maps are kept in memory until the instance
+#                               resets)
+
+Instance.UnloadDelay = 1800000
+
+#
+#    InstancesResetAnnounce
+#        Description: Announce the reset of one instance to whole party.
+#        Default:     0 - (Disabled, don't show, blizzlike)
+#                     1  - (Enabled, show)
+
+InstancesResetAnnounce = 1
+
+#
+#    Quests.EnableQuestTracker
+#        Description: Store datas in the database about quest completion and abandonment to help finding out bugged quests.
+#        Default:     0  - (Disabled)
+#                     1  - (Enabled)
+
+Quests.EnableQuestTracker = 0
+
+#
+#    Quests.LowLevelHideDiff
+#        Description: Level difference between player and quest level at which quests are
+#                     considered low-level and are not shown via exclamation mark (!) at quest
+#                     givers.
+#        Default:     4  - (Enabled, Hide quests that have 4 levels less than the character)
+#                     -1 - (Disabled, Show all available quest marks)
+
+Quests.LowLevelHideDiff = 4
+
+#
+#    Quests.HighLevelHideDiff
+#        Description: Level difference between player and quest level at which quests are
+#                     considered high-level and are not shown via exclamation mark (!) at quest
+#                     givers.
+#        Default:     7  - (Enabled, Hide quests that have 7 levels more than the character)
+#                     -1 - (Disabled, Show all available quest marks)
+
+Quests.HighLevelHideDiff = 7
+
+#
+#    Quests.IgnoreRaid
+#        Description: Allow non-raid quests to be completed while in a raid group.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Quests.IgnoreRaid = 0
+
+#
+#    Quests.IgnoreAutoAccept
+#        Description: Ignore auto accept flag. Clients will have to manually accept all quests.
+#        Default:     0 - (Disabled, DB values determine if quest is marked auto accept or not.)
+#                     1 - (Enabled, clients will not be told to automatically accept any quest.)
+
+Quests.IgnoreAutoAccept = 0
+
+#
+#    Quests.IgnoreAutoComplete
+#        Description: Ignore auto complete flag. Clients will have to manually complete all quests.
+#        Default:     0 - (Disabled, DB values determine if quest is marked auto complete or not.)
+#                     1 - (Enabled, clients will not be told to automatically complete any quest.)
+
+Quests.IgnoreAutoComplete = 0
+
+#
+#    Guild.EventLogRecordsCount
+#        Description: Number of log entries for guild events that are stored per guild. Old entries
+#                     will be overwritten if the number of log entries exceed the configured value.
+#                     High numbers prevent this behavior but may have performance impacts.
+#        Default:     100
+
+Guild.EventLogRecordsCount = 100
+
+#
+#    Guild.ResetHour
+#        Description: Hour of the day when the daily cap resets occur.
+#        Range:       0-23
+#        Default:     6 - (06:00 AM)
+
+Guild.ResetHour = 6
+
+#
+#    Guild.BankEventLogRecordsCount
+#        Description: Number of log entries for guild bank events that are stored per guild. Old
+#                     entries will be overwritten if the number of log entries exceed the
+#                     configured value. High numbers prevent this behavior but may have performance
+#                     impacts.
+#        Default:     25 - (Minimum)
+
+Guild.BankEventLogRecordsCount = 25
+
+#
+#    MaxPrimaryTradeSkill
+#        Description: Maximum number of primary professions a character can learn.
+#        Range:       0-10
+#        Default:     2
+
+MaxPrimaryTradeSkill = 3
+
+#
+#    MinPetitionSigns
+#        Description: Number of required signatures on charters to create a guild.
+#        Range:       0-9
+#        Default:     9
+
+MinPetitionSigns = 9
+
+#
+#    MaxGroupXPDistance
+#        Description: Max distance to creature for group member to get experience at creature
+#                     death.
+#        Default:     74
+
+MaxGroupXPDistance = 74
+
+#
+#    MaxRecruitAFriendBonusDistance
+#        Description: Max distance between character and and group to gain the Recruit-A-Friend
+#                     XP multiplier.
+#        Default:     100
+
+MaxRecruitAFriendBonusDistance = 100
+
+#
+#    MailDeliveryDelay
+#        Description: Time (in seconds) mail delivery is delayed when sending items.
+#        Default:     3600 - (1 hour)
+
+MailDeliveryDelay = 3600
+
+#
+#    SkillChance.Prospecting
+#        Description: Allow skill increase from prospecting.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+SkillChance.Prospecting = 1
+
+#
+#    SkillChance.Milling
+#        Description: Allow skill increase from milling.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+SkillChance.Milling = 1
+
+#
+#    OffhandCheckAtSpellUnlearn
+#        Description: Unlearning certain spells can change offhand weapon restrictions
+#                     for equip slots.
+#        Default:     1 - (Recheck offhand slot weapon at unlearning a spell)
+#                     0 - (Recheck offhand slot weapon only at zone update)
+
+OffhandCheckAtSpellUnlearn = 1
+
+#
+#    ClientCacheVersion
+#        Description: Client cache version for client cache data reset. Use any value different
+#                     from DB and not recently been used to trigger client side cache reset.
+#        Default:     0 - (Use DB value from world DB version.cache_id field)
+
+ClientCacheVersion = 0
+
+#
+#    Event.Announce
+#        Description: Announce events.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Event.Announce = 1
+
+#
+#    BeepAtStart
+#        Description: Beep when the world server finished starting (Unix/Linux systems).
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+BeepAtStart = 1
+
+#
+#    Motd
+#        Description: Message of the Day, displayed at login.
+#                     Use '@' for a newline and be sure to escape special characters.
+#        Example:     "Welcome to a Quantum Core server."
+#        Default:     "Welcome to a Quantum Core server."
+
+Motd = "Welcome to QuantumCore Server by Crispi"
+
+#
+#    Server.LoginInfo
+#        Description: Display core version (.server info) on login.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Server.LoginInfo = 1
+
+#
+#    Command.LookupMaxResults
+#        Description: Number of results being displayed using a .lookup command.
+#        Default:     0 - (Unlimited)
+
+Command.LookupMaxResults = 0
+
+#
+#    AllowTickets
+#        Description: Allow/disallow sending new tickets.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AllowTickets = 1
+
+#
+#     DungeonFinder.Enable
+#        Description: Dungeon and raid finder system.
+#        Default:     0 - (Disabled)
+#                     0 - (Disabled)
+
+DungeonFinder.Enable = 1
+
+#
+#   DBC.EnforceItemAttributes
+#        Description: Disallow overriding item attributes stored in DBC files with values from the
+#                     database.
+#        Default:     1 - (Enabled, Enforce DBC values)
+#                     0 - (Disabled, Use database values)
+
+DBC.EnforceItemAttributes = 1
+
+#
+#   AccountInstancesPerHour
+#        Description: Controls the max amount of different instances player can enter within hour
+#        Default:     5
+
+AccountInstancesPerHour = 5
+
+#
+#   BirthdayTime
+#        Description: Set to date of project's birth in UNIX time. By default the date when TrinityCore was started (Thu Oct 2, 2008)
+#        Default:     1222964635
+#
+
+BirthdayTime = 1222964635
+
+#
+###################################################################################################
+
+###################################################################################################
+# PLAYER INTERACTION
+#
+#    AllowTwoSide.Accounts
+#        Description: Allow creating characters of both factions on the same account.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AllowTwoSide.Accounts = 1
+
+#
+#    AllowTwoSide.Interaction.Calendar
+#        Description: Allow calendar invites between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Calendar = 0
+
+#
+#    AllowTwoSide.Interaction.Chat
+#        Description: Allow say chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Chat = 1
+
+#
+#    AllowTwoSide.Interaction.Channel
+#        Description: Allow channel chat between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Channel = 0
+
+#
+#    AllowTwoSide.Interaction.Group
+#        Description: Allow group joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Group = 0
+
+#
+#    AllowTwoSide.Interaction.Guild
+#        Description: Allow guild joining between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Guild = 0
+
+#
+#    AllowTwoSide.Interaction.Auction
+#        Description: Allow auctions between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Auction = 1
+
+#
+#    AllowTwoSide.Interaction.Mail
+#        Description: Allow sending mails between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Interaction.Mail = 0
+
+#
+#    AllowTwoSide.WhoList
+#        Description: Show characters from both factions in the /who list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.WhoList = 1
+
+#
+#    AllowTwoSide.AddFriend
+#        Description: Allow adding friends from other faction the friends list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.AddFriend = 0
+
+#
+#    AllowTwoSide.Trade
+#        Description: Allow trading between factions.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AllowTwoSide.Trade = 0
+
+#
+#    TalentsInspecting
+#        Description: Allow inspecting characters from the opposing faction.
+#                     Doesn't affect characters in gamemaster mode.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+TalentsInspecting = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# CREATURE SETTINGS
+#
+#    ThreatRadius
+#        Description: Distance for creatures to evade after being pulled away from the combat
+#                     starting point. If ThreatRadius is less than creature aggro radius then aggro
+#                     radius will be used.
+#        Default:     60
+
+ThreatRadius = 60
+
+#
+#    Rate.Creature.Aggro
+#        Description: Aggro radius percentage.
+#        Default:     1   - (Enabled, 100%)
+#                     1.5 - (Enabled, 150%)
+#                     0   - (Disabled, 0%)
+
+Rate.Creature.Aggro = 1
+
+#
+#    CreatureFamilyFleeAssistanceRadius
+#        Description: Distance for fleeing creatures seeking assistance from other creatures.
+#        Default:     30 - (Enabled)
+#                     0  - (Disabled)
+
+CreatureFamilyFleeAssistanceRadius = 30
+
+#
+#    CreatureFamilyAssistanceRadius
+#        Description: Distance for creatures calling for assistance from other creatures without
+#                     moving.
+#        Default:     10 - (Enabled)
+#                     0  - (Disabled)
+
+CreatureFamilyAssistanceRadius = 10
+
+#
+#    CreatureFamilyAssistanceDelay
+#        Description: Time (in milliseconds) before creature assistance call.
+#        Default:     1500 - (1.5 Seconds)
+
+CreatureFamilyAssistanceDelay = 1500
+
+#
+#    CreatureFamilyFleeDelay
+#        Description: Time (in milliseconds) during which creature can flee if no assistance was found.
+#        Default:     7000 (7 Seconds)
+
+CreatureFamilyFleeDelay = 7000
+
+#
+#    WorldBossLevelDiff
+#        Description: World boss level difference.
+#        Default:     3
+
+WorldBossLevelDiff = 3
+
+#
+#    Corpse.Decay.NORMAL
+#    Corpse.Decay.RARE
+#    Corpse.Decay.ELITE
+#    Corpse.Decay.RAREELITE
+#    Corpse.Decay.WORLDBOSS
+#        Description: Time (in seconds) until creature corpse will decay if not looted or skinned.
+#        Default:     60   - (1 Minute, Corpse.Decay.NORMAL)
+#                     300  - (5 Minutes, Corpse.Decay.RARE)
+#                     300  - (5 Minutes, Corpse.Decay.ELITE)
+#                     300  - (5 Minutes, Corpse.Decay.RAREELITE)
+#                     3600 - (1 Hour, Corpse.Decay.WORLDBOSS)
+
+Corpse.Decay.NORMAL    = 60
+Corpse.Decay.RARE      = 300
+Corpse.Decay.ELITE     = 300
+Corpse.Decay.RAREELITE = 300
+Corpse.Decay.WORLDBOSS = 3600
+
+#
+#    Rate.Corpse.Decay.Looted
+#        Description: Multiplier for Corpse.Decay.* to configure how long creature corpses stay
+#                     after they have been looted.
+#         Default:    0.5
+
+Rate.Corpse.Decay.Looted = 0.5
+
+#
+#    ListenRange.Say
+#        Description: Distance in which players can read say messages from creatures or
+#                     gameobjects.
+#        Default:     25
+
+ListenRange.Say = 25
+
+#
+#    ListenRange.TextEmote
+#        Description: Distance in which players can read emotes from creatures or gameobjects.
+#        Default:     25
+
+ListenRange.TextEmote = 25
+
+#
+#    ListenRange.Yell
+#        Description: Distance in which players can read yell messages from creatures or
+#                     gameobjects.
+#        Default:     300
+
+ListenRange.Yell = 300
+
+#
+###################################################################################################
+
+###################################################################################################
+# CHAT SETTINGS
+#
+#    ChatFakeMessagePreventing
+#        Description: Chat protection from creating fake messages using a lot spaces or other
+#                     invisible symbols. Not applied to the addon language, but may break old
+#                     addons that use normal languages for sending data to other clients.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ChatFakeMessagePreventing = 1
+
+#
+#    ChatStrictLinkChecking.Severity
+#        Description: Check chat messages for ingame links to spells, items, quests, etc.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled, Check if only valid pipe commands are used, Prevents posting
+#                         pictures.)
+#                     2 - (Enabled, Verify that pipe commands are used in a correct order)
+#                     3 - (Check if color, entry and name don't contradict each other. For this to
+#                         work correctly, please assure that you have extracted locale DBCs of
+#                         every language specific client playing on this server)
+
+ChatStrictLinkChecking.Severity = 3
+
+#
+#    ChatStrictLinkChecking.Kick
+#        Description: Defines what should be done if a message is considered to contain invalid
+#                     pipe commands.
+#        Default:     0 - (Silently ignore message)
+#                     1 - (Disconnect players who sent malformed messages)
+
+ChatStrictLinkChecking.Kick = 0
+
+#
+#    ChatFlood.MessageCount
+#        Description: Chat flood protection, number of messages before player gets muted.
+#        Default:     10 - (Enabled)
+#                     0  - (Disabled)
+
+ChatFlood.MessageCount = 10
+
+#
+#    ChatFlood.MessageDelay
+#        Description: Time (in seconds) between messages to be counted into ChatFlood.MessageCount.
+#        Default:     1
+
+ChatFlood.MessageDelay = 1
+
+#
+#    ChatFlood.MuteTime
+#        Description: Time (in seconds) characters get muted for violating ChatFlood.MessageCount.
+#        Default:     10
+
+ChatFlood.MuteTime = 10
+
+#
+#    Channel.RestrictedLfg
+#        Description: Restrict LookupForGroup channel to characters registered in the LFG tool.
+#        Default:     1 - (Enabled, Allow join to channel only if registered in LFG)
+#                     0 - (Disabled, Allow join to channel in any time)
+
+Channel.RestrictedLfg = 0
+
+#
+#    Channel.SilentlyGMJoin
+#        Description: Silently join GM characters to channels. If set to 1, channel kick and ban
+#                     commands issued by a GM will not be broadcasted.
+#        Default:     0 - (Disabled, Join with announcement)
+#                     1 - (Enabled, Join without announcement)
+
+Channel.SilentlyGMJoin = 1
+
+#
+#    ChatLevelReq.Channel
+#        Description: Level requirement for characters to be able to write in chat channels.
+#        Default:     1
+
+ChatLevelReq.Channel = 1
+
+#
+#    ChatLevelReq.Whisper
+#        Description: Level requirement for characters to be able to whisper other characters.
+#        Default:     1
+
+ChatLevelReq.Whisper = 1
+
+#
+#    ChatLevelReq.Say
+#        Description: Level requirement for characters to be able to use say/yell/emote.
+#        Default:     1
+
+ChatLevelReq.Say = 1
+
+#
+#    AllowPlayerCommands
+#        Description: Allow players to use commands.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+AllowPlayerCommands = 1
+
+#
+#    PreserveCustomChannels
+#        Description: Store custom chat channel settings like password, automatic ownership handout
+#                     or ban list in the database. Needs to be enabled to save custom
+#                     world/trade/etc. channels that have automatic ownership handout disabled.
+#                     (.channel set ownership $channel off)
+#        Default:     0 - (Disabled, Blizzlike, Channel settings are lost if last person left)
+#                     1 - (Enabled)
+
+PreserveCustomChannels = 1
+
+#
+#    PreserveCustomChannelDuration
+#        Description: Time (in days) that needs to pass before the customs chat channels get
+#                     cleaned up from the database. Only channels with ownership handout enabled
+#                     (default behavior) will be cleaned.
+#        Default:     14 - (Enabled, Clean channels that haven't been used for 14 days)
+#                     0  - (Disabled, Infinite channel storage)
+
+PreserveCustomChannelDuration = 14
+
+#
+###################################################################################################
+
+###################################################################################################
+# GAME MASTER SETTINGS
+#
+#    GM.LoginState
+#        Description: GM mode at login.
+#        Default:     2 - (Last save state)
+#                     0 - (Disable)
+#                     1 - (Enable)
+
+GM.LoginState = 2
+
+#
+#    GM.Visible
+#        Description: GM visibility at login.
+#        Default:     2 - (Last save state)
+#                     0 - (Invisible)
+#                     1 - (Visible)
+
+GM.Visible = 2
+
+#
+#    GM.Chat
+#        Description: GM chat mode at login.
+#        Default:     2 - (Last save state)
+#                     0 - (Disable)
+#                     1 - (Enable)
+
+GM.Chat = 2
+
+#
+#    GM.WhisperingTo
+#        Description: Is GM accepting whispers from player by default or not.
+#        Default:     2 - (Last save state)
+#                     0 - (Disable)
+#                     1 - (Enable)
+
+GM.WhisperingTo = 2
+
+#
+#    GM.FreezeAuraDuration
+#       Description: Allows to set a default duration to the Freeze Aura
+#                    applied on players when using the .freeze command
+#       Default:     0 - (Original aura duration. Lasts until the .unfreeze command is used)
+#                    N - (Aura duration if unspecified in .freeze command, in seconds)
+
+GM.FreezeAuraDuration = 0
+
+#
+#    GM.InGMList.Level
+#        Description: Maximum GM level shown in GM list (if enabled) in non-GM state (.gm off).
+#        Default:     3 - (Anyone)
+#                     0 - (Only players)
+#                     1 - (Only moderators)
+#                     2 - (Only gamemasters)
+
+GM.InGMList.Level = 3
+
+#
+#    GM.InWhoList.Level
+#        Description: Max GM level showed in who list (if visible).
+#        Default:     3 - (Anyone)
+#                     0 - (Only players)
+#                     1 - (Only moderators)
+#                     2 - (Only gamemasters)
+
+GM.InWhoList.Level = 3
+
+#
+#    GM.LogTrade
+#        Description: Include GM trade and trade slot enchanting operations in GM log.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+GM.LogTrade = 1
+
+#
+#    GM.StartLevel
+#        Description: GM character starting level.
+#        Default:     1
+
+GM.StartLevel = 1
+
+#
+#    GM.AllowInvite
+#        Description: Allow players to invite GM characters.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+GM.AllowInvite = 0
+
+#
+#    GM.AllowFriend
+#        Description: Allow players to add GM characters to their friends list.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+GM.AllowFriend = 0
+
+#
+#    GM.LowerSecurity
+#        Description: Allow lower security levels to use commands on higher security level
+#                     characters.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+GM.LowerSecurity = 0
+
+#
+#    GM.AllowAchievementGain.Level
+#        Description: Max GM level allowed to obtain achievements.
+#        Default:     7 - (ALL)
+#                     0 - (Players)
+#                     1 - (Players, Moderators)
+#                     2 - (Players, Moderators, EventMasters)
+#                     3 - (Players, Moderators, EventMasters GameMasters)
+#                     4 - (Players, Moderators, EventMasters GameMasters, Admins)
+#                     5 - (Players, Moderators, EventMasters GameMasters, Admins, MainAdmins)
+#                     6 - (Players, Moderators, EventMasters GameMasters, Admins, MainAdmins, Developers)
+#                     7 - (Players, Moderators, EventMasters GameMasters, Admins, MainAdmins, Developers, TechSupports)
+
+GM.AllowAchievementGain.Level = 7
+
+#
+#    GM.TicketSystem.ChanceOfGMSurvey
+#        Description: Chance of sending a GM survey after ticket completion.
+#        Default:     50 - (Enabled)
+#                     0  - (Disabled)
+
+GM.TicketSystem.ChanceOfGMSurvey = 50
+
+#
+###################################################################################################
+
+###################################################################################################
+# VISIBILITY AND DISTANCES FOR SERVERSIDE GRIDS
+#
+#    Visibility.GroupMode
+#        Description: Group visibility modes. Defines which groups can aways detect invisible
+#                     characters of the same raid, group or faction.
+#        Default:     1 - (Raid)
+#                     0 - (Party)
+#                     2 - (Faction)
+
+Visibility.GroupMode = 1
+
+#
+#    Visibility.Distance.Continents
+#    Visibility.Distance.Instances
+#    Visibility.Distance.BGArenas
+#        Description: Visibility distance to see other players or gameobjects.
+#                     Visibility on continents on retail 335 yards.
+#                     For instances default: 185.
+#                     Max limited by grid size: 533.33333
+#                     Min limit is max aggro radius (45) * Rate.Creature.Aggro
+#        Default:     339 - (Visibility.Distance.Continents)
+#                     185 - (Visibility.Distance.Instances)
+#                     533 - (Visibility.Distance.BGArenas)
+
+Visibility.Distance.Continents = 275
+Visibility.Distance.Instances = 185
+Visibility.Distance.BGArenas = 533
+
+#
+#    Visibility.Notify.Period.OnContinents
+#    Visibility.Notify.Period.InInstances
+#    Visibility.Notify.Period.InBGArenas
+#        Description: Time (in milliseconds) for visibility update period. Lower values may have
+#                     performance impact.
+#        Default:     1000 - (Visibility.Notify.Period.OnContinents)
+#                     1000 - (Visibility.Notify.Period.InInstances)
+#                     1000 - (Visibility.Notify.Period.InBGArenas)
+
+Visibility.Notify.Period.OnContinents = 1000
+Visibility.Notify.Period.InInstances = 1000
+Visibility.Notify.Period.InBGArenas = 1000
+
+#
+###################################################################################################
+
+###################################################################################################
+# SERVER RATES AND STATS
+#
+#    Rate.Health
+#    Rate.Mana
+#    Rate.Rage.Income
+#    Rate.Rage.Loss
+#    Rate.RunicPower.Income
+#    Rate.RunicPower.Loss
+#    Rate.Focus
+#    Rate.Energy
+#    Rate.Loyalty
+#        Description: Multiplier to configure health, mana, incoming rage, loss of rage, focus
+#                     energy and loyalty increase or decrease.
+#        Default:     1 - (Rate.Health)
+#                     1 - (Rate.Mana)
+#                     1 - (Rate.Rage.Income)
+#                     1 - (Rate.Rage.Loss)
+#                     1 - (Rate.RunicPower.Income)
+#                     1 - (Rate.RunicPower.Loss)
+#                     1 - (Rate.Focus)
+#                     1 - (Rate.Energy)
+#                     1 - (Rate.Loyalty)
+
+Rate.Health            = 1
+Rate.Mana              = 1
+Rate.Rage.Income       = 1
+Rate.Rage.Loss         = 1
+Rate.RunicPower.Income = 1
+Rate.RunicPower.Loss   = 1
+Rate.Focus             = 1
+Rate.Energy            = 1
+Rate.Loyalty           = 1
+
+#
+#    Rate.Skill.Discovery
+#        Description: Multiplier for skill discovery.
+#        Default:     1
+
+Rate.Skill.Discovery = 1
+
+#
+#    Rate.Drop.Item.Poor
+#    Rate.Drop.Item.Normal
+#    Rate.Drop.Item.Uncommon
+#    Rate.Drop.Item.Rare
+#    Rate.Drop.Item.Epic
+#    Rate.Drop.Item.Legendary
+#    Rate.Drop.Item.Artifact
+#    Rate.Drop.Item.Referenced
+#    Rate.Drop.Money
+#        Description: Drop rates for money and items based on quality.
+#        Default:     1 - (Rate.Drop.Item.Poor)
+#                     1 - (Rate.Drop.Item.Normal)
+#                     1 - (Rate.Drop.Item.Uncommon)
+#                     1 - (Rate.Drop.Item.Rare)
+#                     1 - (Rate.Drop.Item.Epic)
+#                     1 - (Rate.Drop.Item.Legendary)
+#                     1 - (Rate.Drop.Item.Artifact)
+#                     1 - (Rate.Drop.Item.Referenced)
+#                     1 - (Rate.Drop.Money)
+
+Rate.Drop.Item.Poor             = 1
+Rate.Drop.Item.Normal           = 1
+Rate.Drop.Item.Uncommon         = 1
+Rate.Drop.Item.Rare             = 1
+Rate.Drop.Item.Epic             = 1
+Rate.Drop.Item.Legendary        = 1
+Rate.Drop.Item.Artifact         = 1
+Rate.Drop.Item.Referenced       = 1
+Rate.Drop.Money                 = 1
+
+#
+#    Rate.Drop.Item.ReferencedAmount
+#        Description: Multiplier for referenced loot amount.
+#        Default:     1
+
+Rate.Drop.Item.ReferencedAmount = 1
+
+#
+#    Rate.XP.Kill
+#    Rate.XP.Quest
+#    Rate.XP.Explore
+#        Description: Experience rates.
+#        Default:     1 - (Rate.XP.Kill, affects only kills outside of Battlegrounds)
+#                     1 - (Rate.XP.Quest)
+#                     1 - (Rate.XP.Explore)
+
+Rate.XP.Kill    = 1
+Rate.XP.Quest   = 1
+Rate.XP.Explore = 1
+
+#
+#    Rate.XP.BattlegroundKill
+#        Description: Experience rate for honorable kills in battlegrounds,
+#                     it works when Battleground.GiveXPForKills = 1
+#        Default:     1
+
+Rate.XP.BattlegroundKill = 1
+
+#
+#    Rate.Quest.Money.Reward
+#    Rate.Quest.Money.Max.Level.Reward
+#        Description: Multiplier for money quest rewards. Can not be below 0.
+#        Default:     1
+
+Rate.Quest.Money.Reward = 1
+Rate.Quest.Money.Max.Level.Reward = 1
+
+#
+#    Rate.RepairCost
+#        Description: Repair cost rate.
+#        Default:     1
+
+Rate.RepairCost = 1
+
+#
+#    Rate.Rest.InGame
+#    Rate.Rest.Offline.InTavernOrCity
+#    Rate.Rest.Offline.InWilderness
+#        Description: Resting points grow rates.
+#        Default:     1 - (Rate.Rest.InGame)
+#                     1 - (Rate.Rest.Offline.InTavernOrCity)
+#                     1 - (Rate.Rest.Offline.InWilderness)
+
+Rate.Rest.InGame                 = 1
+Rate.Rest.Offline.InTavernOrCity = 1
+Rate.Rest.Offline.InWilderness   = 1
+
+#
+#    Rate.Damage.Fall
+#        Description: Damage after fall rate.
+#        Default:     1
+
+Rate.Damage.Fall = 1
+
+#
+#    Rate.Auction.Time
+#    Rate.Auction.Deposit
+#    Rate.Auction.Cut
+#        Description: Auction rates (auction time, deposit get at auction start,
+#                     auction cut from price at auction end)
+#        Default:     1 - (Rate.Auction.Time)
+#                     1 - (Rate.Auction.Deposit)
+#                     1 - (Rate.Auction.Cut)
+
+Rate.Auction.Time    = 1
+Rate.Auction.Deposit = 1
+Rate.Auction.Cut     = 1
+
+#
+#    Rate.Honor
+#        Description: Honor gain rate.
+#        Default:     1
+
+Rate.Honor = 1
+
+#
+#    Rate.Mining.Amount
+#        Description: Rate for minimum/maximum times a deposit can be used.
+#        Default:     1
+
+Rate.Mining.Amount = 1
+
+#
+#    Rate.Mining.Next
+#        Description: Mining rates.
+#        Default:     Chance to to mine a deposit again.
+
+Rate.Mining.Next = 1
+
+#
+#    Rate.Talent
+#        Description: Talent point rate.
+#        Default:     1
+
+Rate.Talent = 1
+
+#
+#    Rate.Reputation.Gain
+#        Description: Reputation gain rate.
+#        Default:     1
+
+Rate.Reputation.Gain = 1
+
+#
+#    Rate.Reputation.LowLevel.Kill
+#        Description: Reputation gain from killing low level (grey) creatures.
+#        Default:     1
+
+Rate.Reputation.LowLevel.Kill = 1
+
+#
+#    Rate.Reputation.LowLevel.Quest
+#        Description: Reputation gain rate.
+#        Default:     1
+
+Rate.Reputation.LowLevel.Quest = 1
+
+#
+#    Rate.Reputation.RecruitAFriendBonus
+#        Description: Reputation bonus rate for recruit-a-friend.
+#        Default:     0.1
+
+Rate.Reputation.RecruitAFriendBonus = 0.1
+
+#
+#    Rate.MoveSpeed
+#        Description: Movement speed rate.
+#        Default:     1
+
+Rate.MoveSpeed = 1
+
+#
+#    Rate.InstanceResetTime
+#        Description: Multiplier for the rate between global raid/heroic instance resets 
+#                     (dbc value). Higher value increases the time between resets, 
+#                     lower value lowers the time, you need clean `instance_reset` in 
+#                     characters db in order to let new values work.
+#        Default:     1
+
+Rate.InstanceResetTime = 1
+
+#
+#    SkillGain.Crafting
+#    SkillGain.Defense
+#    SkillGain.Gathering
+#    SkillGain.Weapon
+#        Description: Crafting/defense/gathering/weapon skills gain rate.
+#        Default:     1 - (SkillGain.Crafting)
+#                     1 - (SkillGain.Defense)
+#                     1 - (SkillGain.Gathering)
+#                     1 - (SkillGain.Weapon)
+
+SkillGain.Crafting  = 5
+SkillGain.Defense   = 5
+SkillGain.Gathering = 5
+SkillGain.Weapon    = 5
+
+#
+#    SkillChance.Orange
+#    SkillChance.Yellow
+#    SkillChance.Green
+#    SkillChance.Grey
+#        Description: Chance to increase skill based on recipe color.
+#        Default:     100 - (SkillChance.Orange)
+#                     75  - (SkillChance.Yellow)
+#                     25  - (SkillChance.Green)
+#                     0   - (SkillChance.Grey)
+
+SkillChance.Orange = 100
+SkillChance.Yellow = 75
+SkillChance.Green  = 35
+SkillChance.Grey   = 15
+
+#
+#    SkillChance.MiningSteps
+#    SkillChance.SkinningSteps
+#        Description: Skinning and Mining chance decreases with skill level.
+#        Default:     0  - (Disabled)
+#                     75 - (In 2 times each 75 skill points)
+
+SkillChance.MiningSteps   = 0
+SkillChance.SkinningSteps = 0
+
+#
+#    DurabilityLoss.InPvP
+#        Description: Durability loss on death during PvP.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+DurabilityLoss.InPvP = 0
+
+#
+#    DurabilityLoss.OnDeath
+#        Description: Durability loss percentage on death.
+#        Default:     10
+
+DurabilityLoss.OnDeath = 10
+
+#
+#    DurabilityLossChance.Damage
+#        Description: Chance to lose durability on one equipped item from damage.
+#        Default:     0.5 - (100/0.5 = 200, Each 200 damage one equipped item will use durability)
+
+DurabilityLossChance.Damage = 0.5
+
+#
+#    DurabilityLossChance.Absorb
+#        Description: Chance to lose durability on one equipped armor item when absorbing damage.
+#        Default:     0.5 - (100/0.5 = 200, Each 200 absorbed damage one equipped item will lose
+#                           durability)
+
+DurabilityLossChance.Absorb = 0.5
+
+#
+#    DurabilityLossChance.Parry
+#        Description: Chance to lose durability on main weapon when parrying attacks.
+#        Default:     0.05 - (100/0.05 = 2000, Each 2000 parried damage the main weapon will lose
+#                            durability)
+
+DurabilityLossChance.Parry = 0.05
+
+#
+#    DurabilityLossChance.Block
+#        Description: Chance to lose durability on shield when blocking attacks.
+#        Default:     0.05 - (100/0.05 = 2000, Each 2000 blocked damage the shield will lose
+#                            durability)
+
+DurabilityLossChance.Block = 0.05
+
+#
+#    Death.SicknessLevel
+#        Description: Starting level for resurrection sickness.
+#        Example:     11 - (Level 1-10 characters will not be affected,
+#                           Level 11-19 characters will be affected for 1 minute,
+#                           Level 20-MaxPlayerLevel characters will be affected for 10 minutes)
+#         Default:    11               - (Enabled, See Example)
+#                     MaxPlayerLevel+1 - (Disabled)
+#                     -10              - (Enabled, Level 1+ characters have 10 minute duration)
+
+Death.SicknessLevel = 11
+
+#
+#    Death.CorpseReclaimDelay.PvP
+#    Death.CorpseReclaimDelay.PvE
+#        Description: Increase corpse reclaim delay at PvP/PvE deaths.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Death.CorpseReclaimDelay.PvP = 0
+Death.CorpseReclaimDelay.PvE = 0
+
+#
+#    Death.Bones.World
+#    Death.Bones.BattlegroundOrArena
+#        Description: Create bones instead of corpses at resurrection in normal zones, instances,
+#                     battleground or arenas.
+#        Default:     1 - (Enabled, Death.Bones.World)
+#                     1 - (Enabled, Death.Bones.BattlegroundOrArena)
+#                     0 - (Disabled)
+
+Death.Bones.World               = 1
+Death.Bones.BattlegroundOrArena = 1
+
+#
+#    Die.Command.Mode
+#        Description: Do not trigger things like loot from .die command.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Die.Command.Mode = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# AUTO BROADCAST SYSTEM
+#
+#    AutoBroadcast.On
+#        Description: Enable auto broadcast.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AutoBroadcast.On = 0
+
+#
+#    AutoBroadcast.Center
+#        Description: Auto broadcasting display method.
+#        Default:     0 - (Announce)
+#                     1 - (Notify)
+#                     2 - (Both)
+
+AutoBroadcast.Center = 0
+
+#
+#    AutoBroadcast.Timer
+#        Description: Timer (in milliseconds) for auto broadcasts.
+#        Default:     600000 - (10 minutes)
+
+AutoBroadcast.Timer = 600000
+
+#
+###################################################################################################
+
+###################################################################################################
+# BATTLEGROUND CONFIGIRATION
+#
+#    Battleground.CastDeserter
+#        Description: Cast Deserter spell at players who leave battlegrounds in progress.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Battleground.CastDeserter = 1
+
+#
+#    Battleground.QueueAnnouncer.Enable
+#        Description: Announce battleground queue status to chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.QueueAnnouncer.Enable = 1
+
+#
+#    Battleground.QueueAnnouncer.PlayerOnly
+#        Description: Battleground queue announcement type.
+#        Default:     0 - (System message, Anyone can see it)
+#                     1 - (Private, Only queued players can see it)
+
+Battleground.QueueAnnouncer.PlayerOnly = 0
+
+#
+#    Battleground.StoreStatistics.Enable
+#        Description: Store Battleground scores in the database.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.StoreStatistics.Enable = 1
+
+#
+#    Battleground.TrackDeserters.Enable
+#        Description: Track deserters of Battlegrounds.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.TrackDeserters.Enable = 0
+
+#
+#    Battleground.InvitationType
+#        Description: Set Battleground invitation type.
+#        Default:     0 - (Normal, Invite as much players to battlegrounds as queued,
+#                          Don't bother with balance)
+#                     1 - (Experimental, Don't allow to invite much more players
+#                          of one faction)
+
+Battleground.InvitationType = 0
+
+#
+#    Battleground.PrematureFinishTimer
+#        Description: Time (in milliseconds) before battleground will end prematurely if there are
+#                     not enough players on one team. (Values defined in battleground template)
+#        Default:     300000 - (Enabled, 5 minutes)
+#                     0      - (Disabled, Not recommended)
+
+BattleGround.PrematureFinishTimer = 300000
+
+#
+#    BattleGround.PremadeGroupWaitForMatch
+#        Description: Time (in milliseconds) a pre-made group has to wait for matching group of the
+#                     other faction.
+#        Default:     1800000 - (Enabled, 30 minutes)
+#                     0       - (Disabled, Not recommended)
+
+BattleGround.PremadeGroupWaitForMatch = 1800000
+
+#
+#    Battleground.GiveXPForKills
+#        Description: Give experience for honorable kills in battlegrounds.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Battleground.GiveXPForKills = 1
+
+#
+#    Battleground.Random.ResetHour
+#        Description: Hour of the day when the global instance resets occur.
+#        Range:       0-23
+#        Default:     6 - (06:00 AM)
+
+Battleground.Random.ResetHour = 6
+
+#
+###################################################################################################
+
+###################################################################################################
+# ARENA SETTINGS
+#
+#    Arena.MaxRatingDifference
+#        Description: Maximum rating difference between two teams in rated matches.
+#        Default:     150 - (Enabled)
+#                     0   - (Disabled)
+
+Arena.MaxRatingDifference = 150
+
+#
+#    Arena.RatingDiscardTimer
+#        Description: Time (in milliseconds) after which rating differences are ignored when setting up matches.
+#        Default:     600000 - (Enabled, 10 minutes)
+#                     0      - (Disabled)
+
+Arena.RatingDiscardTimer = 60000
+
+#
+#    Arena.RatedUpdateTimer
+#        Description: Time (in milliseconds) between checks for matchups in rated arena
+#        Default:     5000 - (5 seconds)
+
+Arena.RatedUpdateTimer = 5000
+
+#
+#    Arena.AutoDistributePoints
+#        Description: Automatically distribute arena points.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Arena.AutoDistributePoints = 1
+
+#
+#    Arena.AutoDistributeInterval
+#        Description: Time (in days) how often arena points should be distributed if automatic distribution is enabled.
+#        Default:     7 - (Weekly)
+
+Arena.AutoDistributeInterval = 7
+
+#
+#    Arena.QueueAnnouncer.Enable
+#        Description: Announce arena queue status to chat.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Arena.QueueAnnouncer.Enable = 1
+
+#
+#    Arena.ArenaSeason.ID
+#        Description: Current arena season id shown in clients.
+#        Default:     8
+
+Arena.ArenaSeason.ID = 8
+
+#
+#    Arena.ArenaSeason.InProgress
+#        Description: State of current arena season.
+#        Default:     1 - (Active)
+#                     0 - (Finished)
+
+Arena.ArenaSeason.InProgress = 1
+
+#
+#    Arena.ArenaStartRating
+#        Description: Start rating for new arena teams.
+#        Default:     0
+
+Arena.ArenaStartRating = 0
+
+#
+#    Arena.ArenaStartPersonalRating
+#        Description: Start personal rating when joining a team.
+#        Default:     0
+
+Arena.ArenaStartPersonalRating = 0
+
+#
+#    Arena.ArenaStartMatchmakerRating
+#        Description: Start matchmaker rating for players.
+#        Default:     1500
+
+Arena.ArenaStartMatchmakerRating = 1500
+
+#
+###################################################################################################
+
+###################################################################################################
+# NETWORK CONFIG
+#
+#    Network.Threads
+#        Description: Number of threads for network.
+#         Default:    1 - (Recommended 1 thread per 1000 connections)
+
+Network.Threads = 1
+
+#
+#    Network.OutKBuff
+#        Description: Amount of memory (in bytes) used for the output kernel buffer (see SO_SNDBUF
+#                     socket option, TCP manual).
+#        Default:     -1 - (Use system default setting)
+
+Network.OutKBuff = -1
+
+#
+#    Network.OutUBuff
+#        Description: Amount of memory (in bytes) reserved in the user space per connection for
+#                     output buffering.
+#         Default:    65536
+
+Network.OutUBuff = 65536
+
+#
+#    Network.TcpNoDelay:
+#        Description: TCP Nagle algorithm setting.
+#         Default:    0 - (Enabled, Less traffic, More latency)
+#                     1 - (Disabled, More traffic, Less latency, TCP_NO_DELAY)
+
+Network.TcpNodelay = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# CONSOLE AND REMOTE ACCESS
+#
+#    Console.Enable
+#        Description: Enable console.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+Console.Enable = 1
+
+#
+#    Remote.Access.Enable
+#        Description: Enable remote console (telnet).
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Remote.Access.Enable = 0
+
+#
+#    Remote.Access.IP
+#        Description: Bind remote access to IP/hostname.
+#        Default:     "0.0.0.0" - (Bind to all IPs on the system)
+
+Remote.Access.IP = "0.0.0.0"
+
+#
+#    Remote.Access.Port
+#        Description: TCP port to reach the remote console.
+#        Default:     3443
+
+Remote.Access.Port = 3443
+
+#
+#    Ra.MinLevel
+#        Description: Required security level to use the remote console.
+#        Default:     3
+
+Remote.Access.MinLevel = 3
+
+#
+#    SOAP.Enable
+#        Description: Enable soap service
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+SOAP.Enabled = 0
+
+#
+#    SOAP.IP
+#        Description: Bind SOAP service to IP/hostname
+#        Default:     "127.0.0.1" - (Bind to localhost)
+
+SOAP.IP = "127.0.0.1"
+
+#
+#    SOAP.Port
+#        Description: TCP port to reach the SOAP service.
+#        Default:     7878
+
+SOAP.Port = 7878
+
+#
+###################################################################################################
+
+###################################################################################################
+# CHARACTER DELETE OPTIONS
+#
+#    CharDelete.Method
+#        Description: Character deletion behavior.
+#        Default:     0 - (Completely remove character from the database)
+#                     1 - (Unlink the character from account and free up the name, Appears as
+#                         deleted ingame)
+
+CharDelete.Method = 0
+
+#
+#    CharDelete.MinLevel
+#        Description: Required level to use the unlinking method if enabled.
+#        Default:     0  - (Same method for every level)
+#                     1+ - (Only characters with the specified level will use the unlinking method)
+
+CharDelete.MinLevel = 0
+
+#
+#    CharDelete.KeepDays
+#        Description: Time (in days) before unlinked characters will be removed from the database.
+#        Default:     30 - (Enabled)
+#                     0  - (Disabled, Don't delete any characters)
+
+CharDelete.KeepDays = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# CUSTOM SERVER OPTIONS
+#
+#    AllowTrackBothResources
+#       Description: Allows players to track herbs and minerals at the same time (if they have the skills)
+#       Default:     0 - (Do not allow)
+#                    1 - (Allow)
+#
+#       Note:        The following are client limitations and cannot be coded for:
+#                    * The minimap tracking icon will display whichever skill is activated second.
+#                    * The minimap tracking list will only show a check mark next to the last skill activated (sometimes this
+#                    bugs out and doesn't switch the check mark. It has no effect on the actual tracking though).
+#                    * The minimap dots are yellow for both resources
+
+AllowTrackBothResources = 0
+
+#
+#    PlayerStart.AllReputation
+#        Description: Players will start with most of the high level reputations that are needed
+#                     for items, mounts etc.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PlayerStart.AllReputation = 0
+
+#
+#    PlayerStart.AllSpells
+#        Description: If enabled, players will start with all their class spells (not talents).
+#                     You must populate playercreateinfo_spell_custom table with the spells you
+#                     want, or this will not work! The table has data for all classes / races up
+#                     to TBC expansion.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PlayerStart.AllSpells = 0
+
+#
+#    PlayerStart.MapsExplored
+#        Description: Characters start with all maps explored.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PlayerStart.MapsExplored = 0
+
+#
+#    HonorPointsAfterDuel
+#        Description: Amount of honor points the duel winner will get after a duel.
+#        Default:     0  - (Disabled)
+#                     1+ - (Enabled)
+
+HonorPointsAfterDuel = 0
+
+#
+#    AlwaysMaxWeaponSkill
+#        Description: Players will automatically gain max weapon/defense skill when logging in,
+#                     or leveling.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AlwaysMaxWeaponSkill = 0
+
+#
+#    PvPToken.Enable
+#        Description: Character will receive a token after defeating another character that yields
+#                     honor.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+PvPToken.Enable = 0
+
+#
+#    PvPToken.MapAllowType
+#        Description: Define where characters can receive tokens.
+#        Default:     4 - (All maps)
+#                     3 - (Battlegrounds)
+#                     2 - (FFA areas only like Gurubashi arena)
+#                     1 - (Battlegrounds and FFA areas)
+
+PvPToken.MapAllowType = 4
+
+#
+#    PvPToken.ItemID
+#        Description: Item characters will receive after defeating another character if PvP Token
+#                     system is enabled.
+#        Default:     29434 - (Badge of justice)
+
+PvPToken.ItemID = 29434
+
+#
+#    PvPToken.ItemCount
+#        Description: Number of tokens a character will receive.
+#        Default:     1
+
+PvPToken.ItemCount = 1
+
+#
+#    NoResetTalentsCost
+#        Description: Resetting talents doesn't cost anything.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+NoResetTalentsCost = 0
+
+#
+#     Guild.AllowMultipleGuildMaster
+#        Description: Allow more than one guild master. Additional Guild Masters must be set using
+#                     the ".guild rank" command.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Guild.AllowMultipleGuildMaster = 0
+
+#
+#     ShowKickInWorld
+#        Description: Determines whether a message is broadcasted to the entire server when a
+#                     player gets kicked
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowKickInWorld = 1
+
+#     ShowMuteInWorld
+#        Description: Determines whether a message is broadcasted to the entire server when a
+#                     player gets muted.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowMuteInWorld = 1
+
+#
+#     ShowBanInWorld
+#        Description: Determines whether a message is broadcasted to the entire server when a
+#                     player gets banned.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+ShowBanInWorld = 1
+
+#
+#     RecordUpdateTimeDiffInterval
+#        Description: Time (in milliseconds) update time diff is written to the log file.
+#                     Update diff can be used as a performance indicator. Diff < 300: good
+#                     performance. Diff > 600 bad performance, may be caused by high CPU usage.
+#        Default:     60000 - (Enabled, 1 minute)
+#                     0     - (Disabled)
+
+RecordUpdateTimeDiffInterval = 60000
+
+#
+#     MinRecordUpdateTimeDiff
+#        Description: Only record update time diff which is greater than this value.
+#        Default:     100
+
+MinRecordUpdateTimeDiff = 100
+
+#
+#     PlayerStart.String
+#        Description: String to be displayed at first login of newly created characters.
+#         Default:    "" - (Disabled)
+
+PlayerStart.String = "Welcome!"
+
+#
+#     LevelReq.Trade
+#        Description: Level requirement for characters to be able to trade.
+#        Default:     1
+
+LevelReq.Trade = 1
+
+#
+#     LevelReq.Ticket
+#        Description: Level requirement for characters to be able to write tickets.
+#        Default:     1
+
+LevelReq.Ticket = 1
+
+#
+#     LevelReq.Auction
+#        Description: Level requirement for characters to be able to use the auction house.
+#        Default:     1
+
+LevelReq.Auction = 1
+
+#
+#     LevelReq.Mail
+#        Description: Level requirement for characters to be able to send and receive mails.
+#        Default:     1
+
+LevelReq.Mail = 1
+
+#
+#     PlayerDump.Disallow.Paths
+#        Description: Disallow using paths in PlayerDump output files
+#        Default:     1
+
+PlayerDump.Disallow.Paths = 1
+
+#
+#     PlayerDump.Disallow.Overwrite
+#        Description: Disallow overwriting existing files with PlayerDump
+#        Default:     1
+
+PlayerDump.Disallow.Overwrite = 1
+
+#
+#     No.Gray.Aggro
+#        Description: Gray mobs will not aggro players above/below some levels
+#                     No.Gray.Aggro.Above: If player is at this level or above, gray mobs will not attack
+#                     No.Gray.Aggro.Below: If player is at this level or below, gray mobs will not attack
+#        Example:     You can for example make players free from gray until they reach level 30.
+#                     Then gray will start to attack them, until they reach max level (80 for example):
+#                     No.Gray.Aggro.Above = 80
+#                     No.Gray.Aggro.Below = 29
+#        Default: 0 - (Blizzlike)
+#
+
+No.Gray.Aggro.Above = 0
+No.Gray.Aggro.Below = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# WARDEN ANTICHEAT SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Warden.Enabled
+#        Description: Enable Warden anticheat system.
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+Warden.Enabled = 1
+
+#
+#    Warden.NumMemChecks
+#        Description: Number of Warden memory checks that are sent to the client each cycle.
+#        Default:     3 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.NumMemChecks = 3
+
+#
+#    Warden.NumOtherChecks
+#        Description: Number of Warden checks other than memory checks that are added to request
+#                     each checking cycle.
+#        Default:     7 - (Enabled)
+#                     0 - (Disabled)
+
+Warden.NumOtherChecks = 7
+
+#
+#    Warden.LogFile
+#        Description: Client check fails will be logged here.
+#        Default:     ""           - (Disabled)
+#                     "Warden.log" - (Enabled)
+#
+
+Warden.LogFile = "Warden.log"
+
+#
+#    Warden.ClientResponseDelay
+#        Description: Time (in seconds) before client is getting disconnecting for not responding.
+#        Default:     600 - (10 Minutes)
+#                     0 - (Disabled, client won't be kicked)
+
+Warden.ClientResponseDelay = 600
+
+#
+#    Warden.ClientCheckHoldOff
+#        Description: Time (in seconds) to wait before sending the next check request to the client.
+#                     A low number increases traffic and load on client and server side.
+#        Default:     30 - (30 Seconds)
+#                     0  - (Send check as soon as possible)
+
+Warden.ClientCheckHoldOff = 30
+
+#
+#    Warden.ClientCheckFailAction
+#        Description: Default action being taken if a client check failed. Actions can be
+#                     overwritten for each single check via warden_action table in characters 
+#                     database.
+#        Default:     0 - (Disabled, Logging only)
+#                     1 - (Kick)
+#                     2 - (Ban)
+
+Warden.ClientCheckFailAction = 0
+
+#
+#    Warden.BanDuration
+#        Description: Time (in seconds) an account will be banned if ClientCheckFailAction is set
+#                     to ban.
+#        Default:     86400 - (24 hours)
+#                     0     - (Permanent ban)
+
+Warden.BanDuration = 86400
+
+#
+###################################################################################################
+
+###################################################################################################
+# QUANTUM CORE PASSIVE ANTICHEAT SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#     Anticheat.Enable
+#        Description: Enables or disables the QuantumCore Anticheat System.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+
+QuantumCore.Anticheat.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# BATTLEGROUND ANTICHEAT SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система отслеживает игроков которые до начала боя
+#    выходят за пределы ворот, система анонсирует в чате
+#    ник читера и телепортирует его назад, накладывая
+#    на него обездвиживание пока не начнется бой.
+#
+#    Battleground.Anticheat.Enable
+#       Description: Disable / Enable Battleground Anticheat System.
+#       Включение/Выключение Системы.
+#       Default:  1 - (Enabled)
+#                 0 - (Disabled)
+
+Battleground.Anticheat.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# DUEL RESET COOLDOWN © QUANTUMCORE PROJECT 2010-2015.
+#
+#  Система сброса кулдаунов персонажа до и после дуэли.
+#
+#  Reset Cooldown On Start
+#     Reseting cooldown and restore health to start of duel
+#     Default: 0 - Disable
+#              1 - Enable
+
+Reset.Cooldown.OnStart = 1
+
+#
+#   Reset Cooldown On Finish
+#     Reseting cooldown and restore health to finish of duel
+#     Default: 0 - Disable
+#              1 - Enable
+
+Reset.Cooldown.OnFinish = 1
+
+#
+#   Reset Energy OnStart
+#     Reseting cooldown and Reset Energy.Rage.Runic Power
+#     Default: 0 - Disable
+#              1 - Enable
+
+Reset.Energy.OnStart = 1
+
+#
+#   Maximum Energy On Start
+#     Reseting cooldown and Increase Maximum Energy.Rage.Runic Power
+#     Default: 0 - Disable
+#              1 - Enable
+
+Maximum.Energy.OnStart = 0
+
+#
+#   Reset Cooldown Only Elwynn Forest and Durotar
+#     Reseting cooldown only Elwynn Forest and Durotar Location
+#     Default: 0 - Disable
+#              1 - Enable
+
+Reset.Cooldown.Only ElwynnForest.and.Durotar = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# WINTERGRASP OUTDOOR PVP SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Озеро ледяных оков с системой автоматического приглашения игрока
+#   в пати вашей фракции на поле боя, если игрок находится в этой зоне.
+#   Дополнительные функции анонсирования и уведомления игроков о начале
+#   и конце битвы, отображение статистики количества игроков, контролирующих
+#   фракций, победителей или проигравших.
+#
+#   Внимание: Включение пати между Ордой и Альянсом может вызвать сбой системы.
+#
+#
+#   Wintergrasp.Enabled
+#      Determines whether the Wintergrasp battle is enabled or not.
+#      Default: 1 = Enable
+#               0 = Disable
+
+Wintergrasp.Enabled = 1
+
+#
+#   Wintergrasp.SaveState.Period
+#      Interval (in milliseconds) of Save Wintergrasp State Data to restore it after crash/shutdown/restart
+#      Default (60000 milliseconds)
+#      Warning:  Do not set it less 1 second!
+
+Wintergrasp.SaveState.Period = 10000
+
+#
+#   Wintergrasp.StartTime
+#      The start time of the first battle after server starts (in minutes)
+#      Default: 30
+
+Wintergrasp.StartTime = 30
+
+#
+#   Wintergrasp.BattleTime
+#      Time limit of a battle (in minutes)
+#      Default: 30
+
+Wintergrasp.BattleTime = 30
+
+#
+#   Wintergrasp.Interval
+#      Interval between battles (in minutes)
+#      Default: 150
+
+Wintergrasp.Interval = 150
+
+#
+#   Wintergrasp.CustomHonorRewards
+#      Defines whether custom honor rewards should be given to player
+#      for partaking in the Wintergrasp Battle.
+#      Default: 0 = Disable
+#               1 = Enable
+
+Wintergrasp.CustomHonorRewards = 1
+
+#
+#   Wintergrasp.CustomHonorBattleWin
+#      Defines the amount of honor points that should be given to the
+#      team winning the Wintergrasp Battle.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 3000
+
+Wintergrasp.CustomHonorBattleWin = 3000
+
+#
+#   Wintergrasp.CustomHonorBattleLose
+#      Defines the amount of honor points that should be given to the
+#      team losing the Wintergrasp Battle.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 1250
+
+Wintergrasp.CustomHonorBattleLose = 1250
+
+#
+#   Wintergrasp.CustomHonorDamageTower
+#      Defines the amount of honor points that should be given to the
+#      team for damaging a tower.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 750
+
+Wintergrasp.CustomHonorDamageTower = 750
+
+#
+#   Wintergrasp.CustomHonorDestroyedTower
+#      Defines the amount of honor points that should be given to the
+#      team for destroying a tower.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 750
+
+Wintergrasp.CustomHonorDestroyedTower = 750
+
+#
+#   Wintergrasp.CustomHonorDamagedBuilding
+#      Defines the amount of honor points that should be given to the
+#      team for damaged buildings after the battle.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 750
+
+Wintergrasp.CustomHonorDamagedBuilding = 750
+
+#
+#   Wintergrasp.CustomHonorIntactBuilding
+#      Defines the amount of honor points that should be given to the
+#      team for intact buildings after the battle.
+#      Requires Wintergrasp.CustomHonorRewards = 1.
+#      Default: 1500
+
+Wintergrasp.CustomHonorIntactBuilding = 1500
+
+#
+#   Wintergrasp.Antifarm.Enable
+#	   Enable or Disable antifarm system
+#      Prevents start WG battle event if there are too low players (see options bellow)
+#      Default: 0 - Disabled
+#               1 - Enabled
+
+Wintergrasp.Antifarm.Enable = 0
+
+#
+#   Wintergrasp.Antifarm.Atk
+#      Min count of attackers for antifarm
+#      Default: 5
+
+Wintergrasp.Antifarm.Atk = 5
+
+#
+#   Wintergrasp.Antifarm.Def
+#      Min count of defenders for antifarm
+#      Default: 5
+
+Wintergrasp.Antifarm.Def = 5
+
+#
+#   Wintergrasp.Minlevel
+#      Min level of player for battle
+#      Default: 74
+
+Wintergrasp.Minlevel = 74
+
+#
+#   Wintergrasp.MaxPlayers
+#      Max players in team for battle
+#      Default: 40
+
+Wintergrasp.MaxPlayers = 40
+
+#
+#  Wintergrasp.Timer.Announce.Enable
+#     Announce for Wintergrasp to 5 minutes before 1 sec
+#     Default: 0 - Disable
+#              1 - Enable
+
+Wintergrasp.Timer.Announce.Enable = 1
+
+#
+#  Wintergrasp.Statistic.Enable
+#     Look information to the Wintergrasp how many people:
+#     Aliance and Horde, who controlled and more..
+#     Default: 0 - Disable
+#              1 - Enable
+
+Wintergrasp.Statistic.Enable = 1
+
+#
+#   Wintergrasp.Stats.Enable
+#      If the 1000 winter Stats is there for the registration in the database.
+#      Default: 1 = Enable
+#               0 = Disable
+
+Wintergrasp.Stats.Enable = 1
+
+#
+#    Wintergrasp.Stats.Update.Interval
+#       This is the interval (in seconds) in the 1000 winters Stats in the database are written.
+#       Default 100
+
+Wintergrasp.Stats.Update.Interval = 100
+
+#
+#   Wintergrasp.Stats.Data.ID
+#      Here it is defined the ID which the record gets in the Table.
+#      Default (1)
+
+Wintergrasp.Stats.Data.ID = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# WOW ARMORY © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Система WowArmory предназначена для тех кто использует в своем сайте подобную систему.
+#
+#    Armory.Enable
+#        Description: Activates the WowArmory.
+#        Default:     0 - (Disable)
+#                     1 - (Enable)
+
+Armory.Enable = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# CHARACTER HISTORY LOGGING SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система логинирования персонажей.
+#    Сохраняет историю создания, удаления, логина и логаута
+#    всех персонажей находящися на каждом аккаунте.
+#
+#    CharacterHistory.Enable
+#        Description: Logging history (create / delete / login / logout) characters to database
+#        Default:     0 = Disable
+#                     1 = Enable
+
+CharacterHistory.Enable = 0
+
+#
+#     CharacterHistory.Login
+#        Description: Enables logging login characters
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharacterHistory.Login = 0
+
+#
+#     CharacterHistory.Logout
+#        Description: Enables logging logout characters
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharacterHistory.Logout = 0
+
+#
+#     CharacterHistory.Create
+#        Description: Enables logging create characters
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharacterHistory.Create = 0
+
+#
+#     CharacterHistory.Delete
+#        Description: Enables logging delete characters
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+CharacterHistory.Delete = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# BATTLEGROUND PVP MARK REWARD SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#     Система награждения игроков марками на полях боя.
+#     При включеной опции марками награждаются игроки
+#     которые победили или проиграли на поле боя как было до патча 3.3.0
+#     За случайное поле боя игроки получают Эмблемы завоевания.
+#     За простое поле боя игроки получают стандартные награды.
+#
+#     Победившая сторона получает 3 Марки.
+#     Проигравшая сторона получает 1 Марку.
+#
+#     Activate PVP Mark Reward System
+#     Item Rewards For Player Only (4 Bag Slot Equip)
+#     Полное включение или отключение системы награды на полях боя.
+#     Default: 0 - Disable
+#              1 - Enable
+
+Battleground.Reward.System.Enable = 1
+
+#
+#     Item Template Reward System
+#     Information About a subject select in table (Item Template)
+#     Номер предмета которым награждаются игроки на рандомном поле боя.
+#     Default: 0 - Disable (Если 0 то игроки награждатся не будут)
+#              ID Item - Enable (Emblem of Conquest) (Эмблема завоевания)
+
+Random.Battleground.Reward.Item.ID = 45624
+
+#
+#     Count Items Given To Awards
+#     Count Reward For Win Player
+#     Количество наград получаемых победившей стороной на поле боя.
+#     Default: 3 - (Enable) (3 штуки по умолчанию)
+#              0 - (Disable)
+
+Battleground.Winner.Mark.Count = 3
+
+#     Count Items Given To Awards
+#     Count Reward For Los Player
+#     Количество наград получаемых проигравшей стороной на поле боя.
+#     Default: 0 - (Disable) (1 штука по умолчанию)
+#              1 - (Enable)
+
+Battleground.Loser.Mark.Count = 1
+
+#
+#     Activate Mark Rewards System For Simple Battlegrounds
+#     Function works only under condition of the included system
+#     Включение/Выключение функции наград игроков за простое поле боя.
+#     Default: 0 - Disable
+#              1 - Enable
+
+Simple.Battleground.Rewards.Enable = 1
+
+#
+#     Reward Mark Item ID For Battleground Alterac Valley
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Alterac.Valley.Reward.ID = 20560
+
+#
+#     Reward Mark Item ID For Battleground Warsong Gulch
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Warsong.Gulch.Reward.ID = 20558
+
+#
+#     Reward Mark Item ID For Battleground Arathi Basin
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Arathi.Basin.Reward.ID = 20559
+
+#
+#     Reward Mark Item ID For Battleground Eye of the Storm
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Eye.of.the.Storm.Reward.ID = 29024
+
+#
+#     Reward Mark Item ID For Battleground Strand of the Ancients
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Strand.of.the.Ancients.Reward.ID = 42425
+
+#
+#     Reward Mark Item ID For Battleground Isle of Conquest
+#     (Стандартный номер предмета как было до патча 3.3.5)
+#     Default: 0 - Disable
+#              Item ID - Enable
+
+Isle.of.Conquest.Reward.ID = 47395
+
+#
+###################################################################################################
+
+###################################################################################################
+# PVP RANK EXTRA HONOR SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система пвп рангов которая увеличивает честь получаемую
+#    игроком который имеет определенное пвп звание.
+#    Так же реализованы все достижения получаемые за звания.
+#
+#    PvP.Rank.Rate.Extra.Honor
+#    Rate of honor bonus for killing higher PVP ranked players
+#    Default: 
+#        1 - 10% more honor per RANK difference
+#        2 - 20%
+#        0 - Disable
+
+PvP.Rank.Rate.Extra.Honor = 1
+
+#
+#    PvPRank.HKPerRank
+#    Honor Kills needed for each rank, use "," between values.
+#    Whole string must be enclosed with " "
+#    Always specify 14 values, for 14 ranks
+#    Default: 
+#        "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"
+
+PvP.Rank.HK.Per.Rank = "10,50,100,200,450,750,1300,2000,3500,6000,9500,15000,21000,30000"
+
+#
+###################################################################################################
+
+###################################################################################################
+# EQUIPMENT PLAYER: ITEM SETS ON START © QUANTUMCORE PROJECT 2010-2015.
+#
+#     Функция позволяет не заменяя никаких таблиц в базе
+#     стартовать персонажу в определенном сете.
+#     При выключеной функции персонаж старует в обычных вещах.
+#
+#     0 - Disable (Blizzlike Player Start)
+#     1 - Player Start Tier 1 Raid Set + 36 Slot Bag
+#     2 - Player Start Tier 2 Raid Set + 36 Slot Bag
+#     3 - Player Start Tier 3 Raid Set + 36 Slot Bag
+#     4 - Player Start Tier 4 Raid Set + 36 Slot Bag
+#     5 - Player Start Tier 5 Raid Set + 36 Slot Bag
+#     6 - Player Start Tier 6 Raid Set + 36 Slot Bag
+#     7 - Player Start Tier 7 Raid Set + 36 Slot Bag
+#     8 - Player Start Tier 8 Raid Set + 36 Slot Bag
+#     9 - Player Start Tier 9 Raid Set + 36 Slot Bag
+#    10 - Player Start Tier 10 Raid Set + 36 Slot Bag
+#    11 - Player Start Arena Season 1 Non Set Epic + 36 Slot Bag
+#    12 - Player Start Arena Season 2 Non Set Epic + 36 Slot Bag
+#    13 - Player Start Arena Season 3 Non Set Epic + 36 Slot Bag
+#    14 - Player Start Arena Season 4 Non Set Epic + 36 Slot Bag
+#    15 - Player Start Arena Season 5 Non Set Epic + 36 Slot Bag (TABLE IS EMPTY!)
+#    16 - Player Start Arena Season 6 Non Set Epic + 36 Slot Bag
+#    17 - Player Start Arena Season 7 Non Set Epic + 36 Slot Bag
+#    18 - Player Start Arena Season 8 Non Set Epic + 36 Slot Bag
+
+Player.Item.Sets.Enable = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# EXTERNAL MAIL SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система отправки почты персонажу с заданным интервалом.
+#    Система проверяет почту каждого персонажа если она есть
+#    то она моментально отправляется получателю.
+#
+#    ExternalMail
+#        Enable external mail delivery from mail_external table.
+#        Default: 0 (disabled)
+#                 1 (enabled)
+
+External.Mail.Enable = 1
+
+#
+#    ExternalMailInterval
+#        Mail delivery delay time for item sending from mail_external table, in minutes.
+#        Default: 5 minutes
+#                 0 (disabled)
+#
+
+External.Mail.Interval = 5
+
+#
+###################################################################################################
+
+###################################################################################################
+# NAME ANNOUNCE [CHAT FRAME] © QUANTUMCORE PROJECT 2010-2015.
+#
+#   При использовании комманды .name перед сообщением пишется статус
+#   от кого прислано сообщение в канал чата.
+#   В ядре реализовано 7 функциональных гм уровней.
+#   При отключении функции комманда становится стандартной.
+#
+#   1 - Уровень(Модератор)
+#   2 - Уровень(Ивент мастер)
+#   3 - Уровень(Игровой мастер)
+#   4 - Уровень(Администратор)
+#   5 - Уровень(Главный администратор)
+#   6 - Уровень(Разработчик)
+#   7 - Уровень(Тех поддержка)
+#
+#   Name Announce Command
+#   Description: Added Chat Gm Level Status
+#
+#   [Moderator]          (1 GM LEVEL)
+#   [Event Master]       (2 GM LEVEL)
+#   [Game Master]        (3 GM LEVEL)
+#   [Administrator]      (4 GM LEVEL)
+#   [Main Administrator] (5 GM LEVEL)
+#   [Developer]          (6 GM LEVEL)
+#   [Technical Support]  (7 GM LEVEL)
+#                
+#   Default: 0 (Disable) Name Announce Command (Default Status)
+#            1 (Enable)
+
+Name.Announce.Command.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# SERVER RATES FOR PREMIUM ACCOUNTS © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Рейты прокачивания персонажа для игроков имеющих статус VIP аккаунта.
+#   Рейт должен бытьна одну или две единицы выше чем у простого игрока.
+#
+#   Experience rates.Gained For Vip Accounts
+#   Default: Blizzlike Server Rates x1
+#
+#   Description: Experience Rates.Gained For Kill
+#   Rate.XP.Kill.Premium
+#   Default: 1
+
+Rate.XP.Kill.Premium = 2
+
+#
+#   Description: Experience Rates.Gained For Quests
+#   Rate.XP.Quest.Premium
+#   Default: 1
+
+Rate.XP.Quest.Premium = 2
+
+#
+#   Description: Experience Rates.Gained For Exploration
+#   Rate.XP.Explore.Premium (Default 1)
+#   Default: 1
+
+Rate.XP.Explore.Premium = 2
+
+#
+#   Description: Honor Rates.Gained For Vip Accounts
+#   Rate.Honor.Premium
+#   Default: 1
+
+Rate.Honor.Premium = 2
+
+#
+###################################################################################################
+
+###################################################################################################
+# VIP COMMAND (PART FOR PREMIUM ACCOUNTS) © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Комманды для игроков имеющих статус VIP аккаунта.
+#
+#    VIP.Debuff.Command
+#    Description: Removes All Debufs From Player
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Debuff.Command = 1
+
+#
+#    VIP.Bank.Command
+#    Description: Open Personal Bank Slot For Player
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Bank.Command = 1
+
+#
+#    VIP.Repair.Command
+#    Description: Repair All Player Items
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Repair.Command = 1
+
+#
+#    VIP.Reset.Talents.Command
+#    Description: Reset All Player Cooldowns
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Reset.Talents.Command = 1
+
+#
+#    VIP.Taxi.Command
+#    Description: Transports Player Between Gryphon Masters
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Taxi.Command = 1
+
+#
+#    VIP.Home.Command
+#    Description: Transfered Player For Home Location
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Home.Command = 1
+
+#
+#    VIP.Capital.Command
+#    Description: Teleport Player For Capitals [Depends on Fraction]
+#    Default: 0 - Disabled
+#             1 - Enabled
+
+VIP.Capital.Command = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# ANTISPAM SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    При создании персонажа игрок не может говорить
+#    или использовать эмоции пока не проведет в игре 30 минут.
+#    Система помогает бороться с рекламой.
+#
+#    На игровых мастеров молчание не распостраняется.
+#    Время молчания можете ставить сколько угодно (но только в секундах)
+#    1800 секунд -> 30 минут.
+
+#    Guard.Chat.Global.Channel
+#    Description: Игрок не может писать в общий чат.
+#    Default:  1800 - 30 min
+#                0 - Disable
+
+Guard.Chat.Global.Channel = 1800
+
+#
+#    Guard.Chat.Whisper
+#    Description: Игрок не может шептать.
+#    Default:  1800 - 30 min
+#                0 - Disable
+
+Guard.Chat.Whisper = 1800
+
+#
+#    Guard.Chat.Say.Yell.Emote
+#    Description: Игрок не может говорить,использовать эмоции,кричать.
+#    Default:  1800 - 30 min
+#                0 - Disable
+
+Guard.Chat.Say.Yell.Emote = 1800
+
+#
+###################################################################################################
+
+###################################################################################################
+# GAME MASTER MONITORING © QUANTUMCORE PROJECT 2010-2015.
+#
+#  Анонсирует в чате какой гм зашел или вышел из игры.
+#  Игрокам в общий в чат приходит уведомление об этом.
+#
+#  Gm.Monitoring.Enter.Game
+#       Description: Анонсирует в чат когда гм входит в игру.
+#       Default:    1 - (Enabled)
+#                   0 - (Disabled)
+
+Gm.Monitoring.Enter.Game = 1
+
+#
+#  Gm.Monitoring.Leave.Game
+#       Description: Анонсирует в чат когда гм выходит из игры.
+#       Default:    1 - (Enabled)
+#                   0 - (Disabled)
+
+Gm.Monitoring.Leave.Game = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# LOOKING FOR GROUP SETTINGS © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция позволяет каналу [Поиск спутников] работать в любой зоне.
+#    При отключении канал будет работать только в столицах (Blizzlike).
+#
+#    Looking.For.Group.Join.All
+#        Description: Looking For Group Channel Connected All Zones
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Looking.For.Group.Join.All = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# NORTHREND ACCESS SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция запрещает игроку не достигжему 68го уровня попасть в Нордскол.
+#
+#    Northrend.Access.Only.68.Level
+#        Description: Disable Access Low Level Players in Nothrend.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Northrend.Access.Min.68.Level = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# ARENA SPECTATOR SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция позволяет игроку просматривать бои других игроков при помощи специального NPC.
+#    Внимание: NPC установлен в столицах и на полянах для дуэлей в Эльвинском лесу, Дуротаре, Даларане.
+#    
+#    ArenaWatcher.Enable
+#        Description: Arena Spectator Disable Enable
+#        Включение выключение зрителя арены.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Arena.Watcher.Enable = 1
+
+#
+#    ArenaWatcher.Only.GM
+#        Description: Arena Spectator Only Game Masters
+#        Нпс доступен только для игровых мастеров.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Arena.Watcher.Only.GM = 0
+
+#
+#    Arena.Watcher.Show.No.Games
+#        Description: Gossip menu hides the if fights on the arena arent present.
+#        Скрывает госсип меню нпс если боев на арене нет.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Arena.Watcher.Show.No.Games = 1
+
+#
+#    Arena.Watcher.Only.Rated
+#        Description: It will be available to players at which there is an arena rating.
+#        Нпс доступен игрокам у которых есть тим рейтинг арены.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Arena.Watcher.Only.Rated = 0
+
+#
+#    Arena.Watcher.To.Players
+#        Description: Allows or forbids to teleport to the player.
+#        Функция запрещает или разрешает телепортироватся к конкретному игроку на арену.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Arena.Watcher.To.Players = 1
+
+#
+#   ArenaWatcher.Silence
+#        Description: Функция запрещает или разрешает разговаривать
+#        игрокам просматривающим бой на арене.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+ArenaWatcher.Silence = 0
+
+#
+#   ArenaWatcher.Fly
+#         Description: Функция разрешает или запрещает летать игрокам
+#         просматривающим бой на арене.
+#         Default: 1 - (Enabled)
+#                  0 - (Disabled)
+
+ArenaWatcher.Fly = 0
+
+#
+#   ArenaWatcher.Speed
+#        Description: Скорость ходьбы просматривающего игрока на арене.
+#        Default: 1.5
+
+ArenaWatcher.Speed = 1.5
+
+#
+###################################################################################################
+
+###################################################################################################
+# MULTIKILL SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция анонсирует игрока на поле боя сколько человек он убил.
+#    Посреди экрана приходит уведомление с иконкой в чат.
+#    Система подобна игре Quake.
+#    [Multikill] [Double Kill] [Killing Spree] и так далее...
+#
+#    MultiKill.Enable
+#        Description: Enable Disable Multikill System.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+MultiKill.Enable = 1
+
+#
+#    MultiKill.BattleGround.Only
+#        Description: System works only battlegrounds.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+MultiKill.BattleGround.Only = 1
+
+#
+#    MultiKill.Log
+#        Description: Enable/Disable Multkill Logging in DB.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+MultiKill.Log = 1
+
+#
+#    MultiKill.Time.Between
+#        Description: The period between murders which it is possible to consider simultaneous.
+#        Default:  15 - (Default)
+#                   0 - (Disabled)
+
+MultiKill.Time.Between = 15
+
+#
+###################################################################################################
+
+###################################################################################################
+# AUTO LEARN SPELL SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система позволяет игроку изучать заклинания автоматически при повышении уровня.
+#    При отключении функции спелы изучаются самостоятельно у тренера.(Blizzlike)
+#
+#    Ниже перечислены функции которые позволяют изучать:
+#
+#    Заклинания.
+#    Навык езды.
+#    Владение видом оружия.
+#    Стандартных ездовых животных.
+#    Двойную специализацию.
+#    Профессии.
+#
+#    AutoLearn.Enable
+#        Description: Enable/Disable Autolearn System.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Enable = 1
+
+#
+#    AutoLearn.Check.Level
+#        Description: Enable/Disable Check Level For Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Check.Level = 1
+
+#
+#    AutoLearn.Spell.Class
+#        Description: Enable/Disable Learn Class Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Spell.Class = 1
+
+#
+#    AutoLearn.Spell.Riding
+#        Description: Enable/Disable Learn Riding Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Spell.Riding = 1
+
+#
+#    AutoLearn.Spell.Mount
+#        Description: Enable/Disable Learn Mount Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Spell.Mount = 1
+
+#
+#    AutoLearn.Spell.Weapon
+#        Description: Enable/Disable Learn Weapon Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Spell.Weapon = 1
+
+#
+#    AutoLearn.Spell.Profession
+#        Description: Enable/Disable Learn Profession Spells.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Spell.Profession = 0
+
+#
+#    AutoLearn.DualSpec
+#        Description: Enable/Disable Learn Dual Spec.(40 Level Default)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+AutoLearn.Dual.Spec = 1
+
+#
+#    AutoLearn.Login.Spell
+#        Description: Check Learn spells on login
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AutoLearn.Login.Spell = 1
+
+#
+#    AutoLearn.Login.Skill
+#        Description: Check Learn skills on login
+#        Default:     0 - (Disabled)
+#                     1 - (Enabled)
+
+AutoLearn.Login.Skill = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# BOSS HISTORY ANNOUNCE SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система уведомляет игроков в общем чате какая гильдия убила того
+#    или иного боса, прошла рейд или подземелье.
+#
+#    BossHistory.Enable
+#        Description: Enable/Disable Announce System
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+BossHistory.Enable = 1
+
+#    BossHistory.Instance.Only
+#        Description: Enable/Disable Announce System Works Only Instace.
+#        Disable System: (Announce works anyplace)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+BossHistory.Instance.Only = 0
+
+#    BossHistory.Announce
+#        Description: Enable/Disable Announce For Players.
+#        Disable Function: (Logging only DB)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+BossHistory.Announce = 1
+
+#    BossHistory.Log
+#        Description: Enable/Disable Logging Announce In DB.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+BossHistory.Log = 0
+
+#    BossHistory.Normal.Text.ID
+#        Description: String ID For Normal Diffculty Announce.(Не трогать!)
+#        Default: - (15006)
+
+BossHistory.Normal.Text.ID = 15006
+
+#    BossHistory.Heroic.Text.ID
+#        Description: String ID For Heroic Diffculty Announce.(Не трогать!)
+#        Default: - (15007)
+
+BossHistory.Heroic.Text.ID = 15007
+
+#
+###################################################################################################
+
+###################################################################################################
+# DAMAGE CHECK SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Система позволяет контролировать урон персонажа.
+#    Если персонаж наносит урон больше заданного количества то
+#    персонаж автоматически получает бан по причине багоюза.
+#    Проверка не распространяеться на игровых мастеров.
+#
+#    Damage.Checker.Max.Damage
+#        Maximum damage on the player.
+#        Default:    0 - Disable
+
+Damage.Checker.Max.Damage = 0
+
+#    Damage.Checker.Immune.Min.GM.Level
+#        The min level of GM, to obtain immunity from the detector.
+#        Default:    1
+
+Damage.Checker.Immune.Min.GM.Level = 1
+
+#    Damage.Checker.Ban.Value
+#        Ban-time for the character (in seconds).
+#        If the BanValue is 0 or less, then only get a log. (Disable)
+#        Default:  86400 (1 Day) (1 день)
+
+Damage.Checker.Ban.Value = 86400
+
+#
+###################################################################################################
+
+###################################################################################################
+# NPC SERVER HELPER CONTROL OPTION © QUANTUMCORE PROJECT 2010-2015.
+#
+#  Функция позволяет Включать/Выключать нпс предназначенного
+#  для определенных функций:
+#  Телепортер.Ренеймер.Профер.Баффер.Обмен валюты.Морфы.
+#
+#    Server.Helper.Enable
+#      Description: Enable/Disable Helper Npc.
+#      Включение/Выключение Нпс.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Enable = 1
+
+#    Server.Helper.Teleport.Menu.Enable
+#      Description: Enable/Disable Teleport Menu.
+#      Позволяет Включать/Выключать меню телепортации.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Teleport.Menu.Enable = 1
+
+#    Server.Helper.Buff.Menu.Enable
+#      Description: Enable/Disable Buff Menu.
+#      Позволяет Включать/Выключать меню бафов.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Buff.Menu.Enable = 1
+
+#    Server.Helper.Customize.Menu.Enable
+#      Description: Enable/Disable Customize Menu.
+#      Позволяет Включать/Выключать меню смены имени,расы,класса за очки арены.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Customize.Menu.Enable = 1
+
+#    Server.Helper.Exchange.Menu.Enable
+#      Description: Enable/Disable Exchange Menu.
+#      Позволяет Включать/Выключать меню обмена валюты.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Exchange.Menu.Enable = 1
+
+#    Server.Helper.Movie.Menu.Enable
+#      Description: Enable/Disable Movie Menu.
+#      Позволяет Включать/Выключать меню просмотра видео.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Movie.Menu.Enable = 1
+
+#    Server.Helper.Funny.Menu.Enable
+#      Description: Enable/Disable Funny Menu.
+#      Позволяет Включать/Выключать меню морфа игроков.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Server.Helper.Funny.Menu.Enable = 1
+
+#    Server.Helper.Event.Menu.Enable
+#      Description: Enable/Disable Event Menu.
+#      Позволяет Включать/Выключать меню телепортации игрока на секретный праздник.
+#      Default:  1 - (Enabled) (Не включать,функция не реализована полностью)
+#                0 - (Disabled)
+
+Server.Helper.Event.Menu.Enable = 0
+
+#
+###################################################################################################
+
+###################################################################################################
+# PROFESSION NPC CONTROL OPTION © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция позволяет Включать/Выключать мастера для изучения профессий. [ID 42654]
+#    В игре Нпс отсутствует, при желании можете его добавить где вам угодно.
+#
+#    Profession.Master.Enable
+#      Description: Enable/Disable Profession Master Npc.
+#      Включение/Выключение Нпс.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Profession.Master.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# ENCHANCEMENT NPC CONTROL OPTION © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Функция позволяет Включать/Выключать мастера для наложения чар.
+#
+#    Enchancement.Master.Enable
+#      Description: Enable/Disable Enchancement Master Npc.
+#      Включение/Выключение Нпс.
+#      Default:  1 - (Enabled)
+#                0 - (Disabled)
+
+Enchancement.Master.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# GAME MASTER START HELPER SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    The system adds standart GM items and spells when you create GM character.
+#
+#    Функция добавляет стандартные Гм предметы и Гм заклинания
+#    при создании Гм персонажа.
+#
+#    Gm.Start.Helper.Enable
+#        Description: Disable / Enable Gm Helper System.
+#        Полное Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Gm.Start.Helper.Enable = 1
+
+#    Gm.Start.Helper.Items.Enable
+#        Description: Disable / Enable Creation GM items after creating GM Character.
+#        Включение/Выключение функции добавления Гм предметов игровому мастеру после создания персонажа.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Gm.Start.Helper.Items.Enable = 1
+
+#    Gm.Start.Helper.Items.Enable
+#        Description: Disable / Enable Learing GM spells after creating GM Character.
+#        Включение/Выключение функции изучения Гм заклинаний игровому мастеру после создания персонажа.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Gm.Start.Helper.Spells.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+# PLAYER START HELPER SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    The System automaticaly learning quest spells after creating character.
+#
+#    Система добавляет квестовые заклинания и тотемы игроку при создании персонажа.
+#
+#    Shaman  [Totems and Totem Spells Rank 1]
+#    Paladin [Resurrection Spell - Redemption Rank 1]
+#    Warrior [Berserker.Defensive Stances]
+#    Druid   [Bear Form.Growl and Maul (Rank 1)]
+#    Warlock [Imp.Voidwalker.Succubus.Felhunter]
+#    Hunter  [Feed Pet.Revive Pet.Tame Beast.Call Pet.Dismiss Pet]
+#
+#    Player.Start.Helper.Enable
+#       Description: Disable / Enable Player Helper System.
+#       Включение/Выключение системы.
+#       Default:  1 - (Enabled)
+#                 0 - (Disabled)
+
+Player.Start.Helper.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  TRANSMOGRIFICATION SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#    Transmogrification.Require.Gold
+#        Description: 0 No gold cost, 1 scaling gold cost, 2 custom gold cost
+#        Default:    1
+
+Transmogrification.Require.Gold = 0
+
+#
+#    Transmogrification.Gold.Modifier
+#        Description: A multiplier for the default gold cost (Transmogrification.RequireGold is 1)
+#        Default:    1.0
+#
+
+Transmogrification.Gold.Modifier = 1.0
+
+#
+#    Transmogrification.Gold.Cost
+#        Description: Cost of transmogrification in copper for custom gold cost (Transmogrification.RequireGold is 2)
+#        Default:    100000
+#
+
+Transmogrification.Gold.Cost = 100000
+
+#
+#    Transmogrification.Require.Token
+#        Description: Adds/disables token cost
+#        Default:    0
+
+Transmogrification.Require.Token = 0
+
+#
+#    Transmogrification.Token.ID
+#        Description: Entry of the token item
+#        Default:    49426
+
+Transmogrification.Token.ID = 49426
+
+#
+#    Transmogrification.TokenAmount
+#        Description: Amount of tokens required
+#        Default:    1
+
+Transmogrification.Token.Amount = 1
+
+#
+#    Transmogrification.AllowPoor
+#        Description: Allow poor quality items to be used as source and target items
+#        Default:    0
+
+Transmogrification.Allow.Poor = 1
+
+#
+#    Transmogrification.AllowCommon
+#        Description: Allow common quality items to be used as source and target items
+#        Default:    0
+
+Transmogrification.Allow.Common = 1
+
+#
+#    Transmogrification.AllowUncommon
+#        Description: Allow uncommon quality items to be used as source and target items
+#        Default:    1
+
+Transmogrification.Allow.Uncommon = 1
+
+#
+#    Transmogrification.AllowRare
+#        Description: Allow rare quality items to be used as source and target items
+#        Default:    1
+
+Transmogrification.Allow.Rare = 1
+
+#
+#    Transmogrification.AllowEpic
+#        Description: Allow epic quality items to be used as source and target items
+#        Default:    1
+
+Transmogrification.Allow.Epic = 1
+
+#
+#    Transmogrification.AllowLegendary
+#        Description: Allow legendary quality items to be used as source and target items
+#        Default:    0
+
+Transmogrification.Allow.Legendary = 1
+
+#
+#    Transmogrification.AllowArtifact
+#        Description: Allow artifact quality items to be used as source and target items
+#        Default:    0
+
+Transmogrification.Allow.Artifact = 1
+
+#
+#    Transmogrification.AllowHeirloom
+#        Description: Allow heirloom quality items to be used as source and target items
+#        Default:    1
+
+Transmogrification.Allow.Heirloom = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  PLAYED TIME REWARD SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   The system rewards players (Honor Points, Arena Points and Gold) over a certain time spent in game.
+#
+#   Система награждает игроков (Очками чести, арены и золотом) за определенное время проведеное в игре.
+#
+#   Played.Time.Reward.Interval.Time
+#        Description: Time played in game.
+#        Включение/Выключение системы.
+#        Default:  3600000 - (Enabled) (1 Hour) (1 Час) (Время в милисекундах)
+#                  0 - (Disabled)
+
+Played.Time.Reward.Interval.Time = 3600000
+
+#
+#   Played.Time.Reward.Money
+#        Description: Gold reward cost in game.
+#        Включение/Выключение системы.
+#        Default:  15 - (Enabled) (15 Gold) (15 Золота)
+#                  0 - (Disabled)
+
+Played.Time.Reward.Money = 15
+
+#
+#   Played.Time.Reward.Honor
+#        Description: Honor Points reward cost in game.
+#        Включение/Выключение системы.
+#        Default:  25 - (Enabled) (25 Honor Points) (25 Очков Чести)
+#                  0 - (Disabled)
+
+Played.Time.Reward.Honor = 25
+
+#
+#   Played.Time.Reward.Arena
+#        Description: Arena Points reward cost in game.
+#        Включение/Выключение системы.
+#        Default:  5 - (Enabled) (5 Arena Points) (5 Очков Арены)
+#                  0 - (Disabled)
+
+Played.Time.Reward.Arena = 5
+
+#
+###################################################################################################
+
+###################################################################################################
+#  D.E.H.T.A CHAT ANNOUNCE SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Система Д.Е.Г.О.Ж в Борейской Тундре отображает в чате
+#   имя персонажа который был пойман друидами с меткой убитого животного.
+#
+#   Dehta.Animal.Killer.Enable
+#        Description: D.E.H.T.A druids announcement in chat of animal killer.
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Dehta.Animal.Killer.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  WORLD REWARDING SYSTEM SPECIAL FOR BLIZZLIKE OLD EVENTS © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Система позволяет игрокам получать Нефритовых тигров которые раздавались на официальном сервере
+#   Во время определенных игровых ивентов на Китайских, Американских, Японских реалмах.
+#
+#   Enchanted.Jade.Tiger.Give.Away.Enable
+#        Description: Give For Players [Enchanted Jade Tiger]
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Enchanted.Jade.Tiger.Give.Away.Enable = 1
+
+#
+#   Purple.Jade.Tiger.Give.Away.Enable
+#        Description: Give For Players [Enchanted Purple Jade Tiger]
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Purple.Jade.Tiger.Give.Away.Enable = 1
+
+#
+#   Onyx.Panther.Give.Away.Enable
+#        Description: Give For Players [Onyx Panther]
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Onyx.Panther.Give.Away.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  ANNIVERSARY WORLD SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Система позволяющая активировать достижения и награды в честь празднования годовщин игры
+#   [World of Warcraft]
+#   При активации игрок получает достижение и награды
+#   как на официальном сервере во время дополнения [Wrath of The Lich King]
+#
+#   За 4х летие дается [Медведь Blizzard] и достижение [4-я годовщина World of Warcraft]
+#   За 5ти летие дается питомец [Дракончик Ониксии] и достижение [5-я годовщина World of Warcraft]
+#
+#   Anniversary.4th.Word.Of.Warcraft.Enable
+#        Description: 4х летие игры [World of Warcraft]
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Anniversary.4th.Word.Of.Warcraft.Enable = 1
+
+#
+#   Anniversary.5th.Word.Of.Warcraft.Enable
+#        Description: 5ти летие игры [World of Warcraft]
+#        Включение/Выключение системы.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Anniversary.5th.Word.Of.Warcraft.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  FUNNY PANDA OF SHAOLIN © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Функция позволяет активировать Веселую Панду Шаолинь.
+#   Которая показывает различные веселые фокусы в Даларане, развлекая игроков.
+#
+#   Funny.Panda.Of.Shaolin.Enable
+#        Description: Enable/Disable Panda
+#        Включение/Выключение Панды
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Funny.Panda.Of.Shaolin.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  PVP RANK ACHIEVEMENTS SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Функция позволяет активировать достижения которыми награждаются игроки имеющие PVP звание.
+#   Так как в ядре реализованы PVP ранги, эта система просто необходима.
+#
+#   [Private]  [Рядовой]
+#   [Corporal] [Капрал]
+#   [Sergeant] [Сержант] и дальше по порядку...
+#
+#   PvP.Rank.Achievements.Enable
+#        Description: Enable/Disable Achievement System.
+#        Включение/Выключение системы
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+PvP.Rank.Achievements.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  COLORED ICONS IN CHAT SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Функция позволяет активировать в общем чате цветную иконку
+#   принадлежности игрока к фракции Альянса или Орды.
+#
+#   Colored.Icons.InChat.Enable
+#        Description: Enable/Disable Colored Icons in Chat.
+#        Включение/Выключение системы
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Colored.Icons.InChat.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  CHARACTER LOGIN INFO SYSTEM © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Функция позволяет активировать меню отображаемое игроку при входе
+#   в игровой мир, игроку отображаются зеленым текстом данные о его аккаунте.
+#
+#   1 - Приветствие с именем игрока.
+#   2 - Уровень персонажа.
+#	3 - Уровень аккаунта.
+#	4 - IP адрес.
+#	5 - Уведомление о том есть ли у него премиум режим.
+#	6 - Игроков на сервере онлайн.
+#	7 - Открытые тикеты (только для гм аккаунтов)
+#	8 - Пожелания.
+#
+#   Character.Login.Info.Enable
+#        Description: Enable/Disable Character Information After Login.
+#        Включение/Выключение системы
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+Character.Login.Info.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  LEVEL SYSTEM FOR GUILDS © QUANTUMCORE PROJECT 2010-2015.
+#
+#  Система позволяет активировать уровневое значение для гильдий
+#  при прокачивании уровня гильдии для всех игроков находящихся в ней, открывается
+#  система бонусов которая дает некоторые привилегии в игре.
+#
+#  Чем больше игроки выполняют квестов, получают достижений, проходят подземелий и рейдов,
+#  тем выше становится уровень их гильдии и следовательно её престиж и популярность.
+#
+#  Привилегии которые получают игроки находящиеся в гильдии.
+#
+#  1 - Увеличение опыта получаемого за прохождение квестов и убийство монстров.
+#  2 - Увеличение количества получаемой репутации при прохождении квестов и прочего.
+#  3 - Увеличение чести получаемой за убийство игрока или за сражение на поле боя.
+#  4 - Увеличение скорости передвижения игрока духом к своему телу.
+#  5 - Увеличение скорости передвижения игрока находясь на средстве передвижения.
+#  6 - Снижение цены на починку вещей в вашем гильдейском банке.
+#  7 - Увеличение количества золота которое в можете взять или положить в гильдейском банке.
+#
+#  Ниже представлены функции для настройки:
+#
+#   Guild.Bonus.Gold.From.Bank.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса золота в гильдейском банке.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Gold.From.Bank.Enable = 1
+
+#
+#   Guild.Bonus.Repair.From.Bank.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса скидки на починку вещей в вашем гильдейском банке.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Repair.From.Bank.Enable = 1
+
+#
+#   Guild.Bonus.Xperience.Gain.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса опыта получаемого за прохождение квестов и убийство монстров.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Xperience.Gain.Enable = 1
+
+#
+#   Guild.Bonus.Reputation.Gain.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса количества получаемой репутации при прохождении квестов и прочего.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Reputation.Gain.Enable = 1
+
+#
+#   Guild.Bonus.Honor.Gain.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса чести получаемой за убийство игрока или за сражение на поле боя.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Honor.Gain.Enable = 1
+
+#
+#   Guild.Bonus.Mount.Speed.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса скорости передвижения игрока находясь на средстве передвижения.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Mount.Speed.Enable = 1
+
+#
+#   Guild.Bonus.Fast.Spirit.Enable
+#        Description: Enable/Disable Function.
+#        Включение/Выключение системы бонуса скорости передвижения игрока духом к своему телу.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+#
+
+Guild.Bonus.Fast.Spirit.Enable = 1
+
+#
+###################################################################################################
+
+###################################################################################################
+#  FUN SYSTEM FOR QUANTUMCORE EMULATOR BY CRISPI © QUANTUMCORE PROJECT 2010-2015.
+#
+#   Система позволяет превратить Blizzlike сервер в Fun и для этого вам не потребуется портить базу
+#   и использовать какие либо запросы, вам достаточно только настроить данные параметры.
+#   Система написана под мое ядро и не подойдет для других эмуляторов, спаун, ауры и многие другие
+#   действия осуществляются исключительно через C++ скрипт.
+#   Так же большой плюс в том что на два реалма используется одна база.
+#   Но это можно и перенастроить по желанию.
+#   В дальнейшем система будет модернизироваться и будут добавляться нововведения.
+#
+#   ВНИМАНИЕ: СЕРВЕР ПОДДЕРЖИВАЕТ ДВА ТИПА ФАН СИСТЕМЫ.
+#
+#   1 - Система активирует старт персонажей в таких зонах как Азшара и Грим Батол.
+#   2 - Система активирует старт персонажей в таких зонах как Штормград и Оргриммар (Классический режим).
+#
+#   ОДНОВРЕМЕННО МОЖЕТ РАБОТАТЬ ТОЛЬКО ОДИН ТИП ФАН СИСТЕМЫ
+#   И ПРИ ПОПЫТКЕ ВКЛЮЧИТЬ СРАЗУ ДВЕ ФАН СИСТЕМЫ, ОТКЛЮЧАТСЯ ОБЕ!
+#
+#   При выключении фан системы сервер автоматически переходит в режим: Blizzlike.
+#   После выключения фан системы требуется перезапуск сервера.
+#
+#   Краткий мануал по настройке [Строго соблюдать все указанные пункты для стабильной работы!]
+#   1 - Поменять стартовый левел на нужный вам:
+#   Строки для смены:
+#   StartPlayerLevel = 1 (Сhange to 80)(Сменить на 80)
+#   StartDeathKnightLevel = 55 (Сhange to 80) (Сменить на 80)
+#   2 - Поменять стартовое золото.
+#   Строки для смены:
+#   StartPlayerMoney = 0 (Change to your amount value) (Сменить на ваше количество)
+#   3 - Настроить рейты на репутацию:
+#   Строки для смены:
+#   Rate.Reputation.Gain = 1 (Сhange to 10) (Сменить на 10)
+#
+#   QuantumCore.New.Fun.System.Enable
+#        Description: Enable/Disable Fun Server System. (Character start in Grim Batol and Azshara.)
+#        Включение/Выключение фан системы ядра (Старт персонажей в Грим Батоле и Азшаре.)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+QuantumCore.New.Fun.System.Enable = 0
+
+#
+#   QuantumCore.Old.Fun.System.Enable
+#        Description: Enable/Disable Fun Server System. (Character Start In Stormwind and Orgrimmar.)
+#        Включение/Выключение фан системы ядра (Старт персонажей в Штормграде и Оргриммаре.)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+# 
+
+QuantumCore.Old.Fun.System.Enable = 0
+
+#
+#   QuantumCore.Fun.InstantCraft.CastTime.Enable
+#        Description: Enable/Disable Instant Craft Casting Time For Enchants, Scrolls, Glyphs, Professions.
+#        Включение/Выключение моментального каста наложения чар на предметы, символы, крафты для профессий.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+# 
+
+QuantumCore.Fun.InstantCraft.CastTime.Enable = 0
+
+#
+#   QuantumCore.Fun.Guard.Detection.Enable
+#        Description: Enable/Disable Detection Hated Factions In Start Locations Fom Fun.
+#        Включение/Выключение обнаружения вражеских фракций в стартовых локациях фана (Орда-Альянс)
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+# 
+
+QuantumCore.Fun.Guard.Detection.Enable = 1
+
+#
+#   QuantumCore.Fun.BuffForNpc.Enable
+#        Description: Enable/Disable Buffs for all fun creatures.
+#        Включение/Выключение бафов у всех фан НПС.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+QuantumCore.Fun.BuffForNpc.Enable = 1
+
+#
+#   QuantumCore.Fun.Trainer.CastSpells.Enable
+#        Description: Enable/Disable Visual casting class spells for fun trainers.
+#        Включение/Выключение визуального каста классовых заклинаний у фан тренеров.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+QuantumCore.Fun.Trainer.CastSpells.Enable = 1
+
+#
+#   QuantumCore.Fun.RoseAura.ForNpc.Enable
+#        Description: Enable/Disable Casasde of Roses aura for all fun creatures.
+#        Включение/Выключение Ауры лепестков розы у всех фан НПС.
+#        Default:  1 - (Enabled)
+#                  0 - (Disabled)
+
+QuantumCore.Fun.RoseAura.ForNpc.Enable = 1
+
+#
+###################################################################################################
+Character.Model.Enable = 0

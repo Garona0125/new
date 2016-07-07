@@ -1,0 +1,105 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_OCULUS_H
+#define DEF_OCULUS_H
+
+enum Data
+{
+    DATA_DRAKOS_EVENT,
+    DATA_VAROS_EVENT,
+    DATA_UROM_EVENT,
+    DATA_EREGOS_EVENT,
+    DATA_UROM_PLATFORM,
+};
+
+enum Data64
+{
+    DATA_DRAKOS,
+    DATA_VAROS,
+    DATA_UROM,
+    DATA_EREGOS,
+};
+
+enum Creatures
+{
+    NPC_DRAKOS_THE_INTERROGATOR = 27654,
+    NPC_VAROS_CLOUDSTRIDER      = 27447,
+    NPC_LORD_MAGE_UROM          = 27655,
+    NPC_LEY_GUARDIAN_EREGOS     = 27656,
+    NPC_AZURE_RING_CAPTAIN      = 28236,
+    NPC_CENTRIFUGE_CONSTRUCT    = 27641,
+    NPC_AMBER_DRAKE_VEHICLE     = 27755,
+    NPC_RUBY_DRAKE_VEHICLE      = 27756,
+	NPC_EMERALD_DRAKE_VEHICLE   = 27692,
+    NPC_CENTRIFUGE_CORE         = 28183,
+	NPC_UNSTABLE_SPHERE         = 28166,
+	NPC_PHANTASMAL_CLOUDSCRAPER = 27645,
+    NPC_PHANTASMAL_MAMMOTH      = 27642,
+    NPC_PHANTASMAL_WOLF         = 27644,
+    NPC_PHANTASMAL_AIR          = 27650,
+    NPC_PHANTASMAL_FIRE         = 27651,
+    NPC_PHANTASMAL_WATER        = 27653,
+    NPC_PHANTASMAL_MURLOC       = 27649,
+    NPC_PHANTASMAL_NAGAL        = 27648,
+    NPC_PHANTASMAL_OGRE         = 27647,
+	NPC_VERDISA                 = 27657,
+	NPC_BELGARISTRASZ           = 27658,
+	NPC_ETERNOS                 = 27659,
+	NPC_AZURE_RING_GUARDIAN     = 27638,
+	NPC_GREATER_LEY_WHELP       = 28276,
+	NPC_SNOWFLAKE               = 28153,
+};
+
+enum GameObjects
+{
+    GO_DRAGON_CAGE_DOOR         = 193995,
+    GO_EREGOS_CACHE_5N          = 191349,
+    GO_EREGOS_CACHE_5H          = 193603,
+};
+
+enum SpellEvents
+{
+    EVENT_CALL_DRAGON = 12229,
+};
+
+enum CreatureActions
+{
+    ACTION_CALL_DRAGON_EVENT = 1,
+};
+
+enum OculusWorldStates
+{
+    WORLD_STATE_CENTRIFUGE_CONSTRUCT_SHOW   = 3524,
+    WORLD_STATE_CENTRIFUGE_CONSTRUCT_AMOUNT = 3486,
+};
+
+enum InstanceSpells
+{
+    SPELL_CENTRIFUGE_SHIELD = 50053,
+    SPELL_ARCANE_SHIELD     = 53813,
+    SPELL_EVOCATION         = 51602,
+    SPELL_DEATH_SPELL       = 50415,
+	SPELL_SHOCK_CHARGE      = 49836,
+	SPELL_MARTYR            = 50253,
+};
+
+enum FlyItems
+{
+	ITEM_ID_EMERALD_ESSENCE = 37815,
+	ITEM_ID_AMBER_ESSENCE   = 37859,
+	ITEM_ID_RUBY_ESSENCE    = 37860,
+};
+
+enum Encounters
+{
+	MAX_ENCOUNTER = 4,
+};
+
+#endif

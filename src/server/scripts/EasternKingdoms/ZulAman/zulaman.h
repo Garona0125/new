@@ -1,0 +1,71 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore <http://vk.com/quantumcore>
+ *
+ * Copyright (C) 2010-2012 MaNGOS project <http://getmangos.com>
+ *
+ */
+
+#ifndef DEF_ZULAMAN_H
+#define DEF_ZULAMAN_H
+
+enum Data
+{
+	DATA_NALORAKK_EVENT = 1,
+	DATA_AKILZON_EVENT  = 2,
+	DATA_JANALAI_EVENT  = 3,
+	DATA_HALAZZI_EVENT  = 4,
+	DATA_HEXLORD_EVENT  = 5,
+	DATA_ZULJIN_EVENT   = 6,
+	DATA_CHEST_LOOTED   = 7,
+
+	TYPE_RAND_VENDOR_1  = 8,
+	TYPE_RAND_VENDOR_2  = 9,
+
+	DATA_TIMER_START    = 10,
+	DATA_GAUNTLET       = 11,
+	DATA_TIMER_DELETE   = 12,
+
+	DATA_CHEST_NAL_LOOT = 13,
+	DATA_CHEST_AKI_LOOT = 14,
+	DATA_CHEST_JAN_LOOT = 15,
+	DATA_CHEST_HAL_LOOT = 16,
+};
+
+enum Creatures
+{
+	NPC_TANZAR        = 23790,
+	NPC_HARKOR        = 23999,
+	NPC_ASHLI         = 24001,
+	NPC_KRAZ          = 24024,
+	NPC_SPIRIT_LYNX   = 24143,
+	NPC_TOTEM         = 24224,
+	NPC_JANALAI       = 23578,
+	NPC_ZULJIN        = 23863,
+	NPC_HEX_LORD      = 24239,
+	NPC_HALAZZI       = 23577,
+	NPC_NALORAKK      = 23576,
+	NPC_AMANI_HATCHER = 23818,
+    NPC_HATCHLING     = 23598,
+    NPC_EGG           = 23817,
+    NPC_FIRE_BOMB     = 23920,
+	NPC_SOARING_EAGLE = 24858,
+	NPC_FOREST_FROG   = 24396,
+};
+
+enum Gameobjects
+{
+	GO_TANZARS_TRUNK      = 186648,
+	GO_HARKORS_SATCHEL    = 187021,
+	GO_ASHLIS_BAG         = 186672,
+	GO_KRAZS_PACKAGE      = 186667,
+	GO_HALAZZI_EXIT_DOOR  = 186303,
+	GO_HALAZZI_ENTER_DOOR = 186304,
+	GO_HEX_LORD_DOOR      = 186305,
+	GO_AKILZON_DOOR       = 186858,
+	GO_ZULJIN_DOOR        = 186859,
+	GO_MASSIVE_DOOR       = 186728,
+};
+
+#endif

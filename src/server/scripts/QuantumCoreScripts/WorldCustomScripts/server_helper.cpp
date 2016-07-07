@@ -1,0 +1,2592 @@
+/*
+ * Copyright (C) 2008-2012 TrinityCore <http://www.trinitycore.org/>
+ *
+ * Copyright (C) 2010-2015 QuantumCore
+ */
+
+#include "ScriptMgr.h"
+#include "QuantumCreature.h"
+#include "QuantumGossip.h"
+#include "Config.h"
+
+enum Texts
+{
+	TEXT_ID_RESURRECTION_SICKNESS = 12014,
+	TEXT_ID_DESETER               = 12015,
+	TEXT_ID_HEAL                  = 12016,
+	TEXT_ID_SAVE                  = 12017,
+	TEXT_ID_RESET_TALENTS         = 12018,
+	TEXT_ID_RESET_QUEST_COOLDOWN  = 12019,
+	TEXT_ID_UPDATE_SKILLS_TO_MAX  = 12020,
+	TEXT_ID_TELEPORT_LOCATION     = 12021,
+	TEXT_ID_BUFF_MENU             = 12022,
+	TEXT_ID_CUSTOMIZE_MENU        = 12023,
+	TEXT_ID_EXCHANGE_MENU         = 12024,
+	TEXT_ID_MOVIE_MENU            = 12025,
+	TEXT_ID_FUNNY_MENU            = 12026,
+	TEXT_ID_EVENT_MENU            = 12027,
+	TEXT_ID_EASTERN_KINGDOMS      = 12028,
+	TEXT_ID_KALIMDOR              = 12029,
+	TEXT_ID_OUTLAND               = 12030,
+	TEXT_ID_NORTHREND             = 12031,
+	TEXT_ID_DUNGEONS_AND_RAIDS    = 12032,
+	TEXT_ID_PVP_ZONE              = 12033,
+	TEXT_ID_MAIN_MENU             = 12034,
+	// Teleport Menu Texts
+	TEXT_ID_ALTERAC_MOUNTAINS     = 12035,
+	TEXT_ID_ARATHI_HIGHLANDS      = 12036,
+	TEXT_ID_BADLANDS              = 12037,
+	TEXT_ID_BLACKROCK_MOUNTAIN    = 12038,
+	TEXT_ID_BLASTED_LANDS         = 12039,
+	TEXT_ID_BURNING_STEPPES       = 12040,
+	TEXT_ID_DEADWIND_PASS         = 12041,
+	TEXT_ID_DUN_MOROGH            = 12042,
+	TEXT_ID_DUSKWOOD              = 12043,
+	TEXT_ID_EASTERN_PLAGUELANDS   = 12044,
+	TEXT_ID_ELWYN_FOREST          = 12045,
+	TEXT_ID_EVERSONG_WOODS        = 12046,
+	TEXT_ID_GHOSTLANDS            = 12047,
+	TEXT_ID_HILLSBRAD_FOOTHILLS   = 12048,
+	TEXT_ID_IRONFORGE             = 12049,
+	TEXT_ID_ISLE_OF_QUEL_DANAS    = 12050,
+	TEXT_ID_LOCH_MODAN            = 12051,
+	TEXT_ID_EBON_HOLD             = 12052,
+	TEXT_ID_REDRIGE_MOUNTAINS     = 12053,
+	TEXT_ID_SEARING_GORGE         = 12054,
+	TEXT_ID_SILVERMOON_CITY       = 12055,
+	TEXT_ID_SILVERPINE_FOREST     = 12056,
+	TEXT_ID_STORMWIND_CITY        = 12057,
+	TEXT_ID_STRANGLETHORN_VALE    = 12058,
+	TEXT_ID_SWAMP_OF_SORROWS      = 12059,
+	TEXT_ID_THE_HINTERLANDS       = 12060,
+	TEXT_ID_TIRISFAL_GLADES       = 12061,
+	TEXT_ID_UNDERCITY             = 12062,
+	TEXT_ID_PLAGUELANDS           = 12063,
+	TEXT_ID_WESTFALL              = 12064,
+	TEXT_ID_WETLANDS              = 12065,
+	TEXT_ID_TELEPORT_MENU         = 12066,
+	TEXT_ID_ASHENVALE             = 12067,
+	TEXT_ID_AZSHARA               = 12068,
+	TEXT_ID_AZUREMYT_ISLE         = 12069,
+	TEXT_ID_BLOODMYST_ISLE        = 12070,
+	TEXT_ID_DARKSHORE             = 12071,
+	TEXT_ID_DARNASSUS             = 12072,
+	TEXT_ID_DESOLACE              = 12073,
+	TEXT_ID_DUROTAR               = 12074,
+	TEXT_ID_DUSTWALLOW_MARSH      = 12075,
+	TEXT_ID_FELWOOD               = 12076,
+	TEXT_ID_FERALAS               = 12077,
+	TEXT_ID_MOONGLADE             = 12078,
+	TEXT_ID_MULGORE               = 12079,
+	TEXT_ID_ORGRIMMAR             = 12080,
+	TEXT_ID_SILITHUS              = 12081,
+	TEXT_ID_STONETALON_MOUNTAINS  = 12082,
+	TEXT_ID_TANARIS               = 12083,
+	TEXT_ID_TELDRASSIL            = 12084,
+	TEXT_ID_THE_BARRENS           = 12085,
+	TEXT_ID_THE_EXODAR            = 12086,
+	TEXT_ID_THE_VEILED_SEA        = 12087,
+	TEXT_ID_THOUSAND_NEEDLES      = 12088,
+	TEXT_ID_THUNDER_BLUFF         = 12089,
+	TEXT_ID_UN_GORO_CRATER        = 12090,
+	TEXT_ID_WINTERSPRING          = 12091,
+	TEXT_ID_BLADES_EDGE_MOUNTAINS = 12092,
+	TEXT_ID_HELLFIRE_PENINSULA    = 12093,
+	TEXT_ID_NAGRAND               = 12094,
+	TEXT_ID_NETHERSTORM           = 12095,
+	TEXT_ID_SHADOWMOON_VALLEY     = 12096,
+	TEXT_ID_SHATTRATH_CITY        = 12097,
+	TEXT_ID_TEROKKAR_FOREST       = 12098,
+	TEXT_ID_ZANGARMARSH           = 12099,
+	TEXT_ID_BOREAN_TUNDRA         = 12100,
+	TEXT_ID_CRYSTALSONG_FOREST    = 12101,
+	TEXT_ID_DALARAN               = 12102,
+	TEXT_ID_DRAGONBLIGHT          = 12103,
+	TEXT_ID_GRIZZLY_HILLS         = 12104,
+	TEXT_ID_HOWLING_FJORD         = 12105,
+	TEXT_ID_HROTGARS_LANDING      = 12106,
+	TEXT_ID_ICECROWN              = 12107,
+	TEXT_ID_SHOLAZAR_BASIN        = 12108,
+	TEXT_ID_THE_STORM_PEAKS       = 12109,
+	TEXT_ID_ZONE_WINTERGRASP      = 12110,
+	TEXT_ID_ZUL_DRAK              = 12111,
+	TEXT_ID_GURUBASHI_ARENA       = 12112,
+	TEXT_ID_BOOTY_BAY             = 12113,
+	TEXT_ID_GADGETZAN             = 12114,
+	TEXT_ID_NIGHTHAVEN            = 12115,
+	TEXT_ID_RATCHET               = 12116,
+	TEXT_ID_HALAA                 = 12117,
+	TEXT_ID_AREA_52               = 12118,
+	TEXT_ID_ICECROWN_CITADEL      = 12119,
+	TEXT_ID_THE_FROZEN_HALLS      = 12120,
+	TEXT_ID_NAXXRAMAS             = 12121,
+	TEXT_ID_ONYXIA_LAIR           = 12122,
+	TEXT_ID_THE_NEXUS             = 12123,
+	TEXT_ID_CHAMDER_OF_ASPECTS    = 12124,
+	TEXT_ID_CRUSADER_COLISEUM     = 12125,
+	TEXT_ID_ULDUAR                = 12126,
+	TEXT_ID_VAULT_OF_ARCHAVON     = 12127,
+	TEXT_ID_AZJOL_NERUB           = 12128,
+	TEXT_ID_UTGARDE_KEEP          = 12129,
+	TEXT_ID_GUNDRAK               = 12130,
+	TEXT_ID_DRAK_THARON_KEEP      = 12131,
+	TEXT_ID_CULLING_OF_STRATHOLME = 12132,
+	TEXT_ID_THE_BLACK_TEMPLE      = 12133,
+	TEXT_ID_TEMPEST_KEEP          = 12134,
+	TEXT_ID_COILFANG_RESERVOIR    = 12135,
+	TEXT_ID_HELLFIRE_CITADEL      = 12136,
+	TEXT_ID_KARAZHAN              = 12137,
+	TEXT_ID_SUNWELL_PLATEAU       = 12138,
+	TEXT_ID_MAGISTERS_TERRACE     = 12139,
+	TEXT_ID_ZULAMAN               = 12140,
+	TEXT_ID_CAVERNS_OF_TIME       = 12141,
+	TEXT_ID_GRUULS_LAIR           = 12142,
+	TEXT_ID_AUCHINDOUN            = 12143,
+	TEXT_ID_BLACKWING_LAIR        = 12144,
+	TEXT_ID_MOLTEN_CORE           = 12145,
+	TEXT_ID_RUINS_OF_AHN_QIRAJ    = 12146,
+	TEXT_ID_TEMPLE_OF_AHN_QIRAJ   = 12147,
+	TEXT_ID_ZUL_GURUB             = 12148,
+	TEXT_ID_STRATHOLME            = 12149,
+	// Buff
+	TEXT_ID_POWER_WORD_FORTITUDE  = 12150,
+	TEXT_ID_PRAYER_OF_SPIRIT      = 12151,
+	TEXT_ID_SHADOW_PROTECTION     = 12152,
+	TEXT_ID_BLESSING_OF_KINGS     = 12153,
+	TEXT_ID_BLESSING_OF_MIGHT     = 12154,
+	TEXT_ID_BLESSING_OF_WISDOM    = 12155,
+	TEXT_ID_BLESSING_OF_SANCTUARY = 12156,
+	TEXT_ID_ARCANE_INTELLECT      = 12157,
+	TEXT_ID_DAMPEN_MAGIC          = 12158,
+	TEXT_ID_AMPLIFY_MAGIC         = 12159,
+	TEXT_ID_GIFT_OF_THE_WILD      = 12160,
+	TEXT_ID_THORNS                = 12161,
+	TEXT_ID_BRILLIANCE_INTELLECT  = 12162,
+	TEXT_ID_HORN_OF_WINTER        = 12163,
+	TEXT_ID_DETECT_INVISIBILITY   = 12164,
+	TEXT_ID_WATER_BREATHING       = 12165,
+	// Customize
+	TEXT_ID_RENAME                = 12166,
+	TEXT_ID_CUSTOMIZE             = 12167,
+	TEXT_ID_CHANGE_FACTION        = 12168,
+	TEXT_ID_CHANGE_RACE           = 12169,
+	// Exchange
+	TEXT_ID_EMBLEM_EXCHANGE       = 12170,
+	TEXT_ID_BG_MARK_EXCHANGE      = 12171,
+	TEXT_ID_CURRENCY_EXCHANGE     = 12172,
+	TEXT_ID_TRADE_GOODS_EXCHANGE  = 12173,
+	TEXT_ID_FROST_TO_ETHEREAL     = 12174,
+	TEXT_ID_FROST_TO_TRIUMPH      = 12175,
+	TEXT_ID_FROST_TO_CONQUEST     = 12176,
+	TEXT_ID_FROST_TO_VALOR        = 12177,
+	TEXT_ID_FROST_TO_HEROISM      = 12178,
+	TEXT_ID_FROST_TO_JUSTICE      = 12179,
+	TEXT_ID_ALTERAC_VALLEY        = 12180,
+	TEXT_ID_WARSONG_GULCH         = 12181,
+	TEXT_ID_ARATHI_BASSIN         = 12182,
+	TEXT_ID_EYE_OF_THE_STORM      = 12183,
+	TEXT_ID_STRAND_OF_ANCIENTS    = 12184,
+	TEXT_ID_ISLE_OF_CONQUEST      = 12185,
+	TEXT_ID_WINTERGRASP           = 12186,
+	TEXT_ID_COOKING_AWARD         = 12187,
+	TEXT_ID_JEWELCRAFTING_TOKEN   = 12188,
+	TEXT_ID_CHAMPIONS_SEAL        = 12189,
+	TEXT_ID_STONE_KEEPERS_SHARD   = 12190,
+	TEXT_ID_ETERNAL_WATER         = 12191,
+	TEXT_ID_ETERNAL_AIR           = 12192,
+	TEXT_ID_ETERNAL_EARTH         = 12193,
+	TEXT_ID_ETERNAL_LIFE          = 12194,
+	TEXT_ID_ETERNAL_SHADOW        = 12195,
+	TEXT_ID_ETERNAL_FIRE          = 12196,
+	TEXT_ID_PRIMAL_MIGHT          = 12197,
+	TEXT_ID_PRIMAL_FIRE           = 12198,
+	TEXT_ID_PRIMAL_WATER          = 12199,
+	TEXT_ID_PRIMAL_LIFE           = 12200,
+	TEXT_ID_PRIMAL_AIR            = 12201,
+	TEXT_ID_PRIMAL_EARTH          = 12202,
+	TEXT_ID_PRIMAL_SHADOW         = 12203,
+	TEXT_ID_PRIMAL_MANA           = 12204,
+	TEXT_ID_PRIMAL_NETHER         = 12205,
+	TEXT_ID_ARCANITE_BAR          = 12206,
+	TEXT_ID_COBALT_BAR            = 12207,
+	TEXT_ID_SARONITE_BAR          = 12208,
+	TEXT_ID_TITANIUM_BAR          = 12209,
+	TEXT_ID_TITANSTEEL_BAR        = 12210,
+	TEXT_ID_ELEMENTIUM_BAR        = 12211,
+	TEXT_ID_EBONWEAVE             = 12212,
+	TEXT_ID_MOONSHROUD            = 12213,
+	TEXT_ID_SPELLWEAVE            = 12214,
+	TEXT_ID_FROSTWEAVE            = 12215,
+	TEXT_ID_DREAM_SHARD           = 12216,
+	TEXT_ID_ABYSS_CRYSTAL         = 12217,
+	TEXT_ID_PRISMATIC_SHARD       = 12218,
+	TEXT_ID_INFINITE_DUST         = 12219,
+	TEXT_ID_ARCANE_DUST           = 12220,
+	TEXT_ID_BOREAN_LEATHER        = 12221,
+	TEXT_ID_ARCTIC_FUR            = 12222,
+	TEXT_ID_CHALCEDONY            = 12223,
+	TEXT_ID_DRAGON_EYE            = 12224,
+	TEXT_ID_EXCHANGE_MENU_NEXT    = 12225,
+	TEXT_ID_EXCHANGE_MENU_BACK    = 12226,
+	TEXT_ID_WORLD_OF_WARCRAFT     = 12227,
+	TEXT_ID_THE_WRATH_GATE        = 12228,
+	TEXT_ID_FALL_OF_THE_LICH_KING = 12229,
+};
+
+enum SystemTexts
+{
+	TEXT_ID_WARNING_REMOVE_SICKNESS_COMPLETE = 12230,
+	TEXT_ID_WARNING_REMOVE_DESERTER_COMPLETE = 12231,
+	TEXT_ID_WARNING_CHARACTER_SAVE_TO_DB     = 12232,
+	TEXT_ID_WARNING_RENAME_COMPLETE          = 12233,
+	TEXT_ID_WARNING_CUSTOMIZE_COMPLETE       = 12234,
+	TEXT_ID_WARNING_CHANGE_FACTION_COMPLETE  = 12235,
+	TEXT_ID_WARNING_CHANGE_RACE_COMPLETE     = 12236,
+	TEXT_ID_WARNING_RESET_QUEST_STATUS       = 12237,
+	TEXT_ID_WARNING_MAX_SKILL                = 12238,
+	TEXT_ID_WARNING_NO_SICKNESS              = 12239,
+	TEXT_ID_WARNING_NO_DESERTER              = 12240,
+	TEXT_ID_WARNING_COOLDOWN                 = 12241,
+	TEXT_ID_WARNING_NO_ARENA_POINTS          = 12242,
+	TEXT_ID_WARNING_TELEPORT_ONLY_HORDE      = 12243,
+	TEXT_ID_WARNING_TELEPORT_ONLY_ALLIANCE   = 12244,
+	TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS        = 12245,
+	TEXT_ID_WARNING_NO_MONEY                 = 12246,
+	TEXT_ID_WARNING_FUNCTION_OFF             = 12247,
+	TEXT_ID_WARNING_NPC_OFF                  = 12248,
+};
+
+enum Spells
+{
+	SPELL_UNTALENT_VISUAL               = 14867,
+	SPELL_UNTRAIN_TALENTS               = 46331,
+	SPELL_POWER_WORD_FORTITUDE          = 48162,
+	SPELL_PRAYER_OF_SPIRIT              = 48074,
+	SPELL_SHADOW_PROTECTION             = 48170,
+	SPELL_GREATER_BLESSING_OF_KINGS     = 43223,
+	SPELL_GREATER_BLESSING_OF_MIGHT     = 48934,
+	SPELL_GREATER_BLESSING_OF_WISDOM    = 48938,
+	SPELL_GREATER_BLESSING_OF_SANCTUARY = 25899,
+	SPELL_ARCANE_INTELLECT              = 36880,
+	SPELL_DAMPEN_MAGIC                  = 43015,
+	SPELL_AMPLIFY_MAGIC                 = 43017,
+	SPELL_GIFT_OF_THE_WILD              = 48470,
+	SPELL_THORNS                        = 467,
+	SPELL_BRILLIANCE_INTELLECT          = 69994,
+	SPELL_HORN_OF_WINTER                = 57623,
+	SPELL_DETECT_INVISIBILITY           = 132,
+	SPELL_WATER_BREATHING               = 40621,
+	SPELL_RESURRECTION_SICKNESS         = 15007,
+	SPELL_DESERTER                      = 26013,
+	SPELL_FULL_HEAL                     = 25840,
+	SPELL_ANTI_HEAL_DEBUFF              = 45523,
+};
+
+enum MenuStructure
+{
+	SICKNESS_MENU  = 1,
+	DESERTER_MENU  = 2,
+	HEAL_MENU      = 3,
+	SAVE_MENU      = 4,
+	QUEST_MENU     = 5,
+	SKILLS_MENU    = 6,
+	TALENT_MENU    = 7,
+	TELEPORT_MENU  = 8,
+	BUFF_MENU      = 9,
+	CUSTOMIZE_MENU = 10,
+	EXCHANGE_MENU  = 11,
+	MOVIE_MENU     = 12,
+	FUNNY_MENU     = 13,
+	EVENT_MENU     = 14,
+	MAIN_MENU      = 15,
+};
+
+enum Consts
+{
+	CONST_ARENA_RENAME         = 500,
+	CONST_ARENA_CUSTOMIZE      = 500,
+	CONST_ARENA_CHANGE_FACTION = 1500,
+	CONST_ARENA_CHANGE_RACE    = 2000,
+
+	CONST_FOR_RESET_QUESTS     = 300000000,
+	CONST_FOR_TELEPORT_EVENT   = 250000000,
+};
+
+enum Entries
+{
+	SOUND_ID_CUSTOMIZE                   = 13838,
+
+	ETHEREAL_CREDIT                      = 38186,
+	EMBLEM_OF_FROST                      = 49426,
+	EMBLEM_OF_TRIUMPH                    = 47241,
+	EMBLEM_OF_CONQUEST                   = 45624,
+	EMBLEM_OF_VALOR                      = 40753,
+	EMBLEM_OF_HEROISM                    = 40752,
+	BADGE_OF_JUSTICE                     = 29434,
+
+	ALTERAC_VALLEY_MARK_OF_HONOR         = 20560,
+	WARSONG_GULCH_MARK_OF_HONOR          = 20558,
+	ARATHI_BASSIN_MARK_OF_HONOR          = 20559,
+	EYE_OF_THE_STORM_MARK_OF_HONOR       = 29024,
+	STRAND_OF_THE_ANCIENTS_MARK_OF_HONOR = 42425,
+	ISLE_OF_CONQUEST_MARK_OF_HONOR       = 47395,
+	WINTERGRASP_MARK_OF_HONOR            = 43589,
+
+	DALARAN_COOKING_AWARD                = 43016,
+	DALARAN_JEWELCRAFTING_TOKEN          = 41596,
+	CHAMPIONS_SEAL                       = 44990,
+	STONE_KEEPERS_SHARD                  = 43228,
+
+	ETERNAL_WATER                        = 35622,
+	ETERNAL_AIR                          = 35623,
+	ETERNAL_EARTH                        = 35624,
+	ETERNAL_LIFE                         = 35625,
+	ETERNAL_SHADOW                       = 35627,
+	ETERNAL_FIRE                         = 36860,
+	PRIMAL_MIGHT                         = 23571,
+	PRIMAL_FIRE                          = 21884,
+	PRIMAL_WATER                         = 21885,
+	PRIMAL_LIFE                          = 21886,
+	PRIMAL_AIR                           = 22451,
+	PRIMAL_EARTH                         = 22452,
+	PRIMAL_SHADOW                        = 22456,
+	PRIMAL_MANA                          = 22457,
+	PRIMAL_NETHER                        = 23572,
+	ARCANE_CRYSTAL                       = 12363,
+	ARCANITE_BAR                         = 12360,
+	SARONITE_BAR                         = 36913,
+	COBALT_BAR                           = 36916,
+	TITANSTEEL_BAR                       = 37663,
+	TITANIUM_BAR                         = 41163,
+	ELEMENTIUM_BAR                       = 17771,
+	EBONWEAVE                            = 41593,
+	MOONSHROUD                           = 41594,
+	SPELLWEAVE                           = 41595,
+	IMBUED_FROSTWEAVE                    = 41511,
+	DREAM_SHARD                          = 34052,
+	ABYSS_CRYSTAL                        = 34057,
+	LARGE_PRISMATIC_SHARD                = 22449,
+	INFINITE_DUST                        = 34054,
+	ARCANE_DUST                          = 22445,
+	HEAVY_BOREAN_LEATHER                 = 38425,
+	ARCTIC_FUR                           = 44128,
+	CHALCEDONY                           = 36923,
+	DRAGON_EYE                           = 42225,
+
+	MOVIE_WORLD_OF_WARCRAFT              = 2,
+	MOVIE_THE_WRATH_GATE                 = 14,
+	MOVIE_FALL_OF_THE_LICH_KING          = 16,
+};
+
+enum Actions
+{
+	// Customize Actions
+	ACTION_RENAME                        = 496,
+	ACTION_CUSTOMIZE                     = 497,
+	ACTION_CHANGE_FACTION                = 498,
+	ACTION_CHANGE_RACE                   = 499,
+	// Teleport Actions
+	ACTION_EASTERN_KINGDOMS              = 500,
+	ACTION_KALIMDOR                      = 501,
+	ACTION_OUTLAND                       = 502,
+	ACTION_NORTHREND                     = 503,
+	ACTION_PVP_TERRITORY                 = 504,
+	ACTION_INSTANCES                     = 505,
+	// Buff Actions
+	ACTION_POWER_WORD_FORTITUDE          = 506,
+	ACTION_PRAYER_OF_SPIRIT              = 507,
+	ACTION_SHADOW_PROTECTION             = 508,
+	ACTION_GREATER_BLESSING_OF_KINGS     = 509,
+	ACTION_GREATER_BLESSING_OF_MIGHT     = 510,
+	ACTION_GREATER_BLESSING_OF_WISDOM    = 511,
+	ACTION_GREATER_BLESSING_OF_SANCTUARY = 512,
+	ACTION_ARCANE_INTELLECT              = 513,
+	ACTION_DAMPEN_MAGIC                  = 514,
+	ACTION_AMPLIFY_MAGIC                 = 515,
+	ACTION_GIFT_OF_THE_WILD              = 516,
+	ACTION_THORNS                        = 517,
+	ACTION_BRILLIANCE_INTELLECT          = 518,
+	ACTION_HORN_OF_WINTER                = 519,
+	ACTION_DETECT_INVISIBILITY           = 520,
+	ACTION_WATER_BREATHING               = 521,
+	// Exchange Actions
+	ACTION_EMBLEM_EXCHANGE               = 522,
+	ACTION_BG_MARK_EXCHANGE              = 523,
+	ACTION_CURRENCY_EXCHANGE             = 524,
+	ACTION_TRADE_GOODS_EXCHANGE_1        = 525,
+	ACTION_TRADE_GOODS_EXCHANGE_2        = 526,
+	ACTION_FROST_TO_ETHEREAL             = 527,
+	ACTION_FROST_TO_TRIUMPH              = 528,
+	ACTION_FROST_TO_CONQUEST             = 529,
+	ACTION_FROST_TO_VALOR                = 530,
+	ACTION_FROST_TO_HEROISM              = 531,
+	ACTION_FROST_TO_JUSTICE              = 532,
+	ACTION_TRIUMPH_TO_ALTERAC_VALLEY     = 533,
+	ACTION_TRIUMPH_TO_WARSONG_GULCH      = 534,
+	ACTION_TRIUMPH_TO_ARATHI_BASSIN      = 535,
+	ACTION_TRIUMPH_TO_EYE_OF_THE_STORM   = 536,
+	ACTION_TRIUMPH_TO_STRAND_OF_ANCIENTS = 537,
+	ACTION_TRIUMPH_TO_ISLE_OF_CONQUEST   = 538,
+	ACTION_TRIUMPH_TO_WINTERGRASP        = 539,
+	ACTION_FROST_TO_COOKING_AWARD        = 540,
+	ACTION_FROST_TO_JEWELCRAFTING_TOKEN  = 541,
+	ACTION_FROST_TO_CHAMPIONS_SEAL       = 542,
+	ACTION_FROST_TO_STONE_KEEPERS_SHARD  = 543,
+	ACTION_TRIUMPH_TO_ETERNAL_WATER      = 544,
+	ACTION_TRIUMPH_TO_ETERNAL_AIR        = 545,
+	ACTION_TRIUMPH_TO_ETERNAL_EARTH      = 546,
+	ACTION_TRIUMPH_TO_ETERNAL_LIFE       = 547,
+	ACTION_TRIUMPH_TO_ETERNAL_SHADOW     = 548,
+	ACTION_TRIUMPH_TO_ETERNAL_FIRE       = 549,
+	ACTION_TRIUMPH_TO_PRIMAL_MIGHT       = 550,
+	ACTION_TRIUMPH_TO_PRIMAL_FIRE        = 551,
+	ACTION_TRIUMPH_TO_PRIMAL_WATER       = 552,
+	ACTION_TRIUMPH_TO_PRIMAL_LIFE        = 553,
+	ACTION_TRIUMPH_TO_PRIMAL_AIR         = 554,
+	ACTION_TRIUMPH_TO_PRIMAL_EARTH       = 555,
+	ACTION_TRIUMPH_TO_PRIMAL_SHADOW      = 556,
+	ACTION_TRIUMPH_TO_PRIMAL_MANA        = 557,
+	ACTION_TRIUMPH_TO_PRIMAL_NETHER      = 558,
+	ACTION_TRIUMPH_TO_ARCANITE_BAR       = 559,
+	ACTION_TRIUMPH_TO_COBALT_BAR         = 560,
+	ACTION_TRIUMPH_TO_SARONITE_BAR       = 561,
+	ACTION_TRIUMPH_TO_TITANIUM_BAR       = 562,
+	ACTION_TRIUMPH_TO_TITANSTEEL_BAR     = 563,
+	ACTION_TRIUMPH_TO_ELEMENTIUM_BAR     = 564,
+	ACTION_TRIUMPH_TO_EBONWEAVE          = 565,
+	ACTION_TRIUMPH_TO_MOONSHROUD         = 566,
+	ACTION_TRIUMPH_TO_SPELLWEAVE         = 567,
+	ACTION_TRIUMPH_TO_FROSTWEAVE         = 568,
+	ACTION_TRIUMPH_TO_DREAM_SHARD        = 569,
+	ACTION_TRIUMPH_TO_ABYSS_CRYSTAL      = 570,
+	ACTION_TRIUMPH_TO_PRISMATIC_SHARD    = 571,
+	ACTION_TRIUMPH_TO_INFINITE_DUST      = 572,
+	ACTION_TRIUMPH_TO_ARCANE_DUST        = 573,
+	ACTION_TRIUMPH_TO_BOREAN_LEATHER     = 574,
+	ACTION_TRIUMPH_TO_ARCTIC_FUR         = 575,
+	ACTION_TRIUMPH_TO_CHALCEDONY         = 576,
+	ACTION_TRIUMPH_TO_DRAGON_EYE         = 577,
+	// Movie Actions
+	ACTION_MOVIE_WORLD_OF_WARCRAFT       = 578,
+	ACTION_MOVIE_THE_WRATH_GATE          = 579,
+	ACTION_MOVIE_FALL_OF_THE_LICH_KING   = 580,
+	// Funny Actions
+	ACTION_STARCRAFT_MURLOC              = 581,
+	ACTION_AMBROSE_BOLTSPARK             = 582,
+	ACTION_JONATHAN_THE_REVELATOR        = 583,
+	ACTION_SHATTERED_SUN_MAGE            = 584,
+	ACTION_WORGEN                        = 585,
+	ACTION_PANDAREN_MONK                 = 586,
+	ACTION_ALGALON                       = 587,
+	ACTION_IRON_MENDER                   = 588,
+	ACTION_DRUID                         = 589,
+	ACTION_PRIEST                        = 590,
+	ACTION_PALADIN                       = 591,
+	ACTION_ROGUE                         = 592,
+	ACTION_DEATH_KNIGHT                  = 593,
+	ACTION_WARLOCK                       = 594,
+	ACTION_WARRIOR                       = 595,
+	ACTION_MAGE                          = 596,
+	ACTION_SHAMAN                        = 597,
+	ACTION_HUNTER                        = 598,
+	ACTION_DRAENEI_GIRL_WHITE            = 599,
+	ACTION_DRAENEI_GIRL_BLACK            = 600,
+	ACTION_TERON_GOREFIEND               = 601,
+	ACTION_DEMORPH                       = 602,
+	ACTION_ENTER_EVENT                   = 603,
+	ACTION_LEAVE_EVENT                   = 604,
+};
+
+enum ZoneData
+{
+	DATA_ALTERAC_MOUNTAINS     = 100,
+	DATA_ARATHI_HIGHLANDS      = 101,
+	DATA_BADLANDS              = 102,
+	DATA_BLACKROCK_MOUNTAIN    = 103,
+	DATA_BLASTED_LANDS         = 104,
+	DATA_BURNING_STEPPES       = 105,
+	DATA_DEADWIND_PASS         = 106,
+	DATA_DUN_MOROGH            = 107,
+	DATA_DUSKWOOD              = 108,
+	DATA_EASTERN_PLAGUELANDS   = 109,
+	DATA_ELWYN_FOREST          = 110,
+	DATA_EVERSONG_WOODS        = 111,
+	DATA_GHOSTLANDS            = 112,
+	DATA_HILLSBRAD_FOOTHILLS   = 113,
+	DATA_IRONFORGE             = 114,
+	DATA_ISLE_OF_QUEL_DANAS    = 115,
+	DATA_LOCH_MODAN            = 116,
+	DATA_EBON_HOLD             = 117,
+	DATA_REDRIGE_MOUNTAINS     = 118,
+	DATA_SEARING_GORGE         = 119,
+	DATA_SILVERMOON_CITY       = 120,
+	DATA_SILVERPINE_FOREST     = 121,
+	DATA_STORMWIND_CITY        = 122,
+	DATA_STRANGLETHORN_VALE    = 123,
+	DATA_SWAMP_OF_SORROWS      = 124,
+	DATA_THE_HINTERLANDS       = 125,
+	DATA_TIRISFAL_GLADES       = 126,
+	DATA_UNDERCITY             = 127,
+	DATA_WESTERN_PLAGUELANDS   = 128,
+	DATA_WESTFALL              = 129,
+	DATA_WETLANDS              = 130,
+	DATA_ASHENVALE             = 131,
+	DATA_AZSHARA               = 132,
+	DATA_AZUREMYT_ISLE         = 133,
+	DATA_BLOODMYST_ISLE        = 134,
+	DATA_DARKSHORE             = 135,
+	DATA_DARNASSUS             = 136,
+	DATA_DESOLACE              = 137,
+	DATA_DUROTAR               = 138,
+	DATA_DUSTWALLOW_MARSH      = 139,
+	DATA_FELWOOD               = 140,
+	DATA_FERALAS               = 141,
+	DATA_MOONGLADE             = 142,
+	DATA_MULGORE               = 143,
+	DATA_ORGRIMMAR             = 144,
+	DATA_SILITHUS              = 145,
+	DATA_STONETALON_MOUNTAINS  = 146,
+	DATA_TANARIS               = 147,
+	DATA_TELDRASSIL            = 148,
+	DATA_THE_BARRENS           = 149,
+	DATA_THE_EXODAR            = 150,
+	DATA_THE_VEILED_SEA        = 151,
+	DATA_THOUSAND_NEEDLES      = 152,
+	DATA_THUNDER_BLUFF         = 153,
+	DATA_UN_GORO_CRATER        = 154,
+	DATA_WINTERSPRING          = 155,
+	DATA_BLADES_EDGE_MOUNTAINS = 156,
+	DATA_HELLFIRE_PENINSULA    = 157,
+	DATA_NAGRAND               = 158,
+	DATA_NETHERSTORM           = 159,
+	DATA_SHADOWMOON_VALLEY     = 160,
+	DATA_SHATTRATH_CITY        = 161,
+	DATA_TEROKKAR_FOREST       = 162,
+	DATA_ZANGARMARSH           = 163,
+	DATA_BOREAN_TUNDRA         = 164,
+	DATA_CRYSTALSONG_FOREST    = 165,
+	DATA_DALARAN               = 166,
+	DATA_DRAGONBLIGHT          = 167,
+	DATA_GRIZZLY_HILLS         = 168,
+	DATA_HOWLING_FJORD         = 169,
+	DATA_HROTGARS_LANDING      = 170,
+	DATA_ICECROWN              = 171,
+	DATA_SHOLAZAR_BASIN        = 172,
+	DATA_THE_STORM_PEAKS       = 173,
+	DATA_WINTERGRASP           = 174,
+	DATA_ZUL_DRAK              = 175,
+	DATA_ICECROWN_CITADEL      = 176,
+	DATA_THE_FROZEN_HALLS      = 177,
+	DATA_NAXXRAMAS             = 178,
+	DATA_ONYXIA_LAIR           = 179,
+	DATA_THE_NEXUS             = 180,
+	DATA_CHAMDER_OF_ASPECTS    = 181,
+	DATA_CRUSADER_COLISEUM     = 182,
+	DATA_ULDUAR                = 183,
+	DATA_VAULT_OF_ARCHAVON     = 184,
+	DATA_AZJOL_NERUB           = 185,
+	DATA_UTGARDE_KEEP          = 186,
+	DATA_GUNDRAK               = 187,
+	DATA_DRAK_THARON_KEEP      = 188,
+	DATA_CULLING_OF_STRATHOLME = 189,
+	DATA_THE_BLACK_TEMPLE      = 190,
+	DATA_TEMPEST_KEEP          = 191,
+	DATA_COILFANG_RESERVOIR    = 192,
+	DATA_HELLFIRE_CITADEL      = 193,
+	DATA_KARAZHAN              = 194,
+	DATA_SUNWELL_PLATEAU       = 195,
+	DATA_MAGISTERS_TERRACE     = 196,
+	DATA_ZULAMAN               = 197,
+	DATA_CAVERNS_OF_TIME       = 198,
+	DATA_GRUULS_LAIR           = 199,
+	DATA_AUCHINDOUN            = 200,
+	DATA_BLACKWING_LAIR        = 201,
+	DATA_MOLTEN_CORE           = 202,
+	DATA_RUINS_OF_AHN_QIRAJ    = 203,
+	DATA_TEMPLE_OF_AHN_QIRAJ   = 204,
+	DATA_ZUL_GURUB             = 205,
+	DATA_STRATHOLME            = 206,
+	DATA_GURUBASHI_ARENA       = 207,
+	DATA_BOOTY_BAY             = 208,
+	DATA_GADGETZAN             = 209,
+	DATA_NIGHTHAVEN            = 210,
+	DATA_RATCHET               = 211,
+	DATA_HALAA                 = 212,
+	DATA_AREA_52               = 213,
+};
+
+enum DisplayId
+{
+	DISPLAY_ID_STARCRAFT_MURLOC       = 29348,
+	DISPLAY_ID_AMBROSE_BOLTSPARK      = 28586,
+	DISPLAY_ID_JONATHAN_THE_REVELATOR = 15867,
+	DISPLAY_ID_SHATTERED_SUN_MAGE     = 22959,
+	DISPLAY_ID_WORGEN                 = 657,
+	DISPLAY_ID_PANDAREN_MONK          = 30414,
+	DISPLAY_ID_ALGALON                = 28641,
+	DISPLAY_ID_IRON_MENDER            = 26239,
+	DISPLAY_ID_DRUID                  = 30481,
+	DISPLAY_ID_PRIEST                 = 21419,
+	DISPLAY_ID_PALADIN                = 29774,
+	DISPLAY_ID_ROGUE                  = 30485,
+	DISPLAY_ID_DEATH_KNIGHT           = 27153,
+	DISPLAY_ID_WARLOCK                = 30487,
+	DISPLAY_ID_WARRIOR                = 14732,
+	DISPLAY_ID_MAGE                   = 30477,
+	DISPLAY_ID_SHAMAN                 = 23188,
+	DISPLAY_ID_HUNTER                 = 21379,
+	DISPLAY_ID_DRAENEI_GIRL_WHITE     = 30634,
+	DISPLAY_ID_DRAENEI_GIRL_BLACK     = 30771,
+	DISPLAY_ID_TERON_GOREFIEND        = 21576,
+};
+
+enum PhaseMask
+{
+	PHASE_MASK_NORMAL = 1,
+	PHASE_MASK_EVENT  = 2,
+};
+
+class npc_server_helper : public CreatureScript
+{
+public:
+    npc_server_helper() : CreatureScript("npc_server_helper") { }
+
+	bool OnGossipHello(Player* player, Creature* creature)
+	{
+		if (GetConfigSettings::GetBoolState("Server.Helper.Enable", true))
+		{
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RESURRECTION_SICKNESS), GOSSIP_SENDER_MAIN, SICKNESS_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DESETER), GOSSIP_SENDER_MAIN, DESERTER_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HEAL), GOSSIP_SENDER_MAIN, HEAL_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SAVE), GOSSIP_SENDER_MAIN, SAVE_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RESET_TALENTS), GOSSIP_SENDER_MAIN, TALENT_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RESET_QUEST_COOLDOWN), GOSSIP_SENDER_MAIN, QUEST_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_UPDATE_SKILLS_TO_MAX), GOSSIP_SENDER_MAIN, SKILLS_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_LOCATION), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BUFF_MENU), GOSSIP_SENDER_MAIN, BUFF_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CUSTOMIZE_MENU), GOSSIP_SENDER_MAIN, CUSTOMIZE_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU), GOSSIP_SENDER_MAIN, EXCHANGE_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MOVIE_MENU), GOSSIP_SENDER_MAIN, MOVIE_MENU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FUNNY_MENU), GOSSIP_SENDER_MAIN, FUNNY_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			return true;
+		}
+		else
+		{
+			player->CLOSE_GOSSIP_MENU();
+			creature->MonsterTextEmote(TEXT_ID_WARNING_NPC_OFF, player->GetGUID(), true);
+		}
+		return true;
+	}
+
+	bool OnGossipSelect(Player* player, Creature* creature, uint32 /*sender*/, uint32 action)
+	{
+		player->PlayerTalkClass->ClearMenus();
+
+		switch (action)
+		{
+		case SICKNESS_MENU:
+			if (!player->HasAura(SPELL_RESURRECTION_SICKNESS))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_SICKNESS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->RemoveAurasDueToSpell(SPELL_RESURRECTION_SICKNESS);
+				player->ResetAllPowers();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_REMOVE_SICKNESS_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case DESERTER_MENU:
+			if (!player->HasAura(SPELL_DESERTER))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_DESERTER, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->RemoveAurasDueToSpell(SPELL_DESERTER);
+				creature->MonsterTextEmote(TEXT_ID_WARNING_REMOVE_DESERTER_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case HEAL_MENU:
+			if (player->HasAura(SPELL_ANTI_HEAL_DEBUFF))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_COOLDOWN, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->CastSpell(player, SPELL_FULL_HEAL, true);
+				player->CastSpell(player, SPELL_ANTI_HEAL_DEBUFF, true);
+			}
+			break;
+		case SAVE_MENU:
+			player->CLOSE_GOSSIP_MENU();
+			player->SaveToDB();
+			creature->MonsterTextEmote(TEXT_ID_WARNING_CHARACTER_SAVE_TO_DB, player->GetGUID(), true);
+			break;
+		case TALENT_MENU:
+			player->CLOSE_GOSSIP_MENU();
+			player->resetTalents(true);
+			creature->CastSpell(player, SPELL_UNTALENT_VISUAL, true); 
+			break;
+		case QUEST_MENU:
+			if (!player->HasEnoughMoney(CONST_FOR_RESET_QUESTS))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_MONEY, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->ModifyMoney(-CONST_FOR_RESET_QUESTS);
+				player->ResetDailyQuestStatus();
+				player->ResetWeeklyQuestStatus();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_RESET_QUEST_STATUS, player->GetGUID(), true);
+			}
+			break;
+		case SKILLS_MENU:
+			player->CLOSE_GOSSIP_MENU();
+			player->UpdateSkillsToMaxSkillsForLevel();
+			creature->MonsterTextEmote(TEXT_ID_WARNING_MAX_SKILL, player->GetGUID(), true);
+			break;
+		case TELEPORT_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Teleport.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EASTERN_KINGDOMS), GOSSIP_SENDER_MAIN, ACTION_EASTERN_KINGDOMS);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_KALIMDOR), GOSSIP_SENDER_MAIN, ACTION_KALIMDOR);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_OUTLAND), GOSSIP_SENDER_MAIN, ACTION_OUTLAND);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_NORTHREND), GOSSIP_SENDER_MAIN, ACTION_NORTHREND);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PVP_ZONE), GOSSIP_SENDER_MAIN, ACTION_PVP_TERRITORY);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DUNGEONS_AND_RAIDS), GOSSIP_SENDER_MAIN, ACTION_INSTANCES);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_EASTERN_KINGDOMS:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ALTERAC_MOUNTAINS), GOSSIP_SENDER_MAIN, DATA_ALTERAC_MOUNTAINS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARATHI_HIGHLANDS), GOSSIP_SENDER_MAIN, DATA_ARATHI_HIGHLANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BADLANDS), GOSSIP_SENDER_MAIN, DATA_BADLANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLACKROCK_MOUNTAIN), GOSSIP_SENDER_MAIN, DATA_BLACKROCK_MOUNTAIN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLASTED_LANDS), GOSSIP_SENDER_MAIN, DATA_BLASTED_LANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BURNING_STEPPES), GOSSIP_SENDER_MAIN, DATA_BURNING_STEPPES);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DEADWIND_PASS), GOSSIP_SENDER_MAIN, DATA_DEADWIND_PASS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DUN_MOROGH), GOSSIP_SENDER_MAIN, DATA_DUN_MOROGH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DUSKWOOD), GOSSIP_SENDER_MAIN, DATA_DUSKWOOD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EASTERN_PLAGUELANDS), GOSSIP_SENDER_MAIN, DATA_EASTERN_PLAGUELANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ELWYN_FOREST), GOSSIP_SENDER_MAIN, DATA_ELWYN_FOREST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EVERSONG_WOODS), GOSSIP_SENDER_MAIN, DATA_EVERSONG_WOODS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GHOSTLANDS), GOSSIP_SENDER_MAIN, DATA_GHOSTLANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HILLSBRAD_FOOTHILLS), GOSSIP_SENDER_MAIN, DATA_HILLSBRAD_FOOTHILLS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_IRONFORGE), GOSSIP_SENDER_MAIN, DATA_IRONFORGE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ISLE_OF_QUEL_DANAS), GOSSIP_SENDER_MAIN, DATA_ISLE_OF_QUEL_DANAS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_LOCH_MODAN), GOSSIP_SENDER_MAIN, DATA_LOCH_MODAN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EBON_HOLD), GOSSIP_SENDER_MAIN, DATA_EBON_HOLD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_REDRIGE_MOUNTAINS), GOSSIP_SENDER_MAIN, DATA_REDRIGE_MOUNTAINS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SEARING_GORGE), GOSSIP_SENDER_MAIN, DATA_SEARING_GORGE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SILVERMOON_CITY), GOSSIP_SENDER_MAIN, DATA_SILVERMOON_CITY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SILVERPINE_FOREST), GOSSIP_SENDER_MAIN, DATA_SILVERPINE_FOREST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STORMWIND_CITY), GOSSIP_SENDER_MAIN, DATA_STORMWIND_CITY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STRANGLETHORN_VALE), GOSSIP_SENDER_MAIN, DATA_STRANGLETHORN_VALE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SWAMP_OF_SORROWS), GOSSIP_SENDER_MAIN, DATA_SWAMP_OF_SORROWS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_HINTERLANDS), GOSSIP_SENDER_MAIN, DATA_THE_HINTERLANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TIRISFAL_GLADES), GOSSIP_SENDER_MAIN, DATA_TIRISFAL_GLADES);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_UNDERCITY), GOSSIP_SENDER_MAIN, DATA_UNDERCITY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PLAGUELANDS), GOSSIP_SENDER_MAIN, DATA_WESTERN_PLAGUELANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WESTFALL), GOSSIP_SENDER_MAIN, DATA_WESTFALL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WETLANDS), GOSSIP_SENDER_MAIN, DATA_WETLANDS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_ALTERAC_MOUNTAINS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 370.763f, -491.355f, 175.361f, 5.37858f);
+			break;
+		case DATA_ARATHI_HIGHLANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -1508.51f, -2732.06f, 32.4986f, 3.35708f);
+			break;
+		case DATA_BADLANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -6779.2f, -3423.64f, 241.667f, 0.647481f);
+			break;
+		case DATA_BLACKROCK_MOUNTAIN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -7494.94f, -1123.49f, 265.547f, 3.3092f);
+			break;
+		case DATA_BLASTED_LANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -11182.5f, -3016.67f, 7.42235f, 4.0004f);
+			break;
+		case DATA_BURNING_STEPPES:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -8118.54f, -1633.83f, 132.996f, 0.089067f);
+			break;
+		case DATA_DEADWIND_PASS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -10438.8f, -1932.75f, 104.617f, 4.77402f);
+			break;
+		case DATA_DUN_MOROGH:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -5451.55f, -656.992f, 392.675f, 0.66789f);
+			break;
+		case DATA_DUSKWOOD:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -10898.3f, -364.784f, 39.2681f, 3.04614f);
+			break;
+		case DATA_EASTERN_PLAGUELANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 2300.97f, -4613.36f, 73.6231f, 0.367722f);
+			break;
+		case DATA_ELWYN_FOREST:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -9617.06f, -288.949f, 57.3053f, 4.72687f);
+			break;
+		case DATA_EVERSONG_WOODS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 9079.92f, -7193.23f, 55.6013f, 5.94597f);
+			break;
+		case DATA_GHOSTLANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 7360.86f, -6803.3f, 44.2942f, 5.83679f);
+			break;
+		case DATA_HILLSBRAD_FOOTHILLS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -436.657f, -581.254f, 53.5944f, 1.25917f);
+			break;
+		case DATA_IRONFORGE:
+			if (player->GetTeam() == HORDE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_ALLIANCE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(0, -4918.88f, -940.406f, 501.564f, 5.42347f);
+			}
+			break;
+		case DATA_ISLE_OF_QUEL_DANAS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 12947.4f, -6893.31f, 5.68398f, 3.09154f);
+			break;
+		case DATA_LOCH_MODAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -2846.52f, -2846.52f, 335.867f, 3.53304f);
+			break;
+		case DATA_EBON_HOLD:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 2359.69f, -5661.45f, 382.262f, 3.711f);
+			break;
+		case DATA_REDRIGE_MOUNTAINS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -9551.81f, -2204.73f, 93.473f, 5.47141f);
+			break;
+		case DATA_SEARING_GORGE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -7012.47f, -1065.13f, 241.786f, 5.63162f);
+			break;
+		case DATA_SILVERMOON_CITY:
+			if (player->GetTeam() == ALLIANCE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_HORDE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(530, 9487.69f, -7279.2f, 14.2866f, 6.16478f);
+			}
+			break;
+		case DATA_SILVERPINE_FOREST:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 878.74f, 1359.33f, 50.355f, 5.89929f);
+			break;
+		case DATA_STORMWIND_CITY:
+			if (player->GetTeam() == HORDE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_ALLIANCE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(0, -8833.38f, 628.628f, 94.0066f, 1.06535f);
+			}
+			break;
+		case DATA_STRANGLETHORN_VALE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -12644.3f, -377.411f, 10.1021f, 6.09978f);
+			break;
+		case DATA_SWAMP_OF_SORROWS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -10345.4f, -2773.42f, 21.99f, 5.08426f);
+			break;
+		case DATA_THE_HINTERLANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 119.387f, -3190.37f, 117.331f, 2.34064f);
+			break;
+		case DATA_TIRISFAL_GLADES:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 2036.02f, 161.331f, 33.8674f, 0.143896f);
+			break;
+		case DATA_UNDERCITY:
+			if (player->GetTeam() == ALLIANCE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_HORDE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(0, 1584.07f, 241.987f, -52.1534f, 0.049647f);
+			}
+			break;
+		case DATA_WESTERN_PLAGUELANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 1728.65f, -1602.25f, 63.429f, 1.6558f);
+			break;
+		case DATA_WESTFALL:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -9823.5f, 859.1f, 25.7484f, 2.18454f);
+			break;
+		case DATA_WETLANDS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -3242.81f, -2469.04f, 15.9226f, 6.03924f);
+			break;
+		case ACTION_KALIMDOR:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ASHENVALE), GOSSIP_SENDER_MAIN, DATA_ASHENVALE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AZSHARA), GOSSIP_SENDER_MAIN, DATA_AZSHARA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AZUREMYT_ISLE), GOSSIP_SENDER_MAIN, DATA_AZUREMYT_ISLE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLOODMYST_ISLE), GOSSIP_SENDER_MAIN, DATA_BLOODMYST_ISLE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DARKSHORE), GOSSIP_SENDER_MAIN, DATA_DARKSHORE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DARNASSUS), GOSSIP_SENDER_MAIN, DATA_DARNASSUS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DESOLACE), GOSSIP_SENDER_MAIN, DATA_DESOLACE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DUROTAR), GOSSIP_SENDER_MAIN, DATA_DUROTAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DUSTWALLOW_MARSH), GOSSIP_SENDER_MAIN, DATA_DUSTWALLOW_MARSH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FELWOOD), GOSSIP_SENDER_MAIN, DATA_FELWOOD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FERALAS), GOSSIP_SENDER_MAIN, DATA_FERALAS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MOONGLADE), GOSSIP_SENDER_MAIN, DATA_MOONGLADE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MULGORE), GOSSIP_SENDER_MAIN, DATA_MULGORE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ORGRIMMAR), GOSSIP_SENDER_MAIN, DATA_ORGRIMMAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SILITHUS), GOSSIP_SENDER_MAIN, DATA_SILITHUS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STONETALON_MOUNTAINS), GOSSIP_SENDER_MAIN, DATA_STONETALON_MOUNTAINS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TANARIS), GOSSIP_SENDER_MAIN, DATA_TANARIS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELDRASSIL), GOSSIP_SENDER_MAIN, DATA_TELDRASSIL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_BARRENS), GOSSIP_SENDER_MAIN, DATA_THE_BARRENS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_EXODAR), GOSSIP_SENDER_MAIN, DATA_THE_EXODAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_VEILED_SEA), GOSSIP_SENDER_MAIN, DATA_THE_VEILED_SEA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THOUSAND_NEEDLES), GOSSIP_SENDER_MAIN, DATA_THOUSAND_NEEDLES);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THUNDER_BLUFF), GOSSIP_SENDER_MAIN, DATA_THUNDER_BLUFF);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_UN_GORO_CRATER), GOSSIP_SENDER_MAIN, DATA_UN_GORO_CRATER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WINTERSPRING), GOSSIP_SENDER_MAIN, DATA_WINTERSPRING);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_ASHENVALE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 1928.34f, -2165.95f, 93.7896f, 0.205731f);
+			break;
+		case DATA_AZSHARA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 3341.36f, -4603.79f, 92.5027f, 5.28142f);
+			break;
+		case DATA_AZUREMYT_ISLE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -4204.32f, -12595.5f, 34.3839f, 1.41562f);
+			break;
+		case DATA_BLOODMYST_ISLE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -1993.62f, -11475.8f, 63.9657f, 5.29437f);
+			break;
+		case DATA_DARKSHORE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 5756.25f, 298.505f, 20.6049f, 5.96504f);
+			break;
+		case DATA_DARNASSUS:
+			if (player->GetTeam() == HORDE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_ALLIANCE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(1, 9949.56f, 2284.21f, 1341.4f, 1.59587f);
+			}
+			break;
+		case DATA_DESOLACE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -606.395f, 2211.75f, 92.9818f, 0.809746f);
+			break;
+		case DATA_DUROTAR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 1007.78f, -4446.22f, 11.2022f, 0.20797f);
+			break;
+		case DATA_DUSTWALLOW_MARSH:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -4043.65f, -2991.32f, 36.3984f, 3.37443f);
+			break;
+		case DATA_FELWOOD:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 4102.25f, -1006.79f, 272.717f, 0.790048f);
+			break;
+		case DATA_FERALAS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -4841.19f, 1309.44f, 81.3937f, 1.48501f);
+			break;
+		case DATA_MOONGLADE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 7654.3f, -2232.87f, 462.107f, 5.96786f);
+			break;
+		case DATA_MULGORE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -2192.62f, -736.317f, -13.3274f, 0.487569f);
+			break;
+		case DATA_ORGRIMMAR:
+			if (player->GetTeam() == ALLIANCE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_HORDE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(1, 1629.63f, -4373.58f, 31.5523f, 3.44375f);
+			}
+			break;
+		case DATA_SILITHUS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -7426.87f, 1005.31f, 1.13359f, 2.96086f);
+			break;
+		case DATA_STONETALON_MOUNTAINS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 1570.92f, 1031.52f, 137.959f, 3.33006f);
+			break;
+		case DATA_TANARIS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -7931.2f, -3414.28f, 80.7365f, 0.66522f);
+			break;
+		case DATA_TELDRASSIL:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 10111.3f, 1557.73f, 1324.33f, 4.04239f);
+			break;
+		case DATA_THE_BARRENS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 884.54f, -3548.45f, 91.8532f, 2.95957f);
+
+			break;
+		case DATA_THE_EXODAR:
+			if (player->GetTeam() == HORDE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_ALLIANCE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(530, -3965.7f, -11653.6f, -138.844f, 0.852154f);
+			}
+			break;
+		case DATA_THE_VEILED_SEA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -4263.27f, -11338.0f, 5.59938f, 1.67446f);
+			break;
+		case DATA_THOUSAND_NEEDLES:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -4969.02f, -1726.89f, -62.1269f, 3.7933f);
+			break;
+		case DATA_THUNDER_BLUFF:
+			if (player->GetTeam() == ALLIANCE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_TELEPORT_ONLY_HORDE, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->TeleportTo(1, -1277.37f, 124.804f, 131.287f, 5.22274f);
+			}
+			break;
+		case DATA_UN_GORO_CRATER:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -7943.22f, -2119.09f, -218.343f, 6.0727f);
+			break;
+		case DATA_WINTERSPRING:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 6759.18f, -4419.63f, 763.214f, 4.43476f);
+			break;
+		case ACTION_OUTLAND:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLADES_EDGE_MOUNTAINS), GOSSIP_SENDER_MAIN, DATA_BLADES_EDGE_MOUNTAINS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HELLFIRE_PENINSULA), GOSSIP_SENDER_MAIN, DATA_HELLFIRE_PENINSULA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_NAGRAND), GOSSIP_SENDER_MAIN, DATA_NAGRAND);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_NETHERSTORM), GOSSIP_SENDER_MAIN, DATA_NETHERSTORM);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SHADOWMOON_VALLEY), GOSSIP_SENDER_MAIN, DATA_SHADOWMOON_VALLEY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SHATTRATH_CITY), GOSSIP_SENDER_MAIN, DATA_SHATTRATH_CITY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TEROKKAR_FOREST), GOSSIP_SENDER_MAIN, DATA_TEROKKAR_FOREST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ZANGARMARSH), GOSSIP_SENDER_MAIN, DATA_ZANGARMARSH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_BLADES_EDGE_MOUNTAINS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 3037.67f, 5962.86f, 130.774f, 1.27253f);
+			break;
+		case DATA_HELLFIRE_PENINSULA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -211.237f, 4278.54f, 86.5678f, 4.59776f);
+			break;
+		case DATA_NAGRAND:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -1145.95f, 8182.35f, 3.60249f, 6.13478f);
+			break;
+		case DATA_NETHERSTORM:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 3830.23f, 3426.5f, 88.6145f, 5.16677f);
+			break;
+		case DATA_SHADOWMOON_VALLEY:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -2998.66f, 2568.9f, 76.6306f, 0.551303f);
+			break;
+		case DATA_SHATTRATH_CITY:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -1838.16f, 5301.79f, -12.428f, 5.9517f);
+			break;
+		case DATA_TEROKKAR_FOREST:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -2000.47f, 4451.54f, 8.37917f, 4.40447f);
+			break;
+		case DATA_ZANGARMARSH:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -54.8621f, 5813.44f, 20.9764f, 0.081722f);
+			break;
+		case ACTION_NORTHREND:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BOREAN_TUNDRA), GOSSIP_SENDER_MAIN, DATA_BOREAN_TUNDRA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CRYSTALSONG_FOREST), GOSSIP_SENDER_MAIN, DATA_CRYSTALSONG_FOREST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DALARAN), GOSSIP_SENDER_MAIN, DATA_DALARAN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DRAGONBLIGHT), GOSSIP_SENDER_MAIN, DATA_DRAGONBLIGHT);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GRIZZLY_HILLS), GOSSIP_SENDER_MAIN, DATA_GRIZZLY_HILLS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HOWLING_FJORD), GOSSIP_SENDER_MAIN, DATA_HOWLING_FJORD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HROTGARS_LANDING), GOSSIP_SENDER_MAIN, DATA_HROTGARS_LANDING);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ICECROWN), GOSSIP_SENDER_MAIN, DATA_ICECROWN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SHOLAZAR_BASIN), GOSSIP_SENDER_MAIN, DATA_SHOLAZAR_BASIN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_STORM_PEAKS), GOSSIP_SENDER_MAIN, DATA_THE_STORM_PEAKS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ZONE_WINTERGRASP), GOSSIP_SENDER_MAIN, DATA_WINTERGRASP);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ZUL_DRAK), GOSSIP_SENDER_MAIN, DATA_ZUL_DRAK);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_BOREAN_TUNDRA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 3256.57f, 5278.23f, 40.8046f, 0.246367f);
+			break;
+		case DATA_CRYSTALSONG_FOREST:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5496.46f, 42.38f, 150.0f, 0.75f);
+			break;
+		case DATA_DALARAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5804.15f, 624.771f, 647.767f, 1.64f);
+			break;
+		case DATA_DRAGONBLIGHT:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 4103.36f, 264.478f, 50.5019f, 3.09349f);
+			break;
+		case DATA_GRIZZLY_HILLS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 4391.73f, -3587.92f, 238.531f, 3.57526f);
+			break;
+		case DATA_HOWLING_FJORD:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 1902.15f, -4883.91f, 171.363f, 3.11537f);
+			break;
+		case DATA_HROTGARS_LANDING:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 10254.2f, 679.759f, 68.6468f, 3.11773f);
+			break;
+		case DATA_ICECROWN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 7253.64f, 1644.78f, 433.68f, 4.83412f);
+			break;
+		case DATA_SHOLAZAR_BASIN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5563.16f, 5510.62f, -96.0489f, 1.59178f);
+			break;
+		case DATA_THE_STORM_PEAKS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 7527.14f, -1260.89f, 919.049f, 2.0696f);
+			break;
+		case DATA_WINTERGRASP:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 4561.58f, 2835.33f, 389.79f, 0.34f);
+			break;
+		case DATA_ZUL_DRAK:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5560.23f, -3211.66f, 371.709f, 5.55055f);
+			break;
+		case ACTION_PVP_TERRITORY:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GURUBASHI_ARENA), GOSSIP_SENDER_MAIN, DATA_GURUBASHI_ARENA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BOOTY_BAY), GOSSIP_SENDER_MAIN, DATA_BOOTY_BAY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GADGETZAN), GOSSIP_SENDER_MAIN, DATA_GADGETZAN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_NIGHTHAVEN), GOSSIP_SENDER_MAIN, DATA_NIGHTHAVEN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RATCHET), GOSSIP_SENDER_MAIN, DATA_RATCHET);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HALAA), GOSSIP_SENDER_MAIN, DATA_HALAA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AREA_52), GOSSIP_SENDER_MAIN, DATA_AREA_52);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_GURUBASHI_ARENA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -13277.4f, 127.372f, 26.1418f, 1.11878f);
+			break;
+		case DATA_BOOTY_BAY:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -14297.2f, 530.993f, 8.77916f, 3.98863f);
+			break;
+		case DATA_GADGETZAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -7177.15f, -3785.34f, 8.36981f, 6.10237f);
+			break;
+		case DATA_NIGHTHAVEN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, 7966.85f, -2491.04f, 487.734f, 3.20562f);
+			break;
+		case DATA_RATCHET:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -956.664f, -3754.71f, 5.33239f, 0.996637f);
+			break;
+		case DATA_HALAA:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -1563.05f, 7945.67f, -22.5568f, 1.13572f);
+			break;
+		case DATA_AREA_52:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 3043.33f, 3681.33f, 143.065f, 5.07464f);
+			break;
+		case ACTION_INSTANCES:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ICECROWN_CITADEL), GOSSIP_SENDER_MAIN, DATA_ICECROWN_CITADEL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_FROZEN_HALLS), GOSSIP_SENDER_MAIN, DATA_THE_FROZEN_HALLS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_NAXXRAMAS), GOSSIP_SENDER_MAIN, DATA_NAXXRAMAS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ONYXIA_LAIR), GOSSIP_SENDER_MAIN, DATA_ONYXIA_LAIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_NEXUS), GOSSIP_SENDER_MAIN, DATA_THE_NEXUS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CHAMDER_OF_ASPECTS), GOSSIP_SENDER_MAIN, DATA_CHAMDER_OF_ASPECTS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CRUSADER_COLISEUM), GOSSIP_SENDER_MAIN, DATA_CRUSADER_COLISEUM);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ULDUAR), GOSSIP_SENDER_MAIN, DATA_ULDUAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_VAULT_OF_ARCHAVON), GOSSIP_SENDER_MAIN, DATA_VAULT_OF_ARCHAVON);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AZJOL_NERUB), GOSSIP_SENDER_MAIN, DATA_AZJOL_NERUB);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_UTGARDE_KEEP), GOSSIP_SENDER_MAIN, DATA_UTGARDE_KEEP);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GUNDRAK), GOSSIP_SENDER_MAIN, DATA_GUNDRAK);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DRAK_THARON_KEEP), GOSSIP_SENDER_MAIN, DATA_DRAK_THARON_KEEP);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CULLING_OF_STRATHOLME), GOSSIP_SENDER_MAIN, DATA_CULLING_OF_STRATHOLME);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_BLACK_TEMPLE), GOSSIP_SENDER_MAIN, DATA_THE_BLACK_TEMPLE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TEMPEST_KEEP), GOSSIP_SENDER_MAIN, DATA_TEMPEST_KEEP);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_COILFANG_RESERVOIR), GOSSIP_SENDER_MAIN, DATA_COILFANG_RESERVOIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HELLFIRE_CITADEL), GOSSIP_SENDER_MAIN, DATA_HELLFIRE_CITADEL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_KARAZHAN), GOSSIP_SENDER_MAIN, DATA_KARAZHAN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SUNWELL_PLATEAU), GOSSIP_SENDER_MAIN, DATA_SUNWELL_PLATEAU);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAGISTERS_TERRACE), GOSSIP_SENDER_MAIN, DATA_MAGISTERS_TERRACE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ZULAMAN), GOSSIP_SENDER_MAIN, DATA_ZULAMAN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CAVERNS_OF_TIME), GOSSIP_SENDER_MAIN, DATA_CAVERNS_OF_TIME);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GRUULS_LAIR), GOSSIP_SENDER_MAIN, DATA_GRUULS_LAIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AUCHINDOUN), GOSSIP_SENDER_MAIN, DATA_AUCHINDOUN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLACKWING_LAIR), GOSSIP_SENDER_MAIN, DATA_BLACKWING_LAIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MOLTEN_CORE), GOSSIP_SENDER_MAIN, DATA_MOLTEN_CORE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RUINS_OF_AHN_QIRAJ), GOSSIP_SENDER_MAIN, DATA_RUINS_OF_AHN_QIRAJ);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TEMPLE_OF_AHN_QIRAJ), GOSSIP_SENDER_MAIN, DATA_TEMPLE_OF_AHN_QIRAJ);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ZUL_GURUB), GOSSIP_SENDER_MAIN, DATA_ZUL_GURUB);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STRATHOLME), GOSSIP_SENDER_MAIN, DATA_STRATHOLME);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TELEPORT_MENU), GOSSIP_SENDER_MAIN, TELEPORT_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case DATA_ICECROWN_CITADEL:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5873.82f, 2110.98f, 636.011f, 3.5523f);
+			break;
+		case DATA_THE_FROZEN_HALLS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5690.97f, 2141.07f, 798.054f, 4.4344f);
+			break;
+		case DATA_NAXXRAMAS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 3667.99f, -1268.26f, 243.505f, 2.30427f);
+			break;
+		case DATA_ONYXIA_LAIR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -4708.27f, -3727.64f, 54.5589f, 3.72786f);
+			break;
+		case DATA_THE_NEXUS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 3897.42f, 6985.33f, 69.487f, 0.012698f);
+			break;
+		case DATA_CHAMDER_OF_ASPECTS:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 3641.45f, 282.75f, -120.145f, 3.325f);
+			break;
+		case DATA_CRUSADER_COLISEUM:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 8515.89f, 629.25f, 547.396f, 1.5747f);
+			break;
+		case DATA_ULDUAR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 9239.35f, -1112.53f, 1216.12f, 0.0361938f);
+			break;
+		case DATA_VAULT_OF_ARCHAVON:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 5482.38f, 2839.47f, 418.839f, 0);
+			break;
+		case DATA_AZJOL_NERUB:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 3707.86f, 2150.23f, 36.76f, 3.22f);
+			break;
+		case DATA_UTGARDE_KEEP:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 1228.09f, -4862.45f, 41.248f, 0.314811f);
+			break;
+		case DATA_GUNDRAK:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 6898.72f, -4584.94f, 451.12f, 2.34455f);
+			break;
+		case DATA_DRAK_THARON_KEEP:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(571, 4774.47f, -2028.04f, 229.373f, 1.54661f);
+			break;
+		case DATA_CULLING_OF_STRATHOLME:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -8204.88f, -4495.25f, 9.0091f, 4.72574f);
+			break;
+		case DATA_THE_BLACK_TEMPLE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -3649.92f, 317.469f, 35.2827f, 2.94285f);
+			break;
+		case DATA_TEMPEST_KEEP:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 3099.36f, 1518.73f, 190.3f, 4.72592f);
+			break;
+		case DATA_COILFANG_RESERVOIR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 735.066f, 6883.45f, -66.2913f, 5.89172f);
+			break;
+		case DATA_HELLFIRE_CITADEL:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -390.863f, 3130.64f, 4.51327f, 0.218692f);
+			break;
+		case DATA_KARAZHAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -11118.9f, -2010.33f, 47.0819f, 0.649895f);
+			break;
+		case DATA_SUNWELL_PLATEAU:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 12574.1f, -6774.81f, 15.0904f, 3.13788f);
+			break;
+		case DATA_MAGISTERS_TERRACE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 12884.6f, -7317.69f, 65.5023f, 4.799f);
+			break;
+		case DATA_ZULAMAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 6851.78f, -7972.57f, 179.242f, 4.64691f);
+			break;
+		case DATA_CAVERNS_OF_TIME:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -8204.88f, -4495.25f, 9.0091f, 4.72574f);
+			break;
+		case DATA_GRUULS_LAIR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, 3530.06f, 5104.08f, 3.50861f, 5.51117f);
+			break;
+		case DATA_AUCHINDOUN:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(530, -3324.49f, 4943.45f, -101.239f, 4.63901f);
+			break;
+		case DATA_BLACKWING_LAIR:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(229, 164.789f, -475.305f, 116.842f, 0.022714f);
+			break;
+		case DATA_MOLTEN_CORE:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(230, 1126.64f, -459.94f, -102.535f, 3.46095f);
+			break;
+		case DATA_RUINS_OF_AHN_QIRAJ:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -8409.82f, 1499.06f, 27.7179f, 2.51868f);
+			break;
+		case DATA_TEMPLE_OF_AHN_QIRAJ:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(1, -8240.09f, 1991.32f, 129.072f, 0.941603f);
+			break;
+		case DATA_ZUL_GURUB:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, -11916.7f, -1215.72f, 92.289f, 4.72454f);
+			break;
+		case DATA_STRATHOLME:
+			player->CLOSE_GOSSIP_MENU();
+			player->TeleportTo(0, 3355.5f, -3379.97f, 144.782f, 0.00674677f);
+			break;
+		case BUFF_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Buff.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_POWER_WORD_FORTITUDE), GOSSIP_SENDER_MAIN, ACTION_POWER_WORD_FORTITUDE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRAYER_OF_SPIRIT), GOSSIP_SENDER_MAIN, ACTION_PRAYER_OF_SPIRIT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SHADOW_PROTECTION), GOSSIP_SENDER_MAIN, ACTION_SHADOW_PROTECTION);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLESSING_OF_KINGS), GOSSIP_SENDER_MAIN, ACTION_GREATER_BLESSING_OF_KINGS);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLESSING_OF_MIGHT), GOSSIP_SENDER_MAIN, ACTION_GREATER_BLESSING_OF_MIGHT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLESSING_OF_WISDOM), GOSSIP_SENDER_MAIN, ACTION_GREATER_BLESSING_OF_WISDOM);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BLESSING_OF_SANCTUARY), GOSSIP_SENDER_MAIN, ACTION_GREATER_BLESSING_OF_SANCTUARY);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARCANE_INTELLECT), GOSSIP_SENDER_MAIN, ACTION_ARCANE_INTELLECT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DAMPEN_MAGIC), GOSSIP_SENDER_MAIN, ACTION_DAMPEN_MAGIC);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_AMPLIFY_MAGIC), GOSSIP_SENDER_MAIN, ACTION_AMPLIFY_MAGIC);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_GIFT_OF_THE_WILD), GOSSIP_SENDER_MAIN, ACTION_GIFT_OF_THE_WILD);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THORNS), GOSSIP_SENDER_MAIN, ACTION_THORNS);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BRILLIANCE_INTELLECT), GOSSIP_SENDER_MAIN, ACTION_BRILLIANCE_INTELLECT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_HORN_OF_WINTER), GOSSIP_SENDER_MAIN, ACTION_HORN_OF_WINTER);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DETECT_INVISIBILITY), GOSSIP_SENDER_MAIN, ACTION_DETECT_INVISIBILITY);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WATER_BREATHING), GOSSIP_SENDER_MAIN, ACTION_WATER_BREATHING);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_POWER_WORD_FORTITUDE:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_POWER_WORD_FORTITUDE, true);
+			break;
+		case ACTION_PRAYER_OF_SPIRIT:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_PRAYER_OF_SPIRIT, true);
+			break;
+		case ACTION_SHADOW_PROTECTION:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_SHADOW_PROTECTION, true);
+			break;
+		case ACTION_GREATER_BLESSING_OF_KINGS:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_GREATER_BLESSING_OF_KINGS, true);
+			break;
+		case ACTION_GREATER_BLESSING_OF_MIGHT:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_GREATER_BLESSING_OF_MIGHT, true);
+			break;
+		case ACTION_GREATER_BLESSING_OF_WISDOM:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_GREATER_BLESSING_OF_WISDOM, true);
+			break;
+		case ACTION_GREATER_BLESSING_OF_SANCTUARY:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_GREATER_BLESSING_OF_SANCTUARY, true);
+			break;
+		case ACTION_ARCANE_INTELLECT:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_ARCANE_INTELLECT, true);
+			break;
+		case ACTION_DAMPEN_MAGIC:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_DAMPEN_MAGIC, true);
+			break;
+		case ACTION_AMPLIFY_MAGIC:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_AMPLIFY_MAGIC, true);
+			break;
+		case ACTION_GIFT_OF_THE_WILD:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_GIFT_OF_THE_WILD, true);
+			break;
+		case ACTION_THORNS:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_THORNS, true);
+			break;
+		case ACTION_BRILLIANCE_INTELLECT:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_BRILLIANCE_INTELLECT, true);
+			break;
+		case ACTION_HORN_OF_WINTER:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_HORN_OF_WINTER, true);
+			break;
+		case ACTION_DETECT_INVISIBILITY:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_DETECT_INVISIBILITY, true);
+			break;
+		case ACTION_WATER_BREATHING:
+			player->CLOSE_GOSSIP_MENU();
+			player->CastSpell(player, SPELL_WATER_BREATHING, true);
+			break;
+		case CUSTOMIZE_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Customize.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_RENAME), GOSSIP_SENDER_MAIN, ACTION_RENAME);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CUSTOMIZE), GOSSIP_SENDER_MAIN, ACTION_CUSTOMIZE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CHANGE_FACTION), GOSSIP_SENDER_MAIN, ACTION_CHANGE_FACTION);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CHANGE_RACE), GOSSIP_SENDER_MAIN, ACTION_CHANGE_RACE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_RENAME:
+			if (player->GetArenaPoints() < CONST_ARENA_RENAME)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ARENA_POINTS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->SetAtLoginFlag(AT_LOGIN_RENAME);
+				player->ModifyArenaPoints(-CONST_ARENA_RENAME);
+				player->PlayDirectSound(SOUND_ID_CUSTOMIZE);
+				creature->MonsterTextEmote(TEXT_ID_WARNING_RENAME_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_CUSTOMIZE:
+			if (player->GetArenaPoints() < CONST_ARENA_CUSTOMIZE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ARENA_POINTS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->SetAtLoginFlag(AT_LOGIN_CUSTOMIZE);
+				player->ModifyArenaPoints(-CONST_ARENA_CUSTOMIZE);
+				player->PlayDirectSound(SOUND_ID_CUSTOMIZE);
+				creature->MonsterTextEmote(TEXT_ID_WARNING_CUSTOMIZE_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_CHANGE_FACTION:
+			if (player->GetArenaPoints() < CONST_ARENA_CHANGE_FACTION)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ARENA_POINTS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
+				player->ModifyArenaPoints(-CONST_ARENA_CHANGE_FACTION);
+				player->PlayDirectSound(SOUND_ID_CUSTOMIZE);
+				creature->MonsterTextEmote(TEXT_ID_WARNING_CHANGE_FACTION_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_CHANGE_RACE:
+			if (player->GetArenaPoints() < CONST_ARENA_CHANGE_RACE)
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ARENA_POINTS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->SetAtLoginFlag(AT_LOGIN_CHANGE_RACE);
+				player->ModifyArenaPoints(-CONST_ARENA_CHANGE_RACE);
+				player->PlayDirectSound(SOUND_ID_CUSTOMIZE);
+				creature->MonsterTextEmote(TEXT_ID_WARNING_CHANGE_RACE_COMPLETE, player->GetGUID(), true);
+			}
+			break;
+		case EXCHANGE_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Exchange.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EMBLEM_EXCHANGE), GOSSIP_SENDER_MAIN, ACTION_EMBLEM_EXCHANGE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BG_MARK_EXCHANGE), GOSSIP_SENDER_MAIN, ACTION_BG_MARK_EXCHANGE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CURRENCY_EXCHANGE), GOSSIP_SENDER_MAIN, ACTION_CURRENCY_EXCHANGE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TRADE_GOODS_EXCHANGE), GOSSIP_SENDER_MAIN, ACTION_TRADE_GOODS_EXCHANGE_1);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_EMBLEM_EXCHANGE:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_ETHEREAL), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_ETHEREAL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_TRIUMPH), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_TRIUMPH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_CONQUEST), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_CONQUEST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_VALOR), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_VALOR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_HEROISM), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_HEROISM);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROST_TO_JUSTICE), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_JUSTICE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_BACK), GOSSIP_SENDER_MAIN, EXCHANGE_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case ACTION_FROST_TO_ETHEREAL:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 2, true);
+				player->AddItem(ETHEREAL_CREDIT, 1);
+			}
+			break;
+		case ACTION_FROST_TO_TRIUMPH:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 5, true);
+				player->AddItem(EMBLEM_OF_TRIUMPH, 5);
+			}
+			break;
+		case ACTION_FROST_TO_CONQUEST:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 5, true);
+				player->AddItem(EMBLEM_OF_CONQUEST, 5);
+			}
+			break;
+		case ACTION_FROST_TO_VALOR:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 5, true);
+				player->AddItem(EMBLEM_OF_VALOR, 5);
+			}
+			break;
+		case ACTION_FROST_TO_HEROISM:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 5, true);
+				player->AddItem(EMBLEM_OF_HEROISM, 5);
+			}
+			break;
+		case ACTION_FROST_TO_JUSTICE:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 5, true);
+				player->AddItem(BADGE_OF_JUSTICE, 5);
+			}
+			break;
+		case ACTION_BG_MARK_EXCHANGE:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ALTERAC_VALLEY), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ALTERAC_VALLEY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WARSONG_GULCH), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_WARSONG_GULCH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARATHI_BASSIN), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ARATHI_BASSIN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EYE_OF_THE_STORM), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_EYE_OF_THE_STORM);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STRAND_OF_ANCIENTS), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_STRAND_OF_ANCIENTS);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ISLE_OF_CONQUEST), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ISLE_OF_CONQUEST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WINTERGRASP), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_WINTERGRASP);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_BACK), GOSSIP_SENDER_MAIN, EXCHANGE_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case ACTION_TRIUMPH_TO_ALTERAC_VALLEY:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(ALTERAC_VALLEY_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_WARSONG_GULCH:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(WARSONG_GULCH_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ARATHI_BASSIN:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(ARATHI_BASSIN_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_EYE_OF_THE_STORM:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(EYE_OF_THE_STORM_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_STRAND_OF_ANCIENTS:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(STRAND_OF_THE_ANCIENTS_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ISLE_OF_CONQUEST:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(ISLE_OF_CONQUEST_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_WINTERGRASP:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(WINTERGRASP_MARK_OF_HONOR, 1);
+			}
+			break;
+		case ACTION_CURRENCY_EXCHANGE:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_COOKING_AWARD), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_COOKING_AWARD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_JEWELCRAFTING_TOKEN), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_JEWELCRAFTING_TOKEN);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CHAMPIONS_SEAL), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_CHAMPIONS_SEAL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_STONE_KEEPERS_SHARD), GOSSIP_SENDER_MAIN, ACTION_FROST_TO_STONE_KEEPERS_SHARD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_BACK), GOSSIP_SENDER_MAIN, EXCHANGE_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case ACTION_FROST_TO_COOKING_AWARD:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 1, true);
+				player->AddItem(DALARAN_COOKING_AWARD, 1);
+			}
+			break;
+		case ACTION_FROST_TO_JEWELCRAFTING_TOKEN:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 1, true);
+				player->AddItem(DALARAN_JEWELCRAFTING_TOKEN, 1);
+			}
+			break;
+		case ACTION_FROST_TO_CHAMPIONS_SEAL:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 1, true);
+				player->AddItem(CHAMPIONS_SEAL, 1);
+			}
+			break;
+		case ACTION_FROST_TO_STONE_KEEPERS_SHARD:
+			if (!player->HasItemCount(EMBLEM_OF_FROST, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_FROST, 1, true);
+				player->AddItem(STONE_KEEPERS_SHARD, 5);
+			}
+			break;
+		case ACTION_TRADE_GOODS_EXCHANGE_1:
+			player->PlayerTalkClass->ClearMenus();
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_WATER), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_WATER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_AIR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_AIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_EARTH), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_EARTH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_LIFE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_LIFE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_SHADOW), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_SHADOW);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ETERNAL_FIRE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ETERNAL_FIRE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_MIGHT), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_MIGHT);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_FIRE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_FIRE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_WATER), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_WATER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_LIFE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_LIFE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_AIR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_AIR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_EARTH), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_EARTH);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_SHADOW), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_SHADOW);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_MANA), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_MANA);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRIMAL_NETHER), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRIMAL_NETHER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARCANITE_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ARCANITE_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_COBALT_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_COBALT_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_NEXT), GOSSIP_SENDER_MAIN, ACTION_TRADE_GOODS_EXCHANGE_2);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_BACK), GOSSIP_SENDER_MAIN, EXCHANGE_MENU);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case ACTION_TRADE_GOODS_EXCHANGE_2:
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SARONITE_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_SARONITE_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TITANIUM_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_TITANIUM_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_TITANSTEEL_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_TITANSTEEL_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ELEMENTIUM_BAR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ELEMENTIUM_BAR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EBONWEAVE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_EBONWEAVE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MOONSHROUD), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_MOONSHROUD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_SPELLWEAVE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_SPELLWEAVE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FROSTWEAVE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_FROSTWEAVE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DREAM_SHARD), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_DREAM_SHARD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ABYSS_CRYSTAL), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ABYSS_CRYSTAL);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_PRISMATIC_SHARD), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_PRISMATIC_SHARD);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_INFINITE_DUST), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_INFINITE_DUST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARCANE_DUST), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ARCANE_DUST);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_BOREAN_LEATHER), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_BOREAN_LEATHER);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_ARCTIC_FUR), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_ARCTIC_FUR);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_CHALCEDONY), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_CHALCEDONY);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_DRAGON_EYE), GOSSIP_SENDER_MAIN, ACTION_TRIUMPH_TO_DRAGON_EYE);
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_EXCHANGE_MENU_BACK), GOSSIP_SENDER_MAIN, ACTION_TRADE_GOODS_EXCHANGE_1);
+			player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_WATER:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_WATER, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_AIR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_AIR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_EARTH:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_EARTH, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_LIFE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_LIFE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_SHADOW:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_SHADOW, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ETERNAL_FIRE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(ETERNAL_FIRE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_MIGHT:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 5, true);
+				player->AddItem(PRIMAL_MIGHT, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_FIRE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_FIRE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_WATER:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_WATER, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_LIFE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_LIFE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_AIR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_AIR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_EARTH:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_EARTH, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_SHADOW:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_SHADOW, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_MANA:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(PRIMAL_MANA, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRIMAL_NETHER:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(PRIMAL_NETHER, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ARCANITE_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 8))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 8, true);
+				player->AddItem(ARCANITE_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_COBALT_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(COBALT_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_SARONITE_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(SARONITE_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_TITANIUM_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(TITANIUM_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_TITANSTEEL_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 5, true);
+				player->AddItem(TITANSTEEL_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ELEMENTIUM_BAR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 15))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 15, true);
+				player->AddItem(ELEMENTIUM_BAR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_EBONWEAVE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(EBONWEAVE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_MOONSHROUD:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(MOONSHROUD, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_SPELLWEAVE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(SPELLWEAVE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_FROSTWEAVE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 1, true);
+				player->AddItem(IMBUED_FROSTWEAVE, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_DREAM_SHARD:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 1, true);
+				player->AddItem(DREAM_SHARD, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ABYSS_CRYSTAL:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 1, true);
+				player->AddItem(ABYSS_CRYSTAL, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_PRISMATIC_SHARD:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 1))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 1, true);
+				player->AddItem(LARGE_PRISMATIC_SHARD, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_INFINITE_DUST:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 5, true);
+				player->AddItem(INFINITE_DUST, 20);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ARCANE_DUST:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 5))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 5, true);
+				player->AddItem(ARCANE_DUST, 20);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_BOREAN_LEATHER:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 3))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 3, true);
+				player->AddItem(HEAVY_BOREAN_LEATHER, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_ARCTIC_FUR:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 4))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 4, true);
+				player->AddItem(ARCTIC_FUR, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_CHALCEDONY:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(CHALCEDONY, 1);
+			}
+			break;
+		case ACTION_TRIUMPH_TO_DRAGON_EYE:
+			if (!player->HasItemCount(EMBLEM_OF_TRIUMPH, 2))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_ENOUGH_EMBLEMS, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->DestroyItemCount(EMBLEM_OF_TRIUMPH, 2, true);
+				player->AddItem(DRAGON_EYE, 1);
+			}
+			break;
+		case MOVIE_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Movie.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_WORLD_OF_WARCRAFT), GOSSIP_SENDER_MAIN, ACTION_MOVIE_WORLD_OF_WARCRAFT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_THE_WRATH_GATE), GOSSIP_SENDER_MAIN, ACTION_MOVIE_THE_WRATH_GATE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_FALL_OF_THE_LICH_KING), GOSSIP_SENDER_MAIN, ACTION_MOVIE_FALL_OF_THE_LICH_KING);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_MOVIE_WORLD_OF_WARCRAFT:
+			player->CLOSE_GOSSIP_MENU();
+			player->SendMovieStart(MOVIE_WORLD_OF_WARCRAFT);
+			break;
+		case ACTION_MOVIE_THE_WRATH_GATE:
+			player->CLOSE_GOSSIP_MENU();
+			player->SendMovieStart(MOVIE_THE_WRATH_GATE);
+			break;
+		case ACTION_MOVIE_FALL_OF_THE_LICH_KING:
+			player->CLOSE_GOSSIP_MENU();
+			player->SendMovieStart(MOVIE_FALL_OF_THE_LICH_KING);
+			break;
+		case FUNNY_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Funny.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Star Craft Murloc", GOSSIP_SENDER_MAIN, ACTION_STARCRAFT_MURLOC);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Ambrose Boltspark", GOSSIP_SENDER_MAIN, ACTION_AMBROSE_BOLTSPARK);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Jonathan The Revelator", GOSSIP_SENDER_MAIN, ACTION_JONATHAN_THE_REVELATOR);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Shattered Sun Mage", GOSSIP_SENDER_MAIN, ACTION_SHATTERED_SUN_MAGE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Worgen", GOSSIP_SENDER_MAIN, ACTION_WORGEN);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Pandaren Monk", GOSSIP_SENDER_MAIN, ACTION_PANDAREN_MONK);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Algalon", GOSSIP_SENDER_MAIN, ACTION_ALGALON);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Iron Mender", GOSSIP_SENDER_MAIN, ACTION_IRON_MENDER );
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Druid", GOSSIP_SENDER_MAIN, ACTION_DRUID);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Priest", GOSSIP_SENDER_MAIN, ACTION_PRIEST);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Paladin", GOSSIP_SENDER_MAIN, ACTION_PALADIN);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Rogue", GOSSIP_SENDER_MAIN, ACTION_ROGUE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Death Knight", GOSSIP_SENDER_MAIN, ACTION_DEATH_KNIGHT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Warlock", GOSSIP_SENDER_MAIN, ACTION_WARLOCK);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Warrior", GOSSIP_SENDER_MAIN, ACTION_WARRIOR);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Mage", GOSSIP_SENDER_MAIN, ACTION_MAGE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Shaman", GOSSIP_SENDER_MAIN, ACTION_SHAMAN);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Hunter", GOSSIP_SENDER_MAIN, ACTION_HUNTER);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Draenei Girl White", GOSSIP_SENDER_MAIN, ACTION_DRAENEI_GIRL_WHITE);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Draenei Girl Black", GOSSIP_SENDER_MAIN, ACTION_DRAENEI_GIRL_BLACK);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Teron Gorefiend", GOSSIP_SENDER_MAIN, ACTION_TERON_GOREFIEND);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "[Demorph]", GOSSIP_SENDER_MAIN, ACTION_DEMORPH);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_STARCRAFT_MURLOC:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_STARCRAFT_MURLOC);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_AMBROSE_BOLTSPARK:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_AMBROSE_BOLTSPARK);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_JONATHAN_THE_REVELATOR:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_JONATHAN_THE_REVELATOR);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_SHATTERED_SUN_MAGE:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_SHATTERED_SUN_MAGE);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_WORGEN:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_WORGEN);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_PANDAREN_MONK:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_PANDAREN_MONK);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 2);
+			break;
+		case ACTION_ALGALON:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_ALGALON);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.2f);
+			break;
+		case ACTION_IRON_MENDER:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_IRON_MENDER);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.5f);
+			break;
+		case ACTION_DRUID:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_DRUID);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_PRIEST:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_PRIEST);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.6f);
+			break;
+		case ACTION_PALADIN:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_PALADIN);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_ROGUE:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_ROGUE);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_DEATH_KNIGHT:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_DEATH_KNIGHT);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_WARLOCK:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_WARLOCK);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_WARRIOR:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_WARRIOR);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_MAGE:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_MAGE);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.7f);
+			break;
+		case ACTION_SHAMAN:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_SHAMAN);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_HUNTER:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_HUNTER);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 0.6f);
+			break;
+		case ACTION_DRAENEI_GIRL_WHITE:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_DRAENEI_GIRL_WHITE);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_DRAENEI_GIRL_BLACK:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_DRAENEI_GIRL_BLACK);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_TERON_GOREFIEND:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetDisplayId(DISPLAY_ID_TERON_GOREFIEND);
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case ACTION_DEMORPH:
+			player->CLOSE_GOSSIP_MENU();
+			player->DeMorph();
+			player->SetFloatValue(OBJECT_FIELD_SCALE_X, 1);
+			break;
+		case MAIN_MENU:
+			OnGossipHello(player, creature);
+			break;
+		case EVENT_MENU:
+			if (GetConfigSettings::GetBoolState("Server.Helper.Event.Menu.Enable", true))
+			{
+				player->PlayerTalkClass->ClearMenus();
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Teleport Me To Event [25.000 Gold]", GOSSIP_SENDER_MAIN, ACTION_ENTER_EVENT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Leave Event ->", GOSSIP_SENDER_MAIN, ACTION_LEAVE_EVENT);
+				player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, sObjectMgr->GetQuantumSystemTextForDBCLocale(TEXT_ID_MAIN_MENU), GOSSIP_SENDER_MAIN, MAIN_MENU);
+				player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
+				return true;
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_FUNCTION_OFF, player->GetGUID(), true);
+			}
+			break;
+		case ACTION_ENTER_EVENT:
+			if (!player->HasEnoughMoney(CONST_FOR_TELEPORT_EVENT))
+			{
+				player->CLOSE_GOSSIP_MENU();
+				creature->MonsterTextEmote(TEXT_ID_WARNING_NO_MONEY, player->GetGUID(), true);
+			}
+			else
+			{
+				player->CLOSE_GOSSIP_MENU();
+				player->ModifyMoney(-CONST_FOR_TELEPORT_EVENT);
+				player->SetPhaseMask(PHASE_MASK_EVENT, true);
+			}
+			break;
+		case ACTION_LEAVE_EVENT:
+			player->CLOSE_GOSSIP_MENU();
+			player->SetPhaseMask(PHASE_MASK_NORMAL, true);
+			break;
+		}
+		return true;
+    }
+};
+
+void AddSC_server_helper()
+{
+	new npc_server_helper();
+}
